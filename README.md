@@ -63,17 +63,17 @@ Getting the git sources of executor (optional)
 
 ### [If you are under MacOs & Linux]
 
-From the directory official\incubator, reference some subdirectories in executor:
+From the directory official/incubator, reference some subdirectories in executor:
 
     mv ooRexxShell ooRexxShell.old
-    ln -s ..\\..\\executor\\incubator\\ooRexxShell ooRexxShell
+    ln -s ../../executor/incubator/ooRexxShell ooRexxShell
     mv DocMusings DocMusings.old
-    ln -s ..\\..\\executor\\incubator\\DocMusings DocMusings
+    ln -s ../../executor/incubator/DocMusings DocMusings
 
 Replace the directory official/sandbox/jlf by a symbolic link to executor/sandbox/jlf
 
     mv jlf jlf.old
-    ln -s ..\\..\\executor\\sandbox\\jlf jlf
+    ln -s ../../executor/sandbox/jlf jlf
 
 
 ### [If you are under Windows]
@@ -81,14 +81,14 @@ Replace the directory official/sandbox/jlf by a symbolic link to executor/sandbo
 From the directory official\incubator, reference some subdirectories in executor:
 
     move ooRexxShell ooRexxShell.svn
-    mklink /d ooRexxShell ..\\..\\executor\\incubator\\ooRexxShell
+    mklink /d ooRexxShell ..\..\executor\incubator\ooRexxShell
     move DocMusings DocMusings.svn
-    mklink /d DocMusings ..\\..\\executor\\incubator\\DocMusings
+    mklink /d DocMusings ..\..\executor\incubator\DocMusings
 
 Replace the directory official/sandbox/jlf by a symbolic link to executor/sandbox/jlf
 
     move jlf jlf.svn
-    mklink /d jlf ..\\..\\executor\\sandbox\\jlf
+    mklink /d jlf ..\..\executor\sandbox\jlf
 
 Getting the git sources of executor5 (optional)
 -----------------------------------------------
@@ -191,13 +191,13 @@ Build the release configuration of ooRexx official/main/trunk:
 
     :: Build directory in the virtual machine for Windows
     e:
-    cd \\local\\rexxlocal\\oorexx
+    cd \local\rexxlocal\oorexx
     :: Shared directory
     y:
-    cd \\local\\rexx\\oorexx
-    call scripts\\setenv e:build\\official\\main\\trunk\\win\\cl\\release\\64
+    cd \local\rexx\oorexx
+    call scripts\setenv e:build\official\main\trunk\win\cl\release\64
     cdbuild
-    cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%oorexx_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\\build\\trunk %oorexx_src_dir%
+    cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%oorexx_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %oorexx_src_dir%
     nmake install
     nmake nsis_template_installer
 
@@ -207,11 +207,11 @@ Build the release configuration of executor master branch:
 
     :: Build directory in the virtual machine for Windows
     e:
-    cd \\local\\rexxlocal\\oorexx
+    cd \local\rexxlocal\oorexx
     :: Shared directory
     y:
-    cd \\local\\rexx\\oorexx
-    call scripts\\setenv build\\executor.master\\sandbox\\jlf\\trunk\\win\\cl\\release\\64
+    cd \local\rexx\oorexx
+    call scripts\setenv build\executor.master\sandbox\jlf\trunk\win\cl\release\64
     cdtrunk
     makeorx NODEBUG
 
@@ -281,8 +281,8 @@ Builder scripts
 
 Each directory in the build path can have a corresponding script.  
 The scripts/setenv script iterates over each directory, from deeper to root.  
-If a script named setenv-\<dir\> exists in the directory of scripts then execute it.  
-If a script named setenv-\<dir\> exists in the directory of private scripts then execute it.  
+If a script named setenv-<dir> exists in the directory of scripts then execute it.  
+If a script named setenv-<dir> exists in the directory of private scripts then execute it.  
 
 Example:
 
@@ -314,8 +314,8 @@ MacOs SMB share
 Windows SMB client
 
     net use
-     Y:        \\\\jlfaucher.local\Local1         Microsoft Windows Network
-     Z:        \\\\vmware-host\Shared Folders     VMware Shared Folders
+     Y:        \\jlfaucher.local\Local1         Microsoft Windows Network
+     Z:        \\vmware-host\Shared Folders     VMware Shared Folders
 
 Must mount Local1 (exported by MacOs) which contains this symbolic link to have the directory 'Local' under Y:
 
