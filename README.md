@@ -3,8 +3,8 @@ Builder
 
 Scripts to support builds for several branches, configurations, bitness
 
-Overview of the build hierarchy
--------------------------------
+Directory hierarchy part 1 (overview)
+-------------------------------------
 
 Under MacOs, which is the main machine:
 
@@ -14,7 +14,7 @@ Under MacOs, which is the main machine:
         executor5/              git sources (clone of official/main/trunk)
         official                svn sources
 
-Inside a virtual machine, two main paths are used:
+Inside the virtual machines (one for Ubuntu, one for Windows), two main paths are used:
 
     /local/rexx/oorexx          NFS mount for Ubuntu, SMB mount for Windows
         executor/               git sources (clone of official/sandbox/jlf)
@@ -61,7 +61,7 @@ Getting the git sources of executor (optional)
     git clone https://github.com/jlfaucher/executor.git
 
 
-### [If you are under MacOs & Linux]
+### MacOs & Linux
 
 From the directory official/incubator, reference some subdirectories in executor:
 
@@ -76,7 +76,7 @@ Replace the directory official/sandbox/jlf by a symbolic link to executor/sandbo
     ln -s ../../executor/sandbox/jlf jlf
 
 
-### [If you are under Windows]
+### Windows
 
 From the directory official\incubator, reference some subdirectories in executor:
 
@@ -155,7 +155,7 @@ OTHER PROBLEM : UNDER MACOS, THE DETECTION OF THE LIB DIRECTORY DOES NOT WORK.
 MacOs & Ubuntu build
 --------------------
 
-### [NEW BUILD SYSTEM]
+### New build system (cmake)
 Build the release configuration of ooRexx official/main/trunk:
 
     # MacOs
@@ -169,7 +169,7 @@ Build the release configuration of ooRexx official/main/trunk:
     make install
 
 
-### [OLD BUILD SYSTEM]
+### Old build system (configure)
 Build the release configuration of executor master branch:
 
     # MacOs
@@ -186,7 +186,7 @@ Build the release configuration of executor master branch:
 Windows build
 -------------
 
-### [NEW BUILD SYSTEM]
+### New build system (cmake)
 Build the release configuration of ooRexx official/main/trunk:
 
     :: Build directory in the virtual machine for Windows
@@ -202,7 +202,7 @@ Build the release configuration of ooRexx official/main/trunk:
     nmake nsis_template_installer
 
 
-### [OLD BUILD SYSTEM]
+### Old build system (configure)
 Build the release configuration of executor master branch:
 
     :: Build directory in the virtual machine for Windows
@@ -211,13 +211,15 @@ Build the release configuration of executor master branch:
     :: Shared directory
     y:
     cd \local\rexx\oorexx
-    call scripts\setenv build\executor.master\sandbox\jlf\trunk\win\cl\release\64
+    call scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64
     cdtrunk
     makeorx NODEBUG
 
 
-build/executor (git clone of official/sandbox/jlf)
---------------------------------------------------
+Directory hierarchy part 2 (all targets)
+----------------------------------------
+
+### build/executor (git clone of official/sandbox/jlf)
 
 5 git branches:
 
@@ -228,16 +230,16 @@ build/executor (git clone of official/sandbox/jlf)
     build/executor.pipeline/sandbox/jlf/trunk
 
 
-build/executor5 (git clone of official/main/trunk)
---------------------------------------------------
+### build/executor5 (git clone of official/main/trunk)
 
 1 git branch:
 
     build/executor5.master/main/trunk
 
 
-build/official (svn main/trunk)
--------------------------------
+### build/official (svn main/trunk)
+
+8 svn branches :
 
     build/official/main/releases/3.1.2/trunk
     build/official/main/releases/3.2.0/trunk
@@ -248,9 +250,7 @@ build/official (svn main/trunk)
     build/official/main/releases/4.2.0/trunk
     build/official/main/trunk
 
-
-Common structure of all builds under trunk : system/compiler/config/bitness
----------------------------------------------------------------------------
+### Common structure of all builds under trunk : system/compiler/config/bitness
 
     macos/clang/debug/32
     macos/clang/debug/64
@@ -281,8 +281,8 @@ Builder scripts
 
 Each directory in the build path can have a corresponding script.  
 The scripts/setenv script iterates over each directory, from deeper to root.  
-If a script named setenv-<dir> exists in the directory of scripts then execute it.  
-If a script named setenv-<dir> exists in the directory of private scripts then execute it.  
+If a script named setenv-"directory" exists in the directory of scripts then execute it.  
+If a script named setenv-"directory" exists in the directory of private scripts then execute it.  
 
 Example:
 
