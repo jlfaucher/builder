@@ -6,22 +6,22 @@ Scripts to support builds for several branches, configurations, bitness
 Directory hierarchy part 1 (overview)
 -------------------------------------
 
-Under MacOs, which is the main machine:
+Under MacOs, which is the main machine (host of the virtual machines):
 
     /local/rexx/oorexx/         (replace by your own path)
         build/                  where all the builds and deliveries are done.
         executor/               git sources (clone of official/sandbox/jlf)
         executor5/              git sources (clone of official/main/trunk)
-        official                svn sources
+        official                svn sources of ooRexx
 
 Inside the virtual machines (one for Ubuntu, one for Windows), two main paths are used:
 
-    /local/rexx/oorexx          NFS mount for Ubuntu, SMB mount for Windows
+    /local/rexx/oorexx          Shared directory: NFS mount for Ubuntu, SMB mount for Windows (replace by your own path)
         executor/               git sources (clone of official/sandbox/jlf)
         executor5/              git sources (clone of official/main/trunk)
-        official                svn sources
-    /local/rexxlocal/oorexx
-        build/
+        official                svn sources of ooRexx
+    /local/rexxlocal/oorexx     Local directory (replace by your own path)
+        build/                  where all the builds and deliveries are done.
 
 Because of bad access time to the shared drive when building from a VM, the build directory is put inside the VM.
 
@@ -65,14 +65,14 @@ Getting the git sources of executor (optional)
 
 From the directory official/incubator, reference some subdirectories in executor:
 
-    mv ooRexxShell ooRexxShell.old
+    mv ooRexxShell ooRexxShell.svn
     ln -s ../../executor/incubator/ooRexxShell ooRexxShell
-    mv DocMusings DocMusings.old
+    mv DocMusings DocMusings.svn
     ln -s ../../executor/incubator/DocMusings DocMusings
 
 Replace the directory official/sandbox/jlf by a symbolic link to executor/sandbox/jlf
 
-    mv jlf jlf.old
+    mv jlf jlf.svn
     ln -s ../../executor/sandbox/jlf jlf
 
 
@@ -94,7 +94,7 @@ Getting the git sources of executor5 (optional)
 -----------------------------------------------
 
     cd /local/rexx/oorexx
-    git clone https://github.com/jlfaucher/executor5.git
+    git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
 
 
 Getting the git sources of the builder scripts
@@ -102,7 +102,7 @@ Getting the git sources of the builder scripts
 
 Can be located anywhere
 
-    cd /local/builder
+    cd /local
     git clone https://github.com/jlfaucher/builder.git
 
 
@@ -127,8 +127,8 @@ OTHER PROBLEM : UNDER MACOS, THE DETECTION OF THE LIB DIRECTORY DOES NOT WORK.
     Changes to apply to
     main/trunk/CMakeLists.txt
 
-    --- CMakeLists.txt	(révision 10943)
-    +++ CMakeLists.txt	(copie de travail)
+    --- CMakeLists.txt	(revision 10943)
+    +++ CMakeLists.txt	(working copy)
     @@ -190,7 +190,10 @@
         ENDMACRO ()
 
@@ -155,13 +155,18 @@ OTHER PROBLEM : UNDER MACOS, THE DETECTION OF THE LIB DIRECTORY DOES NOT WORK.
 MacOs & Ubuntu build
 --------------------
 
+    # MacOs:  shared dir=/local/rexx/oorexx, local_dir=/local/rexx/oorexx
+    # Ubuntu: shared_dir=/local/rexx/oorexx, local_dir=/local/rexxlocal/oorexx
+
 ### New build system (cmake)
 Build the release configuration of ooRexx official/main/trunk:
 
     # MacOs
     cd /local/rexx/oorexx
+    . scripts/setenv build/official/main/trunk/macos/clang/release/64/
     # Ubuntu
     cd /local/rexxlocal/oorexx
+    . scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/
     # MacOs & Ubuntu
     . scripts/setenv build/official/main/trunk/macos/clang/release/64/
     cdbuild
@@ -174,8 +179,10 @@ Build the release configuration of executor master branch:
 
     # MacOs
     cd /local/rexx/oorexx
+    . scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
     # Ubuntu
-    cd /local/rexxlocal/oorexx
+    cd /local/rexx/oorexx
+    . scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/
     # MacOs & Ubuntu
     . scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
     cdbuild
@@ -189,7 +196,7 @@ Windows build
 ### New build system (cmake)
 Build the release configuration of ooRexx official/main/trunk:
 
-    :: Build directory in the virtual machine for Windows
+    :: Local directory in the virtual machine for Windows
     e:
     cd \local\rexxlocal\oorexx
     :: Shared directory
@@ -197,15 +204,15 @@ Build the release configuration of ooRexx official/main/trunk:
     cd \local\rexx\oorexx
     call scripts\setenv e:build\official\main\trunk\win\cl\release\64
     cdbuild
-    cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%oorexx_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %oorexx_src_dir%
+    cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %builder_src_dir%
     nmake install
     nmake nsis_template_installer
 
 
-### Old build system (configure)
+### Old build system (configure) + adaptations
 Build the release configuration of executor master branch:
 
-    :: Build directory in the virtual machine for Windows
+    :: Local directory in the virtual machine for Windows
     e:
     cd \local\rexxlocal\oorexx
     :: Shared directory
@@ -286,32 +293,51 @@ If a script named setenv-"directory" exists in the directory of private scripts 
 
 Example:
 
-    /local/rexx/oorexx/build/official/main/trunk/macos/clang/release/64/
+    /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/
     Scripts currently defined :
     |  setenv-64
     |  setenv-release
-    |  setenv-clang
     |  setenv-build
     V  setenv-oorexx
+
+
+    Variables set by scripts/setenv (values for ubuntu):
+    builder_bitness:            64
+    builder_branch:
+    builder_build_dir           /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/build
+    builder_compiler:           gcc
+    builder_config:             release
+    builder_config_dir:         /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64
+    builder_delivery_dir:       /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/deliver
+    builder_local_build_dir:    /local/rexxlocal/oorexx/build
+    builder_local_dir:          /local/rexxlocal/oorexx
+    builder_scripts_dir:        /local/builder/scripts
+    builder_shared_dir:         /local/rexx/oorexx
+    builder_src_relative_path:  main/trunk
+    builder_system:             ubuntu
+    builder_target:             official
+    builder_target_branch:      official
 
 
 Technical infos
 ---------------
 
-MacOs NFS share
+### MacOs NFS share
 
     MacOs /etc/exports
     /Local -mapall=502          where 502 is the uid displayed by the command id.
 
     Ubuntu fstab: jlfaucher.local:/local	/host/local	nfs	defaults	0	0
 
-MacOs SMB share
+### MacOs SMB share
 
     MacOs : menu System Preferences, then Sharing
     Options : activate SMB, deactivate AFP
     Activate file sharing and add /Local1 to the list
 
-Windows SMB client
+### Windows SMB client
+(replace Y: by your letter drive)
+(replace Z: by your letter drive)
 
     net use
      Y:        \\jlfaucher.local\Local1         Microsoft Windows Network
