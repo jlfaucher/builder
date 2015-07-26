@@ -50,3 +50,8 @@ If a script named setenv-"directory" exists in the directory of private scripts 
     builder_system:             ubuntu
     builder_target:             official
     builder_target_branch:      official
+
+
+[configure-smbd-to-follow-symbolic-links]: http://superuser.com/questions/555715/mac-os-x-10-8-configure-smbd-to-follow-symbolic-links "Configure smbd to follow symbolic links"
+[build_oorexx]: https://github.com/jlfaucher/builder/blob/master/build-oorexx.txt "Build ooRexx"
+[build_regina]: https://github.com/jlfaucher/builder/blob/master/build-regina.txt "Build Regina"
