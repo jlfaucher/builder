@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# List all the environment variables whose name starts with "builder"
+printenv | grep "^builder"
+
+# List all the environment variables whose name starts with "oorexx"
+printenv | grep "^oorexx"
+
+# Remember
+# http://askubuntu.com/questions/275965/how-to-list-all-variables-names-and-their-current-values
+# declare -p : list all variables with their attributes
+# declare -xp : list environment variables with their attributes (subset of -p)
+# (declare -o posix ; set) : list all variables (but a few less than declare -p, don't know why. Ex : BASHPID not listed)

@@ -1,0 +1,93 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Those variables must be defined before calling this script
+#if test -z "$builder_branch" ; then echo "builder_branch is undefined" ; return 1 ; fi   # Can be empty, don't test it
+if test -z "$builder_build_dir" ; then echo "builder_build_dir is undefined" ; return 1 ; fi
+if test -z "$builder_config" ; then echo "builder_config is undefined" ; return 1 ; fi
+if test -z "$builder_config_dir" ; then echo "builder_config_dir is undefined" ; return 1 ; fi
+if test -z "$builder_delivery_dir" ; then echo "builder_delivery_dir is undefined" ; return 1 ; fi
+if test -z "$builder_local_dir" ; then echo "builder_local_dir is undefined" ; return 1 ; fi
+if test -z "$builder_scripts_dir" ; then echo "builder_scripts_dir is undefined" ; return 1 ; fi
+if test -z "$builder_shared_dir" ; then echo "builder_shared_dir is undefined" ; return 1 ; fi
+if test -z "$builder_src_dir" ; then echo "builder_src_dir is undefined" ; return 1 ; fi
+if test -z "$builder_src_relative_path" ; then echo "builder_src_relative_path is undefined" ; return 1 ; fi
+if test -z "$builder_target" ; then echo "builder_target is undefined" ; return 1 ; fi
+
+export regina_doc_dir=$builder_shared_dir/doc
+
+alias cdregina='cd $builder_shared_dir'
+alias cdshared='cd $builder_shared_dir'
+
+alias cdreginalocal='cd $builder_local_dir'
+alias cdlocal='cd $builder_local_dir'
+
+alias cdsvn='cd $builder_shared_dir/svn'
+alias cdversions='cd $builder_shared_dir/versions'
+alias cd391='cd $builder_shared_dir/versions/regina391'
+
+alias cdtrunk='cd $builder_src_dir'
+alias cdsrc='cd $builder_src_dir'
+
+alias cdconfig='cd $builder_config_dir'
+alias cdbuild='cd $builder_build_dir'
+alias cddelivery='cd $builder_delivery_dir'
+
+alias cddoc='cd $regina_doc_dir'
+alias cddocs='cd $regina_doc_dir'
+
+# Title of console
+echo -n -e "\033]0;Regina $builder_target $builder_branch $builder_src_relative_path $builder_config $builder_bitness\007"
+
+export PATH
+export LD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH
+export DYLD_FALLBACK_LIBRARY_PATH
+export CPLUS_INCLUDE_PATH
+export LIBRARY_PATH
+
+# add to front of path
+prepend_path()
+{
+  if eval test -z "\"\$$1\"" || ! eval test -z "\"\${$1##*:$2:*}\"" -o -z "\"\${$1%%*:$2}\"" -o -z "\"\${$1##$2:*}\"" -o -z "\"\${$1##$2}\"" ; then
+    eval "$1=$2:\$$1"
+  fi
+}
+
+prepend_path PATH "$builder_shared_dir/scripts"
+
+echo "Setting environment for building with Regina"
+prepend_path CPLUS_INCLUDE_PATH "$builder_delivery_dir/include"
+prepend_path LIBRARY_PATH "$builder_delivery_dir/lib"
+
+echo "Setting environment for running Regina"
+prepend_path PATH "$builder_delivery_dir/bin"
+prepend_path LD_LIBRARY_PATH "$builder_delivery_dir/lib"
+prepend_path DYLD_LIBRARY_PATH "$builder_delivery_dir/lib"
+prepend_path DYLD_FALLBACK_LIBRARY_PATH "$builder_delivery_dir/lib"
+
+################################################################################
+# Other dependencies (like bsf4rexx)
+################################################################################
+
+other_dependencies="${builder_scripts_dir}.private/other_dependencies"
+if test -x "$other_dependencies"
+then
+    echo Running "$other_dependencies"
+    . "$other_dependencies"
+    if test $? != 0
+    then
+        return 1
+    fi
+fi
+
+################################################################################
+# Export some settings, to be used from child process
+################################################################################
+
+# See ~/.bashrc which calls : . ~/.bash_env
+# See ~/.bash_env which calls : . $rexx_environment
+
+export rexx_environment=$builder_config_dir/rexx_environment
+alias > "$rexx_environment"

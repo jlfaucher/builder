@@ -1,0 +1,287 @@
+--------------------------------------------------------------------------------
+ooRexx directory hierarchy
+--------------------------------------------------------------------------------
+
+One MacOs host.
+One Ubuntu virtual machine.
+One Windows virtual machine.
+
+Only one occurence of the git & svn sources, stored on the MacOs host.
+Any change made to the sources under MacOs is immediatly available from the VMs.
+
+Under MacOs, which is the main machine (host of the virtual machines):
+/local1                                 SMB share (exported, will be mounted as Y: under Windows VM)
+    local@                              symbolic link to /local (the goal is to have Y:\local)
+/local                                  NFS share (exported, will be mounted as /host/local under Ubuntu VM)
+    builder/                            Scripts to support builds for several branches, configurations, bitness
+    rexx/
+        oorexx/                         $builder_shared_dir
+            ----------------------------
+            executor/                   git sources (clone of official/sandbox/jlf)
+                sandbox/
+                    jlf/
+                        trunk/
+            executor5/                  git sources (clone of official/main/trunk)
+                main/
+                    trunk/
+            official/                   svn sources of ooRexx
+                main/
+                    releases/
+                        4.2.0/          last delivered version (older : 4.1.1, 4.1.0, 4.0.1, 4.0.0, 3.2.0, 3.1.2)
+                            trunk/
+                    trunk/              next version to deliver
+            ----------------------------
+            build/                      where all the builds and deliveries for MacOs are done.
+                executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
+                    sandbox/
+                        jlf/
+                            trunk/      macos/clang/[debug|reldbg|release]/[32|64]/
+                executor5.master/       other branches : none for the moment
+                    main/
+                        trunk/          macos/clang/[debug|reldbg|release]/[32|64]/
+                official/
+                    main/
+                        releases/
+                            4.2.0/
+                                trunk/  macos/clang/[debug|reldbg|release]/[32|64]/
+                        trunk/          macos/clang/[debug|reldbg|release]/[32|64]/
+
+
+Ubuntu virtual machine:
+The build directory is put inside the VM because of bad performances when accessing $builder_shared_dir.
+/host/local                             NFS mount MacOs /local
+/local
+    builder@                            symbolic link to /host/local/builder
+    rexx@                               symbolic link to /host/local/rexx
+        oorexx/                         $builder_shared_dir
+            build/                      not used for Ubuntu
+            ----------------------------
+            executor/                   git sources (clone of official/sandbox/jlf)
+            executor5/                  git sources (clone of official/main/trunk)
+            official/                   svn sources of ooRexx
+    rexxlocal/                          Local directory
+        oorexx/                         $builder_local_dir
+            ----------------------------
+            build/                      where all the builds and deliveries for Ubuntu are done.
+                executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
+                    sandbox/
+                        jlf/
+                            trunk/      ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+                executor5.master/       other branches : none for the moment
+                    main/
+                        trunk/          ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+                official/
+                    main/
+                        releases/
+                            4.2.0/
+                                trunk/  ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+                        trunk/          ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+
+
+Windows virtual machine:
+The build directory is put inside the VM because of bad performances when accessing $builder_shared_dir.
+C:\jlf\local\rexxlocal                  root directory of the local files for rexx
+E:                                      subst E: C:\jlf
+Y:                                      SMB mount MacOs /local1 which contains local@ -> /local
+Y:\local
+    rexx\
+        oorexx\                         $builder_shared_dir
+            build\                      not used
+            ----------------------------
+            executor\                   git sources (clone of official/sandbox/jlf)
+            executor5\                  git sources (clone of official/main/trunk)
+            official\                   svn sources of ooRexx
+E:\local\
+    rexxlocal/                          Local directory
+        oorexx/                         $builder_local_dir
+            ----------------------------
+            build/                      where all the builds and deliveries for Windows are done.
+                executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
+                    sandbox/
+                        jlf/
+                            trunk/      win/cl/[debug|reldbg|release]/[32|64]/
+                executor5.master/       other branches : none for the moment
+                    main/
+                        trunk/          win/cl/[debug|reldbg|release]/[32|64]/
+                official/
+                    main/
+                        releases/
+                            4.2.0/
+                                trunk/  win/cl/[debug|reldbg|release]/[32|64]/
+                        trunk/          win/cl/[debug|reldbg|release]/[32|64]/
+
+
+--------------------------------------------------------------------------------
+Getting the svn sources of ooRexx
+--------------------------------------------------------------------------------
+
+# To get everything (1,3Gb: trunk, all releases, doc, test, sandbox):
+cd /local/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0 official
+
+# You can checkout only subsets.
+# In this case each subset will have its own .svn repository to manage separately.
+
+# To get only the main trunk of the interpreter sources (25Mb):
+cd /local/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/main/trunk official/main/trunk
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/build-utilities official/build-utilities
+
+# To get only the main trunk of the documentation (24Mb):
+cd /local/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/docs/trunk official/docs/trunk
+
+# To get only the test framework (7Mb):
+cd /local/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/test/trunk official/test/trunk
+
+
+--------------------------------------------------------------------------------
+Getting the git sources of executor
+--------------------------------------------------------------------------------
+
+cd /local/rexx/oorexx
+git clone https://github.com/jlfaucher/executor.git
+
+
+# [MacOs & Linux]
+
+# From the directory official/incubator, reference some subdirectories in executor:
+mv ooRexxShell ooRexxShell.svn
+ln -s ../../executor/incubator/ooRexxShell ooRexxShell
+mv DocMusings DocMusings.svn
+ln -s ../../executor/incubator/DocMusings DocMusings
+
+# Replace the directory official/sandbox/jlf by a symbolic link to executor/sandbox/jlf
+mv jlf jlf.svn
+ln -s ../../executor/sandbox/jlf jlf
+
+
+:: [Windows]
+
+:: From the directory official\incubator, reference some subdirectories in executor:
+move ooRexxShell ooRexxShell.svn
+mklink /d ooRexxShell ..\..\executor\incubator\ooRexxShell
+move DocMusings DocMusings.svn
+mklink /d DocMusings ..\..\executor\incubator\DocMusings
+
+:: Replace the directory official/sandbox/jlf by a symbolic link to executor/sandbox/jlf
+move jlf jlf.svn
+mklink /d jlf ..\..\executor\sandbox\jlf
+
+--------------------------------------------------------------------------------
+Getting the git sources of executor5
+--------------------------------------------------------------------------------
+
+cd /local/rexx/oorexx
+git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
+
+
+--------------------------------------------------------------------------------
+CHANGE THAT MUST BE APPLIED
+--------------------------------------------------------------------------------
+To official/main/trunk/CMakeLists.txt
+
+WITHOUT THIS CHANGE, IT'S IMPOSSIBLE TO MANAGE SEVERAL DELIVERIES IN
+DIFFERENT INSTALL DIRECTORIES (under MacOs & Linux).
+OTHER PROBLEM: UNDER MACOS, THE DETECTION OF THE LIB DIRECTORY DOES NOT WORK.
+
+Changes to apply to
+main/trunk/CMakeLists.txt
+
+--- CMakeLists.txt	(revision 10943)
++++ CMakeLists.txt	(working copy)
+@@ -190,7 +190,10 @@
+    ENDMACRO ()
+
+ else ()
+-   set (CMAKE_INSTALL_PREFIX /usr)
++   if (NOT DEFINED CMAKE_INSTALL_PREFIX)
++      set (CMAKE_INSTALL_PREFIX "/usr")
++   endif ()
++
+    set (catdir ${CMAKE_INSTALL_PREFIX}/bin)
+    set (INSTALL_EXECUTABLE_DIR ${CMAKE_INSTALL_PREFIX}/bin)
+    set (INSTALL_CLS_DIR ${CMAKE_INSTALL_PREFIX}/bin)
+@@ -198,6 +201,9 @@
+    set (INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+    set (INSTALL_SAMPLES_DIR ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME})
+    find_path(INSTALL_LIB_DIR libc.so PATHS ${CMAKE_INSTALL_PREFIX}/lib/* ${CMAKE_INSTALL_PREFIX}/lib64)
++   if (${INSTALL_LIB_DIR} STREQUAL "INSTALL_LIB_DIR-NOTFOUND")
++      set (INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
++   endif ()
+    set (INSTALL_MAN_DIR ${CMAKE_INSTALL_PREFIX}/share/man)
+ endif ()
+
+
+--------------------------------------------------------------------------------
+Builder scripts
+--------------------------------------------------------------------------------
+
+# For convenience, a symbolic link to /local/builder/scripts can be created
+cd /local/rexx/oorexx
+ln -s /local/builder/scripts .
+
+
+--------------------------------------------------------------------------------
+MacOs & Ubuntu build
+--------------------------------------------------------------------------------
+
+# [NEW BUILD SYSTEM (cmake)]
+# Build the 64-bit release configuration of ooRexx official/main/trunk:
+# MacOs
+cd /local/rexx/oorexx
+. scripts/setenv build/official/main/trunk/macos/clang/release/64/
+# Ubuntu
+cd /local/rexx/oorexx
+. scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/
+# MacOs & Ubuntu
+cdbuild
+cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
+make install
+
+
+# [OLD BUILD SYSTEM (configure)]
+# Build the 64-bit release configuration of executor master branch:
+# MacOs
+cd /local/rexx/oorexx
+. scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+# Ubuntu
+cd /local/rexx/oorexx
+. scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
+# MacOs & Ubuntu
+cdbuild
+$builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static
+make install
+
+
+--------------------------------------------------------------------------------
+Windows build
+--------------------------------------------------------------------------------
+
+:: [NEW BUILD SYSTEM (cmake)]
+# Build the 64-bit release configuration of ooRexx official/main/trunk:
+:: Local directory in the virtual machine for Windows
+e:
+cd \local\rexxlocal\oorexx
+:: Shared directory
+y:
+cd \local\rexx\oorexx
+call scripts\setenv e:build\official\main\trunk\win\cl\release\64
+cdbuild
+cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %builder_src_dir%
+nmake install
+nmake nsis_template_installer
+
+
+:: [OLD BUILD SYSTEM (configure) + adaptations]
+# Build the 64-bit release configuration of executor master branch:
+:: Local directory in the virtual machine for Windows
+e:
+cd \local\rexxlocal\oorexx
+:: Shared directory
+y:
+cd \local\rexx\oorexx
+call scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64
+cdtrunk
+makeorx NODEBUG

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# add to front of path
+prepend_path()
+{
+  if eval test -z "\"\$$1\"" || ! eval test -z "\"\${$1##*:$2:*}\"" -o -z "\"\${$1%%*:$2}\"" -o -z "\"\${$1##$2:*}\"" -o -z "\"\${$1##$2}\"" ; then
+    eval "$1=$2:\$$1"
+  fi
+}
+
+echo "Setting environment for bsf4oorexx"
+. /local/rexx/bsf4oorexx/setenv.sh
+
+echo "Setting environment for ICU"
+. /local/icu/setenv.sh
+
+echo "Setting environment fpr Dropbox scripts"
+prepend_path PATH "$oorexx_samples" "~/Dropbox/oorexx"

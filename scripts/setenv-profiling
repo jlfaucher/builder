@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+export CFLAGS="-g -O3 -pg $CFLAGS"
+export CXXFLAGS="-g -O3 -pg $CXXFLAGS"
+export LDFLAGS="-pg $LDFLAGS"
+
+# todo
+export CMAKE_BUILD_TYPE=RelWithDebInfo

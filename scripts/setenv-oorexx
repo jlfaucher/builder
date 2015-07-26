@@ -1,0 +1,141 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Those variables must be defined before calling this script
+#if test -z "$builder_branch" ; then echo "builder_branch is undefined" ; return 1 ; fi   # Can be empty, don't test it
+if test -z "$builder_build_dir" ; then echo "builder_build_dir is undefined" ; return 1 ; fi
+if test -z "$builder_config" ; then echo "builder_config is undefined" ; return 1 ; fi
+if test -z "$builder_config_dir" ; then echo "builder_config_dir is undefined" ; return 1 ; fi
+if test -z "$builder_delivery_dir" ; then echo "builder_delivery_dir is undefined" ; return 1 ; fi
+if test -z "$builder_local_dir" ; then echo "builder_local_dir is undefined" ; return 1 ; fi
+if test -z "$builder_scripts_dir" ; then echo "builder_scripts_dir is undefined" ; return 1 ; fi
+if test -z "$builder_shared_dir" ; then echo "builder_shared_dir is undefined" ; return 1 ; fi
+if test -z "$builder_src_dir" ; then echo "builder_src_dir is undefined" ; return 1 ; fi
+if test -z "$builder_src_relative_path" ; then echo "builder_src_relative_path is undefined" ; return 1 ; fi
+if test -z "$builder_target" ; then echo "builder_target is undefined" ; return 1 ; fi
+
+export oorexx_doc_dir=$builder_shared_dir/official/docs
+export oorexx_test_trunk=$builder_shared_dir/official/test/trunk
+export oorexx_test_src=$oorexx_test_trunk
+
+alias cdoorexx='cd $builder_shared_dir'
+alias cdshared='cd $builder_shared_dir'
+alias cdoorexxlocal='cd $builder_local_dir'
+alias cdlocal='cd $builder_local_dir'
+
+alias cdofficial='cd $builder_shared_dir/official'
+alias cdexecutor='cd $builder_shared_dir/executor'
+alias cdexecutor5='cd $builder_shared_dir/executor5'
+
+alias cdtrunk='cd $builder_src_dir'
+alias cdsrc='cd $builder_src_dir'
+
+alias cdconfig='cd $builder_config_dir'
+alias cdbuild='cd $builder_build_dir'
+alias cddelivery='cd $builder_delivery_dir'
+
+alias cddoc='cd $oorexx_doc_dir'
+alias cddocs='cd $oorexx_doc_dir'
+
+# Title of console
+echo -n -e "\033]0;ooRexx $builder_target $builder_branch $builder_src_relative_path $builder_config $builder_bitness\007"
+
+export PATH
+export LD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH
+export DYLD_FALLBACK_LIBRARY_PATH
+export CPLUS_INCLUDE_PATH
+export LIBRARY_PATH
+
+# add to front of path
+prepend_path()
+{
+  if eval test -z "\"\$$1\"" || ! eval test -z "\"\${$1##*:$2:*}\"" -o -z "\"\${$1%%*:$2}\"" -o -z "\"\${$1##$2:*}\"" -o -z "\"\${$1##$2}\"" ; then
+    eval "$1=$2:\$$1"
+  fi
+}
+
+prepend_path PATH "$builder_shared_dir/scripts"
+
+echo "Setting environment for building with ooRexx"
+prepend_path CPLUS_INCLUDE_PATH "$builder_delivery_dir/include"
+prepend_path LIBRARY_PATH "$builder_delivery_dir/lib"
+
+echo "Setting environment for running ooRexx"
+prepend_path PATH "$builder_delivery_dir/bin"
+prepend_path LD_LIBRARY_PATH "$builder_delivery_dir/lib"
+prepend_path DYLD_LIBRARY_PATH "$builder_delivery_dir/lib"
+prepend_path DYLD_FALLBACK_LIBRARY_PATH "$builder_delivery_dir/lib"
+
+echo "Setting environment for ooRexx test framework"
+prepend_path PATH "$oorexx_test_trunk"
+prepend_path PATH "$oorexx_test_trunk/framework"
+alias cdtest='cd $oorexx_test_trunk'
+alias cdtests='cd $oorexx_test_trunk'
+
+echo "Setting environment for incubator"
+export oorexx_incubator=$builder_shared_dir/$builder_target/incubator
+prepend_path PATH "$oorexx_incubator"
+alias cdincubator='cd $oorexx_incubator'
+
+echo "Setting environment for DocMusings"
+export oorexx_docmusings=$oorexx_incubator/docmusings
+alias cddocmusings='cd $oorexx_docmusings'
+export oorexx_transformxml=$oorexx_docmusings/transformxml
+alias cdtransformxml='cd $oorexx_transformxml'
+prepend_path PATH "$oorexx_docmusings"
+
+echo "Setting environment for ooRexxShell"
+prepend_path PATH "$oorexx_incubator/oorexxshell"
+alias cdoorexxshell='cd $oorexx_incubator/oorexxshell'
+
+echo "Setting environment for ooSQLite"
+prepend_path PATH "$oorexx_incubator/ooSQLite/bin/linux"
+prepend_path LD_LIBRARY_PATH "$oorexx_incubator/ooSQLite/bin/linux"
+prepend_path DYLD_LIBRARY_PATH "$oorexx_incubator/ooSQLite/bin/linux"
+prepend_path DYLD_FALLBACK_LIBRARY_PATH "$oorexx_incubator/ooSQLite/bin/linux"
+alias cdoosqlite='cd $oorexx_incubator/ooSQLite'
+
+echo "Setting environment for the sandbox"
+export oorexx_sandbox=$builder_shared_dir/$builder_target/sandbox
+alias cdsandbox='cd $oorexx_sandbox'
+alias cdsandboxjlf='cd $oorexx_sandbox/jlf'
+
+echo "Setting environment for the sandbox samples"
+export oorexx_samples=$oorexx_sandbox/jlf/samples
+prepend_path PATH "$oorexx_samples"
+alias cdsamples='cd $oorexx_samples'
+alias cdextension='cd $oorexx_samples/extension'
+alias cdextensionstd='cd $oorexx_samples/extension/std'
+alias cdfunctional='cd $oorexx_samples/functional'
+alias cdconcurrency='cd $oorexx_samples/concurrency'
+alias cdmutablebuffer='cd $oorexx_samples/mutablebuffer'
+alias cdrgfutil2='cd $oorexx_samples/rgf_util2'
+alias cdtrace='cd $oorexx_samples/trace'
+
+################################################################################
+# Other dependencies (like bsf4oorexx)
+################################################################################
+
+other_dependencies="${builder_scripts_dir}.private/other_dependencies-oorexx"
+if test -x "$other_dependencies"
+then
+    echo Running "$other_dependencies"
+    . "$other_dependencies"
+    if test $? != 0
+    then
+        return 1
+    fi
+fi
+
+################################################################################
+# Export some settings, to be used from child process
+################################################################################
+
+# See ~/.bashrc which calls : . ~/.bash_env
+# See ~/.bash_env which calls : . "$rexx_environment"
+# See oorexxshell.rex which expands the aliases : bash -O expand_aliases
+
+export rexx_environment=$builder_config_dir/rexx_environment
+alias > "$rexx_environment"

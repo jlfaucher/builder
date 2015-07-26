@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+export builder_bitness=32
+
+# Regina : I have a mess -m32 -m64 if I don't use this configure option
+export regina_bitness=--enable-32bit
+
+platform=`uname`
+case "$platform" in
+Darwin)
+    export CFLAGS="-arch i386 $CFLAGS"
+    export CPPFLAGS="-arch i386 $CPPFLAGS"
+    export CXXFLAGS="-arch i386 $CXXFLAGS"
+    export LDFLAGS="-arch i386 $LDFLAGS"
+    export ABI="32 $ABI"
+    ;;
+Linux)
+    export CFLAGS="-m32 $CFLAGS"
+    export CPPFLAGS="-m32 $CPPFLAGS"
+    export CXXFLAGS="-m32 $CXXFLAGS"
+    export LDFLAGS="-m32 $LDFLAGS"
+    ;;
+esac

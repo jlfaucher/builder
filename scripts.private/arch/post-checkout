@@ -1,0 +1,126 @@
+#!/bin/bash
+
+# Not working as expected when switching to a branch just created.
+# The old and new branches have the same identifier.
+# Example of output :
+#Switch Branch
+#	Running .git/hooks/post-checkout
+#	post-checkout Arguments : arg1=a7b05976dcdef57ffdb299c43a7de8b13f33f8db
+#	post-checkout Arguments : arg2=a7b05976dcdef57ffdb299c43a7de8b13f33f8db
+#	post-checkout Arguments : arg3=1
+#	post-checkout Variables : oorexx_dir=/Local/rexx/oorexx
+#	post-checkout Variables : build_dir=/Local/rexx/oorexx/build/<target>
+#	post-checkout Variables : delivery_dir=/Local/rexx/oorexx/delivery/<target>
+#	Nothing to do : Branches are identical
+
+# todo :
+# Remove the debug lines
+# echo "$script Variables : line $LINENO"
+
+# This is the error code returned in case of error.
+# Seems better to return 0 instead of 1, to not interrupt git.
+ERROR=0
+
+script=`basename $0`
+echo "Running $0"
+echo "$script Arguments : arg1=$1"
+echo "$script Arguments : arg2=$2"
+echo "$script Arguments : arg3=$3"
+
+# Path to this script (oorexx/<target>/.git/hooks)
+FILE="${BASH_SOURCE[0]}"
+while [ -h "$FILE" ] ; do
+  SRC="$(readlink "$FILE")"
+  FILE="$( cd -P "$(dirname "$FILE")" && \
+           cd -P "$(dirname "$SRC")" && pwd )/$(basename "$SRC")"
+done
+hooks_dir="$( cd -P "$(dirname "$FILE")" && pwd )"  # /local/rexx/oorexx/<target>/.git/hooks
+dot_git_dir=`dirname $hooks_dir`                    # /local/rexx/oorexx/<target>/.git
+target_dir=`dirname $dot_git_dir`                   # /local/rexx/oorexx/<target>
+target_name=`basename $target_dir`                  # Ex : executor, executor5
+oorexx_dir=`dirname $target_dir`                    # /local/rexx/oorexx
+build_dir=$oorexx_dir/build/$target_name            # /local/rexx/oorexx/build/<target>
+delivery_dir=$oorexx_dir/delivery/$target_name      # /local/rexx/oorexx/delivery/<target>
+branches_stack=$dot_git_dir/_branches_stack.txt
+echo "$script Variables : oorexx_dir=$oorexx_dir"
+echo "$script Variables : build_dir=$build_dir"
+echo "$script Variables : delivery_dir=$delivery_dir"
+echo "$script Variables : branches_stack=$branches_stack"
+
+test "$3" = "1" || { echo "Nothing to do : Not a branch checkout" ; exit 0 ; }
+echo "$script Variables : line $LINENO"
+
+# Next test is a bad idea... The SHA are identical when switching to a branch just created.
+# test "$1" != "$2" || { echo "Nothing to do : Branches are identical" ; exit 0 ; }
+echo "$script Variables : line $LINENO"
+
+#do="echo $script Would do : "
+do=
+echo "$script Variables : line $LINENO"
+
+# Does not work when switching to a branch just created, because both SHA are equals
+# and no way to get the old branch name.
+#branch_old=`git branch --no-color --contains $1`
+#branch_new=`git branch --no-color --contains $2`
+#branch_old=${branch_old:2}
+#branch_new=${branch_new:2}
+echo "$script Variables : line $LINENO"
+
+# New way to get the branch names, no longer using the SHA
+if test ! -f "$branches_stack"
+then
+    echo "$script File not found or not a regular file : $branches_stack"
+    echo "$script Create this file, which must contain the branch name of your current build/<target>"
+    exit $ERROR
+fi
+echo "$script Variables : line $LINENO"
+branch_old=`tail -n 1 "$branches_stack" 2>/dev/null`
+echo "$script Variables : line $LINENO"
+branch_new=`git symbolic-ref --short HEAD`
+echo "$script Variables : line $LINENO"
+
+echo "$script Variables : branch_old=$branch_old"
+echo "$script Variables : branch_new=$branch_new"
+echo "$script Variables : line $LINENO"
+
+test "$branch_old" || { echo "KO Old branch undefined" ; exit $ERROR ; }
+echo "$script Variables : line $LINENO"
+test "$branch_new" || { echo "KO New branch undefined" ; exit $ERROR ; }
+echo "$script Variables : line $LINENO"
+
+test "$branch_old" != "$branch_new" || { echo "Nothing to do :  Branches are identical" ; exit 0 ; }
+echo "$script Variables : line $LINENO"
+
+test ! -e "$build_dir.$branch_old" || { echo "KO Config old branch directory already exists : $build_dir.$branch_old" ; exit $ERROR ; }
+echo "$script Variables : line $LINENO"
+test ! -e "$delivery_dir.$branch_old" || { echo "KO Delivery old branch directory already exists : $delivery_dir.$branch_old" ; exit $ERROR ; }
+echo "$script Variables : line $LINENO"
+
+$do mv "$build_dir" "$build_dir.$branch_old" || { echo "KO Could not move build directory to old branch" ; exit $ERROR ; }
+echo "$script Variables : line $LINENO"
+
+if test -d "$build_dir.$branch_new"
+then
+    $do mv "$build_dir.$branch_new" "$build_dir" || { echo "KO Could not move new branch to build directory" ; exit $ERROR ; }
+    echo "$script Variables : line $LINENO"
+else
+    $do mkdir "$build_dir" || { echo "KO Could not create build directory" ; exit $ERROR ; }
+    echo "$script Variables : line $LINENO"
+fi
+
+$do mv "$delivery_dir" "$delivery_dir.$branch_old" || { echo "KO Could not move delivery directory to old branch" ; exit $ERROR ; }
+echo "$script Variables : line $LINENO"
+
+if test -d "$delivery_dir.$branch_new"
+then
+    $do mv "$delivery_dir.$branch_new" "$delivery_dir" || { echo "KO Could not move new branch to delivery directory" ; exit $ERROR ; }
+    echo "$script Variables : line $LINENO"
+else
+    $do mkdir "$delivery_dir" || { echo "KO Could not create delivery directory" ; exit $ERROR ; }
+    echo "$script Variables : line $LINENO"
+fi
+
+echo "$branch_new">>"$branches_stack"
+echo "$script Variables : line $LINENO"
+
+echo "$script ended."

@@ -1,0 +1,52 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Path to this script
+FILE="${BASH_SOURCE[0]}"
+export builder_scripts_dir="$( cd -P "$(dirname "$FILE")" && pwd )"
+
+dir=$1
+if test -z "$dir"
+then
+    echo Mandatory argument: path to config directory \""build/<target[.branch]>/d1/d2/.../system/compiler/config/bitness"\"
+    return 1
+fi
+
+if test ! -d "$dir"
+then
+    echo Directory not found
+    return 1
+fi
+dir="$( cd -P "$dir" && pwd )"
+echo $dir
+
+export builder_config_dir=$dir
+
+# Iterate over each directory, from deeper to root.
+# If a script named setenv-<dir> exists in the directory of scripts then execute it.
+# If a script named setenv-<dir> exists in the directory of private scripts then execute it.
+while [ "$dir" != "/" ]; do
+    current=`basename "$dir"`
+    echo "[current="$current"]"
+    script=${builder_scripts_dir}/setenv-${current}
+    if [ -x "$script" ]; then
+        echo Running "$script"
+        . "$script" "$dir"
+        if test $? != 0
+        then
+            return 1
+        fi
+    fi
+    # Private script
+    script=${builder_scripts_dir}.private/setenv-${current}
+    if [ -x "$script" ]; then
+        echo Running "$script"
+        . "$script" "$dir"
+        if test $? != 0
+        then
+            return 1
+        fi
+    fi
+    dir=`dirname "$dir"`
+done

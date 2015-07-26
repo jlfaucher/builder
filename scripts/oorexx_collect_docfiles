@@ -1,0 +1,91 @@
+#/bin/bash
+
+# Run this script from docs/trunk.
+# Collect the doc files and put them in the directory docs/build/trunk.
+
+check_dir()
+{
+    dir=$1
+    if ! test -e "$dir"
+    then
+        mkdir "$dir" || ERROR=1
+        return
+    fi
+    if ! test -d "$dir"
+    then
+        echo "$dir is not a directory."
+        ERROR=1
+    fi
+}
+
+copy_file()
+{
+    source=$1
+    if ! test -f "$source"
+    then
+        echo "$source not found."
+        ERROR=1
+        return
+    fi
+    file=`basename "$source"`
+    if test "$source" -nt "$DEST/$file"
+    then
+        echo cp "$source" "$DEST"
+        cp -p "$source" "$DEST" || ERROR=1
+    fi
+    return
+}
+
+collect_into()
+{
+    DEST=$1
+    ERROR=0
+    check_dir $DEST
+    if test $ERROR = 1; then return 1; fi
+
+    copy_file ./buildmachine/tmp/en-US/pdf/ooRexxBuild.pdf
+    copy_file ./ooconsole/tmp/en-US/pdf/ooconsole.pdf
+    copy_file ./oodguide/tmp/en-US/pdf/oodguide.pdf
+    copy_file ./oodialog/tmp/en-US/pdf/oodialog.pdf
+    copy_file ./oosqlite/tmp/en-US/pdf/oosqlite.pdf
+    copy_file ./ootest/tmp/en-US/pdf/ootest.pdf
+    copy_file ./orxncurses/tmp/en-US/pdf/orxncurses.pdf
+    copy_file ./readme/tmp/en-US/pdf/readme.pdf
+    copy_file ./rexxextensions/tmp/en-US/pdf/rexxextensions.pdf
+    copy_file ./rexxgtk/tmp/en-US/pdf/rexxgtk.pdf
+    copy_file ./rexxpg/tmp/en-US/pdf/rexxpg.pdf
+    copy_file ./rexxref/tmp/en-US/pdf/rexxref.pdf
+    copy_file ./rxftp/tmp/en-US/pdf/rxftp.pdf
+    copy_file ./rxmath/tmp/en-US/pdf/rxmath.pdf
+    copy_file ./rxsock/tmp/en-US/pdf/rxsock.pdf
+    copy_file ./unixextensions/tmp/en-US/pdf/unixextensions.pdf
+    copy_file ./winextensions/tmp/en-US/pdf/winextensions.pdf
+
+    copy_file ./buildmachine/tmp/en-US/html/ooRexxBuild-html.zip
+    copy_file ./ooconsole/tmp/en-US/html/ooconsole-html.zip
+    copy_file ./oodguide/tmp/en-US/html/oodguide-html.zip
+    copy_file ./oodialog/tmp/en-US/html/oodialog-html.zip
+    copy_file ./oosqlite/tmp/en-US/html/oosqlite-html.zip
+    copy_file ./ootest/tmp/en-US/html/ootest-html.zip
+    copy_file ./orxncurses/tmp/en-US/html/orxncurses-html.zip
+    copy_file ./readme/tmp/en-US/html/readme-html.zip
+    copy_file ./rexxextensions/tmp/en-US/html/rexxextensions-html.zip
+    copy_file ./rexxgtk/tmp/en-US/html/rexxgtk-html.zip
+    copy_file ./rexxpg/tmp/en-US/html/rexxpg-html.zip
+    copy_file ./rexxref/tmp/en-US/html/rexxref-html.zip
+    copy_file ./rxftp/tmp/en-US/html/rxftp-html.zip
+    copy_file ./rxmath/tmp/en-US/html/rxmath-html.zip
+    copy_file ./rxsock/tmp/en-US/html/rxsock-html.zip
+    copy_file ./unixextensions/tmp/en-US/html/unixextensions-html.zip
+    copy_file ./winextensions/tmp/en-US/html/winextensions-html.zip
+
+    if test $ERROR = 1
+    then
+        echo Some files were not copied.
+        return 1
+    fi
+    return 0
+}
+
+
+collect_into ../build/trunk

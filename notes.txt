@@ -1,0 +1,40 @@
+--------------------------------------------------------------------------------
+Technical infos
+--------------------------------------------------------------------------------
+
+MacOs NFS share
+---------------
+MacOs /etc/exports
+/Local -mapall=502          where 502 is the uid displayed by the command id.
+
+Ubuntu fstab: jlfaucher.local:/local	/host/local	nfs	defaults	0	0
+
+MacOs SMB share
+---------------
+MacOs : menu System Preferences, then Sharing
+Options : activate SMB, deactivate AFP
+Activate file sharing and add /Local1 to the list
+
+Windows SMB client
+------------------
+(replace Y: by your letter drive)
+(replace Z: by your letter drive)
+
+net use
+ Y:        \\jlfaucher.local\Local1         Microsoft Windows Network
+ Z:        \\vmware-host\Shared Folders     VMware Shared Folders
+
+Must mount Local1 (exported by MacOs) which contains this symbolic link to have
+the directory 'Local' under Y:
+/Local
+/Local1
+    Local@ -> /Local
+
+http://superuser.com/questions/555715/mac-os-x-10-8-configure-smbd-to-follow-symbolic-links
+Adding no-symlinks as a program argument in smbd's launchdaemon plist did the trick.
+The file sharing services do need a restart after changing the file.
+/System/Library/LaunchDaemons/com.apple.smbd.plist
+<array>
+        <string>/usr/sbin/smbd</string>
+        <string>-no-symlinks</string>
+</array>

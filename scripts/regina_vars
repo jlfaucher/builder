@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# List all the environment variables whose name starts with "builder"
+printenv | grep "^builder"
+
+# List all the environment variables whose name starts with "regina"
+printenv | grep "^oorexx"
