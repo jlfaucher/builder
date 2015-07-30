@@ -51,10 +51,10 @@ exit /B 0
 :CSCCHAAE667748
 
 :: ooRexx build utilities
-call shellscriptlib :prepend_path PATH "C:\jlf\Downloads\Software\rexx\oorexx\official\build-utilities\trunk\platform\windows\bin"
+call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\oorexx\official\build-utilities\trunk\platform\windows\bin"
 
 :: Xalan-C
-call shellscriptlib :prepend_path PATH "C:\jlf\Downloads\Software\xalan-c"
+call shellscriptlib :prepend_path PATH "C:\jlf\local\xalan-c"
 
 :: xsltproc
 call shellscriptlib :prepend_path PATH "C:\MT Toolkit\bin\xmlsoft.org\bin"
@@ -70,19 +70,19 @@ call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre7\bin"
 call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre7\bin\client"
 
 :: GCI
-call shellscriptlib :prepend_path PATH "C:\jlf\Downloads\Software\rexx\GCI\gci-source.1.1\win%builder_bitness%"
+call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-sources.1.1\win%builder_bitness%"
 
 :: NSIS
-call shellscriptlib :prepend_path PATH "C:\jlf\Downloads\Software\nsis\Nsis_longStrings"
+call shellscriptlib :prepend_path PATH "C:\jlf\local\nsis\Nsis_longStrings"
 
 :: Dropbox scripts
 call shellscriptlib :prepend_path PATH "C:\Users\JFaucher\Dropbox\oorexx"
 
 :: csdiff
-call shellscriptlib :prepend_path PATH "C:\jlf\Downloads\Software\csdiff"
+call shellscriptlib :prepend_path PATH "C:\jlf\local\csdiff"
 
 :: windiff
-call shellscriptlib :prepend_path PATH "C:\jlf\Downloads\Software\windiff"
+call shellscriptlib :prepend_path PATH "C:\jlf\local\windiff"
 
 :: unix-like
 call shellscriptlib :prepend_path PATH "C:\MT Toolkit\bin\cygwin\bin"
