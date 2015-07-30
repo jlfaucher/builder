@@ -13,20 +13,27 @@ set amd64_32=amd64_x86
 set amd64_64=amd64
 set compiler=%PROCESSOR_ARCHITECTURE%_%builder_bitness%
 if not defined %compiler%  goto error
-call set compiler=%%%compiler%%%
+call set compiler_option=%%%compiler%%%
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Visual Studio 12.0
 set cl_dir=C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC
 if exist "%cl_dir%" (
-    call "%cl_dir%\vcvarsall.bat" %compiler%
+    call "%cl_dir%\vcvarsall.bat" %compiler_option%
     if errorlevel 1 goto error
     exit /b 0
 )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-set cl_dir=C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin
+:: Visual Studio 11.0
+:: VS 11.0 : x86 | amd64 | arm | x86_amd64 | x86_arm
+:: Always use the 32-bit command line, because  not sure that the 64-bit command line is installed
+set amd64_32=x86
+set amd64_64=x86_amd64
+call set compiler_option=%%%compiler%%%
+set cl_dir=C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC
 if exist "%cl_dir%" (
-    call "%cl_dir%\vcvarsall.bat" %compiler%
+    call "%cl_dir%\vcvarsall.bat" %compiler_option%
     if errorlevel 1 goto error
     exit /b 0
 )
@@ -51,7 +58,6 @@ The 32-bit and 64-bit compilers for each target generate identical code,
 but the 64-bit compilers support more memory for precompiled header symbols
 and the Whole Program Optimization (/GL, /LTCG) options.
 
-C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat
 if /i %1 == x86       goto x86          32-bit command-line builds that target x86 platforms
 if /i %1 == amd64     goto amd64        64-bit command-line builds that target x64 platforms
@@ -61,6 +67,14 @@ if /i %1 == x86_arm   goto x86_arm      32-bit command line builds that target A
 if /i %1 == x86_amd64 goto x86_amd64    32-bit command line builds that target x64 platforms
 if /i %1 == amd64_x86 goto amd64_x86    64-bit command-line builds that target x86 platforms
 if /i %1 == amd64_arm goto amd64_arm    64-bit command-line builds that target ARM platforms
+
+C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat
+if /i %1 == x86       goto x86          32-bit command-line builds that target x86 platforms
+if /i %1 == amd64     goto amd64        64-bit command-line builds that target x64 platforms
+if /i %1 == x64       goto amd64        idem
+if /i %1 == arm       goto arm          ?
+if /i %1 == x86_arm   goto x86_arm      32-bit command line builds that target ARM platforms
+if /i %1 == x86_amd64 goto x86_amd64    32-bit command line builds that target x64 platforms
 
 
 Under win32 :
