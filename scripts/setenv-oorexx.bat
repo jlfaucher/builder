@@ -40,7 +40,7 @@ doskey cddoc=%oorexx_doc_drv% $T cd %oorexx_doc_dir%
 doskey cddocs=%oorexx_doc_drv% $T cd %oorexx_doc_dir%
 
 :: Title of console
-title ooRexx %oorexx_target% %builder_branch% %builder_src_relative_path% %builder_config% %builder_bitness%
+title ooRexx %builder_target% %builder_branch% %builder_src_relative_path% %builder_config% %builder_bitness%
 
 call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 
@@ -96,8 +96,8 @@ doskey cdoorexxshell=%oorexx_incubator_drv% $T cd %oorexx_incubator%\oorexxshell
 :: move jlf jlf.svn
 :: mklink /d jlf ..\..\executor\sandbox\jlf
 echo Setting environment for the sandbox
-set oorexx_sandbox=%oorexx_shared_dir%\official\sandbox
-set oorexx_sandbox_drv=%oorexx_shared_drv%
+set oorexx_sandbox=%builder_shared_dir%\official\sandbox
+set oorexx_sandbox_drv=%builder_shared_drv%
 doskey cdsandbox=%oorexx_sandbox_drv% $T cd %oorexx_sandbox%
 doskey cdsandboxjlf=%oorexx_sandbox_drv% $T cd %oorexx_sandbox%\jlf
 

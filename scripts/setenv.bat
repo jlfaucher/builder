@@ -2,15 +2,15 @@
 if defined echo echo %echo%
 
 :: Path to this script
-set oorexx_scripts_dir="%~dp0"
-set oorexx_scripts_dir=%oorexx_scripts_dir:&=^&%
-set oorexx_scripts_dir=%oorexx_scripts_dir:"=%
+set builder_scripts_dir="%~dp0"
+set builder_scripts_dir=%builder_scripts_dir:&=^&%
+set builder_scripts_dir=%builder_scripts_dir:"=%
 :: Remove the last "\"
-set oorexx_scripts_dir="%oorexx_scripts_dir:~0,-1%"
-set oorexx_scripts_dir=%oorexx_scripts_dir:&=^&%
-set oorexx_scripts_dir=%oorexx_scripts_dir:"=%
+set builder_scripts_dir="%builder_scripts_dir:~0,-1%"
+set builder_scripts_dir=%builder_scripts_dir:&=^&%
+set builder_scripts_dir=%builder_scripts_dir:"=%
 
-call "%oorexx_scripts_dir%\shellscriptlib" :prepend_path PATH "%oorexx_scripts_dir%"
+call "%builder_scripts_dir%\shellscriptlib" :prepend_path PATH "%builder_scripts_dir%"
 
 set dir=%1
 if not defined dir (
@@ -30,7 +30,7 @@ set dir=%dir:&=^&%
 set dir=%dir:"=%
 echo %dir%
 
-set oorexx_config_dir=%dir%
+set builder_config_dir=%dir%
 
 call shellscriptlib :drive "%dir%"
 set drv=%drive%
@@ -43,7 +43,7 @@ if "%dir%"=="%drv%" goto :endloop
 call shellscriptlib :basename "%dir%"
 set current=%basename%
 echo ***current=%current%
-set script="%oorexx_scripts_dir%\setenv-%current%.bat"
+set script="%builder_scripts_dir%\setenv-%current%.bat"
 set script=%script:&=^&%
 set script=%script:"=%
 if exist "%script%" (
@@ -52,7 +52,7 @@ if exist "%script%" (
     if errorlevel 1 exit /b 1
 )
 :: Private script
-set script="%oorexx_scripts_dir%.private\setenv-%current%.bat"
+set script="%builder_scripts_dir%.private\setenv-%current%.bat"
 set script=%script:&=^&%
 set script=%script:"=%
 if exist "%script%" (
