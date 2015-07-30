@@ -218,9 +218,20 @@ main/trunk/CMakeLists.txt
 Builder scripts
 --------------------------------------------------------------------------------
 
-# For convenience, a symbolic link to /local/builder/scripts can be created
+# The builder scripts can be installed anywhere.
+# Example : /local/builder/scripts.
+# For convenience, a symbolic link to /local/builder/scripts can be created.
+
+# MacOs, Ubuntu
 cd /local/rexx/oorexx
 ln -s /local/builder/scripts .
+
+# Windows
+y:
+cd \local\rexx\oorexx
+mklink /d scripts \local\builder\scripts
+# Need also this link, because symlink not dereferenced
+mklink /d scripts.private \local\builder\scripts.private
 
 
 --------------------------------------------------------------------------------
