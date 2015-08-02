@@ -128,13 +128,30 @@ if exist "%other_dependencies%" (
 )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Compatibility with old build system (you need adapted scripts)
+:: Compatibility with old build system (oorexx <= 4.2, executor)
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:: The following scripts must be adapted to support a build directory outside the source directory.
+:: They are already adapted for executor, but not adapted for ooRexx.
+:: - makeorx.bat :
+::   The executor version can be used as-is for ooRexx.
+:: - orxdb.bat :
+::   The executor version can be used for ooRexx, but some changes must be applied :
+::   Search for
+::       OODIALOGSRCW
+::       m17n
+::   and remove the part in relation with this text.
+::   Add set OR_ORYXINCL=%OR_ORYXINCL% -I%OR_OODIALOGSRC%\
+:: - platform\windows\buildorx.bat :
+::   The executor version can be reused as-is for ooRexx.
 
 set SRC_DRV=%builder_src_drv%
 set SRC_DIR=\%builder_src_dir:*\=%
 set BUILD_DRV=%builder_build_drv%
 set BUILD_DIR=\%builder_build_dir:*\=%
 
+set BUILD_TYPE=
+if "%builder_config%" == "release" set BUILD_TYPE=NODEBUG
+if "%builder_config%" == "debug" set BUILD_TYPE=DEBUG
 
 exit /b 0

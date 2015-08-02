@@ -295,4 +295,4 @@ y:
 cd \local\rexx\oorexx
 call scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64
 cdtrunk
-makeorx NODEBUG
+makeorx %BUILD_TYPE%
