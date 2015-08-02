@@ -16,7 +16,18 @@ if not defined %compiler%  goto error
 call set compiler_option=%%%compiler%%%
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Visual Studio 12.0
+:: Visual Studio 2015 (internal version: 14.O)
+
+set cl_dir=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC
+if exist "%cl_dir%" (
+    call "%cl_dir%\vcvarsall.bat" %compiler_option%
+    if errorlevel 1 goto error
+    exit /b 0
+)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Visual Studio 2013 (internal version: 12.0)
+
 set cl_dir=C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC
 if exist "%cl_dir%" (
     call "%cl_dir%\vcvarsall.bat" %compiler_option%
@@ -25,7 +36,8 @@ if exist "%cl_dir%" (
 )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Visual Studio 11.0
+:: Visual Studio 2012 (internal version: 11.0)
+
 :: VS 11.0 : x86 | amd64 | arm | x86_amd64 | x86_arm
 :: Always use the 32-bit command line, because  not sure that the 64-bit command line is installed
 set amd64_32=x86
@@ -45,7 +57,7 @@ exit /B 1
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-DOCUMENTATION for Visual Studio 2013
+DOCUMENTATION
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Visual Studio includes
@@ -57,6 +69,16 @@ are installed for each target (x86, x64, and ARM).
 The 32-bit and 64-bit compilers for each target generate identical code,
 but the 64-bit compilers support more memory for precompiled header symbols
 and the Whole Program Optimization (/GL, /LTCG) options.
+
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
+if /i %1 == x86       goto x86
+if /i %1 == amd64     goto amd64
+if /i %1 == x64       goto amd64
+if /i %1 == arm       goto arm
+if /i %1 == x86_arm   goto x86_arm
+if /i %1 == x86_amd64 goto x86_amd64
+if /i %1 == amd64_x86 goto amd64_x86
+if /i %1 == amd64_arm goto amd64_arm
 
 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat
 if /i %1 == x86       goto x86          32-bit command-line builds that target x86 platforms
