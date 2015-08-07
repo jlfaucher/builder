@@ -44,9 +44,9 @@ title ooRexx %builder_target% %builder_branch% %builder_src_relative_path% %buil
 
 call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 
-:: Old build system : rexximage must be in the path
-echo Setting environment for building ooRexx (old build system)
-call shellscriptlib :prepend_path PATH "%builder_build_dir%"
+:: Needed by extensions\platform\windows\ole\events.cpp for for AgtCtl_i.c
+set sdk=C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A
+if exist "%sdk%" set INCLUDE=%INCLUDE%;%sdk%\include
 
 echo Setting environment for building with ooRexx
 set INCLUDE=%builder_delivery_dir%\api;%INCLUDE%
@@ -131,10 +131,19 @@ if exist "%other_dependencies%" (
 :: Compatibility with old build system (oorexx <= 4.2, executor)
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+:: Old build system : rexximage must be in the path during the build.
+:: Old build system : there is no delivery (except NSIS), so PATH must include the build directory.
+echo Setting environment for building ooRexx (old build system)
+call shellscriptlib :prepend_path PATH "%builder_build_dir%"
+
+
 :: The following scripts must be adapted to support a build directory outside the source directory.
 :: They are already adapted for executor, but not adapted for ooRexx.
+::
 :: - makeorx.bat :
 ::   The executor version can be used as-is for ooRexx.
+::   You must copy cl_infos.cpp in trunk.
+::
 :: - orxdb.bat :
 ::   The executor version can be used for ooRexx, but some changes must be applied :
 ::   Search for
@@ -142,6 +151,10 @@ if exist "%other_dependencies%" (
 ::       m17n
 ::   and remove the part in relation with this text.
 ::   Add set OR_ORYXINCL=%OR_ORYXINCL% -I%OR_OODIALOGSRC%\
+::
+:: - lib\orxwin32.mak :
+::   The executor version can be used as-is for ooRexx.
+::
 :: - platform\windows\buildorx.bat :
 ::   The executor version can be reused as-is for ooRexx.
 
