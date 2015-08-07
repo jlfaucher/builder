@@ -42,7 +42,7 @@ set drv=%drive%
 if "%dir%"=="%drv%" goto :endloop
 call shellscriptlib :basename "%dir%"
 set current=%basename%
-echo ***current=%current%
+echo [current=%current%]
 set script="%builder_scripts_dir%\setenv-%current%.bat"
 set script=%script:&=^&%
 set script=%script:"=%

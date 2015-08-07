@@ -285,7 +285,7 @@ nmake install
 nmake nsis_template_installer
 
 
-:: [OLD BUILD SYSTEM (configure) + adaptations]
+:: [OLD BUILD SYSTEM (configure) + adaptations (see scripts\setenv-oorexx.bat, Compatibility with old build system)]
 # Build the 64-bit release configuration of executor master branch:
 :: Local directory in the virtual machine for Windows
 e:
@@ -295,4 +295,6 @@ y:
 cd \local\rexx\oorexx
 call scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64
 cdtrunk
-makeorx %BUILD_TYPE%
+makeorx_verbose %BUILD_TYPE%
+:: oodialog is not built by default
+makeorx_verbose %BUILD_TYPE% oodialog
