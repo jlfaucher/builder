@@ -15,9 +15,12 @@ set compiler=%PROCESSOR_ARCHITECTURE%_%builder_bitness%
 if not defined %compiler%  goto error
 call set compiler_option=%%%compiler%%%
 
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Visual Studio 2015 (internal version: 14.O)
 
+:cl_14
+if 14 GTR %CL_MAX% goto cl_12
 set cl_dir=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC
 if exist "%cl_dir%" (
     call "%cl_dir%\vcvarsall.bat" %compiler_option%
@@ -28,6 +31,8 @@ if exist "%cl_dir%" (
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Visual Studio 2013 (internal version: 12.0)
 
+:cl_12
+if 12 GTR %CL_MAX% goto cl_11
 set cl_dir=C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC
 if exist "%cl_dir%" (
     call "%cl_dir%\vcvarsall.bat" %compiler_option%
@@ -38,6 +43,8 @@ if exist "%cl_dir%" (
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Visual Studio 2012 (internal version: 11.0)
 
+:cl_11
+if 11 GTR %CL_MAX%  echo No version for CL_MAX=%CL_MAX% & goto :error
 :: VS 11.0 : x86 | amd64 | arm | x86_amd64 | x86_arm
 :: Always use the 32-bit command line, because  not sure that the 64-bit command line is installed
 set amd64_32=x86
