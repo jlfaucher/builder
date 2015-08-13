@@ -36,7 +36,7 @@ call shellscriptlib :prepend_path PATH "Y:\Local\rexx\GCI\gci-source.1.1\win%bui
 call shellscriptlib :prepend_path PATH "E:\nsis\Nsis_longStrings"
 
 :: Dropbox scripts
-call shellscriptlib :prepend_path PATH "Z:\jlfaucher\Dropbox\oorexx"
+call shellscriptlib :prepend_path PATH "Z:\jlfaucher\Dropbox\software\oorexx"
 
 :: windiff
 call shellscriptlib :prepend_path PATH "E:\windiff"
@@ -76,7 +76,7 @@ call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-sources.1.1\wi
 call shellscriptlib :prepend_path PATH "C:\jlf\local\nsis\Nsis_longStrings"
 
 :: Dropbox scripts
-call shellscriptlib :prepend_path PATH "C:\Users\JFaucher\Dropbox\oorexx"
+call shellscriptlib :prepend_path PATH "C:\Users\JFaucher\Dropbox\software\oorexx"
 
 :: csdiff
 call shellscriptlib :prepend_path PATH "C:\jlf\local\csdiff"

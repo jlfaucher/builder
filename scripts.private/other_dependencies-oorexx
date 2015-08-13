@@ -17,4 +17,4 @@ echo "Setting environment for ICU"
 . /local/icu/setenv.sh
 
 echo "Setting environment fpr Dropbox scripts"
-prepend_path PATH "$oorexx_samples" "~/Dropbox/oorexx"
+prepend_path PATH "$oorexx_samples" "~/Dropbox/software/oorexx"
