@@ -25,7 +25,7 @@ set BATIK_ROOT=Y:\Local\XmlToolSet\batik-1.7
 :: Git
 call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Git\bin"
 
-:: Java 64 bits
+:: Java
 call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_45\bin"
 call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_45\bin\client"
 
@@ -41,10 +41,27 @@ call shellscriptlib :prepend_path PATH "Z:\jlfaucher\Dropbox\software\oorexx"
 :: windiff
 call shellscriptlib :prepend_path PATH "E:\windiff"
 
-::echo "Setting environment for bsf4oorexx"
-::. /local/rexx/bsf4oorexx/setenv.sh
+::call :bsf4oorexx_v452
+call :bsf4oorexx_svn
 
 exit /B 0
+
+:bsf4oorexx_v452
+::echo "Setting environment for bsf4oorexx"
+set BSF4REXX_HOME=Y:\Local\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150820-beta\bsf4oorexx
+set CLASSPATH=%BSF4REXX_HOME%\bsf4ooRexx-v452-20150820-bin.jar;%CLASSPATH%
+set PATH=%BSF4REXX_HOME%;%PATH%
+set PATH=%BSF4REXX_HOME%\install\%builder_bitness%;%PATH%
+goto :eof
+
+:bsf4oorexx_svn
+::echo "Setting environment for bsf4oorexx svn"
+set BSF4REXX_HOME=Y:\Local\local\rexx\bsf4oorexx\svn\trunk
+set CLASSPATH=%BSF4REXX_HOME%;%CLASSPATH%
+set PATH=%BSF4REXX_HOME%\bsf4oorexx.dev\bin;%PATH%
+:: REMEMBER : the pdb files are not copied in 32|64
+set PATH=%BSF4REXX_HOME%\bsf4oorexx.dev\source_cc\%builder_bitness%;%PATH%
+goto :eof
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -65,7 +82,7 @@ set BATIK_ROOT=C:\jlf\Downloads\Software\Batik\batik-1.8
 :: Git
 call shellscriptlib :prepend_path PATH "c:\Program Files (x86)\Git\bin"
 
-:: Java 32 bits
+:: Java
 call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre7\bin"
 call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre7\bin\client"
 

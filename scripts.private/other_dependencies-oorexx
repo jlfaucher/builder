@@ -10,11 +10,56 @@ prepend_path()
   fi
 }
 
+
+# Java
+if test -z "$JAVA_HOME"
+then
+    # MacOs
+    JAVA_HOME=`/usr/libexec/java_home 2>/dev/null`
+    if test -z "$JAVA_HOME"
+    then
+        # Ubuntu
+        JAVA_HOME=`readlink -f \`which java\``  # .../jre/bin/java
+        JAVA_HOME=`dirname "$JAVA_HOME"`        # .../jre/bin
+        JAVA_HOME=`dirname "$JAVA_HOME"`        # .../jre
+        JAVA_HOME=`dirname "$JAVA_HOME"`        # ...
+    fi
+    export JAVA_HOME
+fi
+
+
 echo "Setting environment for bsf4oorexx"
-. /local/rexx/bsf4oorexx/setenv.sh
+export BSF4REXX_HOME=/Local/rexx/bsf4oorexx/BSF4ooRexx_install_v452-20150820-beta/bsf4oorexx
+
+export CLASSPATH
+prepend_path CLASSPATH "$BSF4REXX_HOME/bsf4ooRexx-v452-20150820-bin.jar"
+
+# MacOs & Ubuntu
+export PATH
+prepend_path PATH "$BSF4REXX_HOME"
+
+# MacOs
+export DYLD_LIBRARY_PATH
+prepend_path DYLD_LIBRARY_PATH "$BSF4REXX_HOME/install/$builder_bitness"
+# libjvm.dylib
+prepend_path DYLD_LIBRARY_PATH "$JAVA_HOME/jre/lib/server"
+
+# MacOs
+export DYLD_FALLBACK_LIBRARY_PATH
+prepend_path DYLD_FALLBACK_LIBRARY_PATH "$BSF4REXX_HOME/install/$builder_bitness"
+# libjvm.dylib
+prepend_path DYLD_LIBRARY_PATH "$JAVA_HOME/jre/lib/server"
+
+# Ubuntu
+export LD_LIBRARY_PATH
+prepend_path LD_LIBRARY_PATH "$BSF4REXX_HOME/install/$builder_bitness"
+# libjvm.so
+prepend_path LD_LIBRARY_PATH "$JAVA_HOME/jre/lib/amd64/server"
+
 
 echo "Setting environment for ICU"
 . /local/icu/setenv.sh
+
 
 echo "Setting environment fpr Dropbox scripts"
 prepend_path PATH "$oorexx_samples" "~/Dropbox/software/oorexx"
