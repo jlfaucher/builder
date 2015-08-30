@@ -252,7 +252,7 @@ cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_deliv
 make install
 
 
-# [OLD BUILD SYSTEM (configure)]
+# [OLD BUILD SYSTEM (configure) + adaptations (see below)]
 # Build the 64-bit release configuration of executor master branch:
 # MacOs
 cd /local/rexx/oorexx
@@ -261,10 +261,29 @@ cd /local/rexx/oorexx
 cd /local/rexx/oorexx
 . scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
 # MacOs & Ubuntu
+cdtrunk
+./bootstrap
 cdbuild
 $builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static
 make install
 
+---------------------------------------
+
+# The following files must be adapted to support a build directory outside the source directory.
+# They are already adapted for executor, but not adapted for official.
+
+TODROP :
+Makefile.am
+Replace (one occurence)
+$(rexxapi_server_unix_dir)/rxapid
+by
+rexxapi/server/platform/unix/rxapid
+
+Makefile.am
+# JLF : bypass an install problem when building from outside the source tree (I do that...)
+	if test "$(ORX_SYS_STR)" != "AIX" -a "$(ORX_SYS_STR)" != "MACOSX"; then \
+		$(install_sh_SCRIPT) rexxapi/server/platform/unix/rxapid $(DESTDIR)$(prefix)/bin/rxapid; \
+	fi
 
 --------------------------------------------------------------------------------
 Windows build
@@ -285,7 +304,7 @@ nmake install
 nmake nsis_template_installer
 
 
-:: [OLD BUILD SYSTEM (configure) + adaptations (see scripts\setenv-oorexx.bat, Compatibility with old build system)]
+:: [OLD BUILD SYSTEM (configure) + adaptations (see below)]
 # Build the 64-bit release configuration of executor master branch:
 :: Local directory in the virtual machine for Windows
 e:
@@ -298,3 +317,27 @@ cdtrunk
 makeorx_verbose %BUILD_TYPE%
 :: oodialog is not built by default
 makeorx_verbose %BUILD_TYPE% oodialog
+
+---------------------------------------
+
+:: The following files must be adapted to support a build directory outside the source directory.
+:: They are already adapted for executor, but not adapted for official.
+::
+:: - makeorx.bat :
+::   The executor version can be used as-is for ooRexx.
+::   You must copy cl_infos.cpp in trunk.
+::
+:: - orxdb.bat :
+::   The executor version can be used for ooRexx, but some changes must be applied :
+::   Search for
+::       OODIALOGSRCW
+::       m17n
+::   and remove the part in relation with this text.
+::   Add set OR_ORYXINCL=%OR_ORYXINCL% -I%OR_OODIALOGSRC%\
+::
+:: - lib\orxwin32.mak :
+::   The executor version can be used as-is for ooRexx.
+::
+:: - platform\windows\buildorx.bat :
+::   The executor version can be reused as-is for ooRexx.
+

@@ -138,28 +138,6 @@ call shellscriptlib :prepend_path PATH "%builder_build_dir%"
 call shellscriptlib :prepend_path INCLUDE "%builder_build_dir%\api"
 call shellscriptlib :prepend_path LIB "%builder_build_dir%\api"
 
-
-:: The following scripts must be adapted to support a build directory outside the source directory.
-:: They are already adapted for executor, but not adapted for ooRexx.
-::
-:: - makeorx.bat :
-::   The executor version can be used as-is for ooRexx.
-::   You must copy cl_infos.cpp in trunk.
-::
-:: - orxdb.bat :
-::   The executor version can be used for ooRexx, but some changes must be applied :
-::   Search for
-::       OODIALOGSRCW
-::       m17n
-::   and remove the part in relation with this text.
-::   Add set OR_ORYXINCL=%OR_ORYXINCL% -I%OR_OODIALOGSRC%\
-::
-:: - lib\orxwin32.mak :
-::   The executor version can be used as-is for ooRexx.
-::
-:: - platform\windows\buildorx.bat :
-::   The executor version can be reused as-is for ooRexx.
-
 set SRC_DRV=%builder_src_drv%
 set SRC_DIR=\%builder_src_dir:*\=%
 set BUILD_DRV=%builder_build_drv%

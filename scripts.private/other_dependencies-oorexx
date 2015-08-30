@@ -26,7 +26,9 @@ then
     fi
     export JAVA_HOME
 fi
-
+export INCLUDE
+# you need to have a JDK installed, let INCLUDE point to its include directories to be able to resolve "jni.h"
+prepend_path INCLUDE "$JAVA_HOME/include"
 
 echo "Setting environment for bsf4oorexx"
 export BSF4REXX_HOME=/Local/rexx/bsf4oorexx/BSF4ooRexx_install_v452-20150820-beta/bsf4oorexx
@@ -44,12 +46,6 @@ prepend_path DYLD_LIBRARY_PATH "$BSF4REXX_HOME/install/$builder_bitness"
 # libjvm.dylib
 prepend_path DYLD_LIBRARY_PATH "$JAVA_HOME/jre/lib/server"
 
-# MacOs
-export DYLD_FALLBACK_LIBRARY_PATH
-prepend_path DYLD_FALLBACK_LIBRARY_PATH "$BSF4REXX_HOME/install/$builder_bitness"
-# libjvm.dylib
-prepend_path DYLD_LIBRARY_PATH "$JAVA_HOME/jre/lib/server"
-
 # Ubuntu
 export LD_LIBRARY_PATH
 prepend_path LD_LIBRARY_PATH "$BSF4REXX_HOME/install/$builder_bitness"
@@ -61,5 +57,5 @@ echo "Setting environment for ICU"
 . /local/icu/setenv.sh
 
 
-echo "Setting environment fpr Dropbox scripts"
+echo "Setting environment for Dropbox scripts"
 prepend_path PATH "$oorexx_samples" "~/Dropbox/software/oorexx"

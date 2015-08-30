@@ -39,12 +39,16 @@ alias cddoc='cd $oorexx_doc_dir'
 alias cddocs='cd $oorexx_doc_dir'
 
 # Title of console
+# Note : If you don't see this title, then maybe you have to redefine the variable PS1.
+# I had this problem under Ubuntu, where PS1 is defined like that in .bashrc :
+# PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u: \w\a\]$PS1"
+# By assigning this value to PS1, which does not overwrite the title, I can see *my* title :
+# PS1='\w\$ '
 echo -n -e "\033]0;ooRexx $builder_target $builder_branch $builder_src_relative_path $builder_config $builder_bitness\007"
 
 export PATH
 export LD_LIBRARY_PATH
 export DYLD_LIBRARY_PATH
-export DYLD_FALLBACK_LIBRARY_PATH
 export CPLUS_INCLUDE_PATH
 export LIBRARY_PATH
 
@@ -66,7 +70,6 @@ echo "Setting environment for running ooRexx"
 prepend_path PATH "$builder_delivery_dir/bin"
 prepend_path LD_LIBRARY_PATH "$builder_delivery_dir/lib"
 prepend_path DYLD_LIBRARY_PATH "$builder_delivery_dir/lib"
-prepend_path DYLD_FALLBACK_LIBRARY_PATH "$builder_delivery_dir/lib"
 
 echo "Setting environment for ooRexx test framework"
 prepend_path PATH "$oorexx_test_trunk"
@@ -94,7 +97,6 @@ echo "Setting environment for ooSQLite"
 prepend_path PATH "$oorexx_incubator/ooSQLite/bin/linux"
 prepend_path LD_LIBRARY_PATH "$oorexx_incubator/ooSQLite/bin/linux"
 prepend_path DYLD_LIBRARY_PATH "$oorexx_incubator/ooSQLite/bin/linux"
-prepend_path DYLD_FALLBACK_LIBRARY_PATH "$oorexx_incubator/ooSQLite/bin/linux"
 alias cdoosqlite='cd $oorexx_incubator/ooSQLite'
 
 echo "Setting environment for the sandbox"
