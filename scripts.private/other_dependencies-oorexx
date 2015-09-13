@@ -58,4 +58,4 @@ echo "Setting environment for ICU"
 
 
 echo "Setting environment for Dropbox scripts"
-prepend_path PATH "$oorexx_samples" "~/Dropbox/software/oorexx"
+prepend_path PATH "~/Dropbox/software/oorexx"

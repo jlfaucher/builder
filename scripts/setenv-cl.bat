@@ -17,7 +17,7 @@ call set compiler_option=%%%compiler%%%
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Visual Studio 2015 (internal version: 14.O)
+:: Visual Studio 2015 (internal version: 14.O, cl version 19.00 ==> _MSC_VER 1900)
 
 :cl_14
 if 14 GTR %CL_MAX% goto cl_12
@@ -29,7 +29,7 @@ if exist "%cl_dir%" (
 )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Visual Studio 2013 (internal version: 12.0)
+:: Visual Studio 2013 (internal version: 12.0, cl version 18.00 ==> _MSC_VER 1800)
 
 :cl_12
 if 12 GTR %CL_MAX% goto cl_11
