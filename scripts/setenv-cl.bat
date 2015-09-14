@@ -41,7 +41,7 @@ if exist "%cl_dir%" (
 )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Visual Studio 2012 (internal version: 11.0)
+:: Visual Studio 2012 (internal version: 11.0, cl version 17.00 ==> _MSC_VER 1700)
 
 :cl_11
 if 11 GTR %CL_MAX%  echo No version for CL_MAX=%CL_MAX% & goto :error
