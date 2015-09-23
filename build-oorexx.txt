@@ -340,4 +340,12 @@ makeorx_verbose %BUILD_TYPE% oodialog
 ::
 :: - platform\windows\buildorx.bat :
 ::   The executor version can be reused as-is for ooRexx.
-
+::
+:: - test\trunk\external\API\Makefile.windows :
+::   Replace
+!IF DEFINED(OOREXX_BUILD_HOME)
+:: by
+!IF DEFINED(BUILDER_BUILD_DIR)
+API_LIB = $(BUILDER_BUILD_DIR)\api
+API_INCLUDE = $(BUILDER_BUILD_DIR)\api
+!ELSE IF DEFINED(OOREXX_BUILD_HOME)
