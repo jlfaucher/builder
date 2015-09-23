@@ -41,30 +41,16 @@ call shellscriptlib :prepend_path PATH "Z:\jlfaucher\Dropbox\software\oorexx"
 :: windiff
 call shellscriptlib :prepend_path PATH "E:\windiff"
 
-::call :bsf4oorexx_v452
+::set BSF4OOREXX_HOME=Y:\Local\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150820-beta\bsf4oorexx
+::set BSF4OOREXX_JAR=bsf4ooRexx-v452-20150820-bin.jar
+::call :bsf4oorexx_version
+
+set BSF4OOREXX_HOME=Y:\Local\local\rexx\bsf4oorexx\svn\trunk
 call :bsf4oorexx_svn
 
 exit /B 0
 
-:bsf4oorexx_v452
-::echo "Setting environment for bsf4oorexx"
-set BSF4REXX_HOME=Y:\Local\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150820-beta\bsf4oorexx
-call shellscriptlib :prepend_path CLASSPATH "%BSF4REXX_HOME%\bsf4ooRexx-v452-20150820-bin.jar"
-call shellscriptlib :prepend_path PATH "%BSF4REXX_HOME%"
-call shellscriptlib :prepend_path PATH "%BSF4REXX_HOME%\install\%builder_bitness%"
-goto :eof
-
-:bsf4oorexx_svn
-::echo "Setting environment for bsf4oorexx svn"
-set BSF4REXX_HOME=Y:\Local\local\rexx\bsf4oorexx\svn\trunk
-call shellscriptlib :prepend_path CLASSPATH "%BSF4REXX_HOME%"
-call shellscriptlib :prepend_path PATH "%BSF4REXX_HOME%\bsf4oorexx.dev\bin"
-:: REMEMBER : the pdb files are not copied in 32|64
-call shellscriptlib :prepend_path PATH "%BSF4REXX_HOME%\bsf4oorexx.dev\source_cc\%builder_bitness%"
-goto :eof
-
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :CSCCHAAE667748
 
 :: ooRexx build utilities
@@ -83,8 +69,13 @@ set BATIK_ROOT=C:\jlf\Downloads\Software\Batik\batik-1.8
 call shellscriptlib :prepend_path PATH "c:\Program Files (x86)\Git\bin"
 
 :: Java
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre7\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre7\bin\client"
+if "%builder_bitness%" == "32" (
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_51\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_51\bin\client"
+) else (
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_51\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_51\bin\server"
+)
 
 :: GCI
 call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-sources.1.1\win%builder_bitness%"
@@ -101,11 +92,12 @@ call shellscriptlib :prepend_path PATH "C:\jlf\local\csdiff"
 :: windiff
 call shellscriptlib :prepend_path PATH "C:\jlf\local\windiff"
 
-::echo "Setting environment for bsf4oorexx"
-set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150825-beta
-call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\\bsf4oorexx\bsf4ooRexx-v452-20150825-bin.jar"
-call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx"
-call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx\install\%builder_bitness%"
+::set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150825-beta
+::set BSF4OOREXX_JAR=bsf4ooRexx-v452-20150825-bin.jar
+::call :bsf4oorexx_version
+
+set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\svn\trunk
+call :bsf4oorexx_svn
 
 :: unix-like
 call shellscriptlib :prepend_path PATH "C:\MT Toolkit\bin\cygwin\bin"
@@ -114,3 +106,21 @@ doskey ll=ls -lap $*
 doskey ls=ls -ap $*
 doskey mv=mv -i $*
 doskey cp=cp -i $*
+
+exit /B 0
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:bsf4oorexx_version
+echo "Setting environment for bsf4oorexx"
+call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\%BSF4OOREXX_JAR%"
+call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%"
+call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\install\%builder_bitness%"
+goto :eof
+
+:bsf4oorexx_svn
+echo "Setting environment for bsf4oorexx svn"
+call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%"
+call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\bin"
+call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\source_cc\%builder_config%\%builder_bitness%"
+goto :eof

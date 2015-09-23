@@ -2,56 +2,91 @@
 
 if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
 
+
 # add to front of path
 prepend_path()
 {
-  if eval test -z "\"\$$1\"" || ! eval test -z "\"\${$1##*:$2:*}\"" -o -z "\"\${$1%%*:$2}\"" -o -z "\"\${$1##$2:*}\"" -o -z "\"\${$1##$2}\"" ; then
-    eval "$1=$2:\$$1"
-  fi
+    if eval test -z "\"\$$1\"" || ! eval test -z "\"\${$1##*:$2:*}\"" -o -z "\"\${$1%%*:$2}\"" -o -z "\"\${$1##$2:*}\"" -o -z "\"\${$1##$2}\"" ; then
+        eval "$1=$2:\$$1"
+    fi
 }
 
 
-# Java
-if test -z "$JAVA_HOME"
-then
-    # MacOs
-    JAVA_HOME=`/usr/libexec/java_home 2>/dev/null`
+declare_java()
+{
     if test -z "$JAVA_HOME"
     then
-        # Ubuntu
-        JAVA_HOME=`readlink -f \`which java\``  # .../jre/bin/java
-        JAVA_HOME=`dirname "$JAVA_HOME"`        # .../jre/bin
-        JAVA_HOME=`dirname "$JAVA_HOME"`        # .../jre
-        JAVA_HOME=`dirname "$JAVA_HOME"`        # ...
+        # MacOs
+        JAVA_HOME=`/usr/libexec/java_home 2>/dev/null`
+        if test -z "$JAVA_HOME"
+        then
+            # Ubuntu
+            JAVA_HOME=`readlink -f \`which java\``  # .../jre/bin/java
+            JAVA_HOME=`dirname "$JAVA_HOME"`        # .../jre/bin
+            JAVA_HOME=`dirname "$JAVA_HOME"`        # .../jre
+            JAVA_HOME=`dirname "$JAVA_HOME"`        # ...
+        fi
+        export JAVA_HOME
     fi
-    export JAVA_HOME
-fi
-export INCLUDE
-# you need to have a JDK installed, let INCLUDE point to its include directories to be able to resolve "jni.h"
-prepend_path INCLUDE "$JAVA_HOME/include"
+    export INCLUDE
+    # you need to have a JDK installed, let INCLUDE point to its include directories to be able to resolve "jni.h"
+    prepend_path INCLUDE "$JAVA_HOME/include"
+    # libjvm.dylib
+    # MacOs
+    prepend_path DYLD_LIBRARY_PATH "$JAVA_HOME/jre/lib/server"
+    # Ubuntu
+    prepend_path LD_LIBRARY_PATH "$JAVA_HOME/jre/lib/amd64/server"
+}
 
-echo "Setting environment for bsf4oorexx"
-export BSF4REXX_HOME=/Local/rexx/bsf4oorexx/BSF4ooRexx_install_v452-20150820-beta/bsf4oorexx
 
-export CLASSPATH
-prepend_path CLASSPATH "$BSF4REXX_HOME/bsf4ooRexx-v452-20150820-bin.jar"
+bsf4oorexx_version()
+{
+    echo "Setting environment for bsf4oorexx"
+    export CLASSPATH
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME/$BSF4OOREXX_JAR"
 
-# MacOs & Ubuntu
-export PATH
-prepend_path PATH "$BSF4REXX_HOME"
+    # MacOs & Ubuntu
+    export PATH
+    prepend_path PATH "$BSF4OOREXX_HOME"
 
-# MacOs
-export DYLD_LIBRARY_PATH
-prepend_path DYLD_LIBRARY_PATH "$BSF4REXX_HOME/install/$builder_bitness"
-# libjvm.dylib
-prepend_path DYLD_LIBRARY_PATH "$JAVA_HOME/jre/lib/server"
+    # MacOs
+    export DYLD_LIBRARY_PATH
+    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_HOME/install/$builder_bitness"
 
-# Ubuntu
-export LD_LIBRARY_PATH
-prepend_path LD_LIBRARY_PATH "$BSF4REXX_HOME/install/$builder_bitness"
-# libjvm.so
-prepend_path LD_LIBRARY_PATH "$JAVA_HOME/jre/lib/amd64/server"
+    # Ubuntu
+    export LD_LIBRARY_PATH
+    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_HOME/install/$builder_bitness"
+}
 
+
+bsf4oorexx_svn()
+{
+    echo "Setting environment for bsf4oorexx svn"
+    export CLASSPATH
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME"
+
+    # MacOs & Ubuntu
+    export PATH
+    prepend_path PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/bin"
+
+    # MacOs
+    export DYLD_LIBRARY_PATH
+    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/$builder_config/$builder_bitness"
+
+    # Ubuntu
+    export LD_LIBRARY_PATH
+    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/$builder_config/$builder_bitness"
+}
+
+
+declare_java
+
+#export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/BSF4ooRexx_install_v452-20150820-beta/bsf4oorexx
+#export BSF4OOREXX_JAR=bsf4ooRexx-v452-20150820-bin.jar
+#bsf4oorexx_version
+
+export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
+bsf4oorexx_svn
 
 echo "Setting environment for ICU"
 . /local/icu/setenv.sh
