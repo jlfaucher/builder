@@ -269,8 +269,9 @@ make install
 
 ---------------------------------------
 
-# The following files must be adapted to support a build directory outside the source directory.
-# They are already adapted for executor, but not adapted for official.
+ADAPTATION FOR OLD BUILD SYSTEM
+The following files must be adapted to support a build directory outside the source directory.
+They are already adapted for executor, but not adapted for official.
 
 TODROP :
 Makefile.am
@@ -290,7 +291,7 @@ Windows build
 --------------------------------------------------------------------------------
 
 :: [NEW BUILD SYSTEM (cmake)]
-# Build the 64-bit release configuration of ooRexx official/main/trunk:
+:: Build the 64-bit release configuration of ooRexx official/main/trunk:
 :: Local directory in the virtual machine for Windows
 e:
 cd \local\rexxlocal\oorexx
@@ -305,7 +306,7 @@ nmake nsis_template_installer
 
 
 :: [OLD BUILD SYSTEM (configure) + adaptations (see below)]
-# Build the 64-bit release configuration of executor master branch:
+:: Build the 64-bit release configuration of executor master branch:
 :: Local directory in the virtual machine for Windows
 e:
 cd \local\rexxlocal\oorexx
@@ -320,31 +321,32 @@ makeorx_verbose %BUILD_TYPE% oodialog
 
 ---------------------------------------
 
-:: The following files must be adapted to support a build directory outside the source directory.
-:: They are already adapted for executor, but not adapted for official.
-::
-:: - makeorx.bat :
-::   The executor version can be used as-is for ooRexx.
-::   You must copy cl_infos.cpp in trunk.
-::
-:: - orxdb.bat :
-::   The executor version can be used for ooRexx, but some changes must be applied :
-::   Search for
-::       OODIALOGSRCW
-::       m17n
-::   and remove the part in relation with this text.
-::   Add set OR_ORYXINCL=%OR_ORYXINCL% -I%OR_OODIALOGSRC%\
-::
-:: - lib\orxwin32.mak :
-::   The executor version can be used as-is for ooRexx.
-::
-:: - platform\windows\buildorx.bat :
-::   The executor version can be reused as-is for ooRexx.
-::
-:: - test\trunk\external\API\Makefile.windows :
-::   Replace
+ADAPTATION FOR OLD BUILD SYSTEM
+The following files must be adapted to support a build directory outside the source directory.
+They are already adapted for executor, but not adapted for official.
+
+makeorx.bat :
+The executor version can be used as-is for ooRexx.
+You must copy cl_infos.cpp in trunk.
+
+orxdb.bat :
+The executor version can be used for ooRexx, but some changes must be applied :
+Search for
+    OODIALOGSRCW
+    m17n
+and remove the part in relation with this text.
+Add set OR_ORYXINCL=%OR_ORYXINCL% -I%OR_OODIALOGSRC%\
+
+lib\orxwin32.mak :
+The executor version can be used as-is for ooRexx.
+
+platform\windows\buildorx.bat :
+The executor version can be reused as-is for ooRexx.
+
+test\trunk\external\API\Makefile.windows :
+Replace
 !IF DEFINED(OOREXX_BUILD_HOME)
-:: by
+by
 !IF DEFINED(BUILDER_BUILD_DIR)
 API_LIB = $(BUILDER_BUILD_DIR)\api
 API_INCLUDE = $(BUILDER_BUILD_DIR)\api
