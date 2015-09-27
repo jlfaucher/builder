@@ -57,15 +57,22 @@ If a script named setenv-"directory" exists in the directory of private scripts 
     Variables set for building with gcc or clang:
     C_INCLUDE_PATH              List of directories in which to look for header files when preprocessing C files
     CPLUS_INCLUDE_PATH          List of directories in which to look for header files when preprocessing C++ files
+    LIBRARY_PATH                List of directories in which to look for libraries when linking
+
+    Variables set for default make rules (see the output of make -p):
     CXXFLAGS                    Flags for the C++ compiler
     CFLAGS                      Flags for the C compiler
     CPPFLAGS                    Flags for the preprocessor
     LDFLAGS                     Flags for the linker
-    LIBRARY_PATH                List of directories in which to look for libraries when linking
 
-    Variables set for building with Visual C++:
+    Variables set for building with cl (Visual C++):
     INCLUDE                     List of directories in which to look for header files when preprocessing files
     LIB                         List of directories in which to look for libraries when linking
+
+    Variables set for default nmake rules (see the output of nmake /p):
+    CXXFLAGS                    Flags used when compiling .cxx files
+    CFLAGS                      Flags used when compiling .c or .cc files
+    CPPFLAGS                    Flags used when compiling .cpp files
 
     Variables set for execution:
     DYLD_LIBRARY_PATH           MacOsX
