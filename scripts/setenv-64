@@ -11,14 +11,12 @@ platform=`uname`
 case "$platform" in
 Darwin)
     export CFLAGS="-arch x86_64 $CFLAGS"
-    export CPPFLAGS="-arch x86_64 $CPPFLAGS"
     export CXXFLAGS="-arch x86_64 $CXXFLAGS"
     export LDFLAGS="-arch x86_64 $LDFLAGS"
     export ABI="64 $ABI"
     ;;
 Linux)
     export CFLAGS="-m64 $CFLAGS"
-    export CPPFLAGS="-m64 $CPPFLAGS"
     export CXXFLAGS="-m64 $CXXFLAGS"
     export LDFLAGS="-m64 $LDFLAGS"
     ;;
