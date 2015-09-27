@@ -3,8 +3,9 @@
 if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
 
 # Old build system (configure)
-export CFLAGS="-g -O0 -fno-inline -D_DEBUG $CFLAGS"
-export CXXFLAGS="-g -O0 -fno-inline -D_DEBUG $CFLAGS"
+export CFLAGS="-g -O0 -fno-inline -D_DEBUG -DDEBUG $CFLAGS"
+export CPPFLAGS="-D_DEBUG -DDEBUG $CPPFLAGS"
+export CXXFLAGS="-g -O0 -fno-inline -D_DEBUG -DDEBUG $CXXFLAGS"
 
 # New build system (cmake)
 export CMAKE_BUILD_TYPE=Debug
