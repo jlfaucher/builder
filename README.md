@@ -35,21 +35,42 @@ If a script named setenv-"directory" exists in the directory of private scripts 
 
 
     Examples of variables set by scripts/setenv (values for ubuntu):
-    builder_bitness:            64
-    builder_branch:
+    builder_bitness             64
+    builder_branch
     builder_build_dir           /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/build
-    builder_compiler:           gcc
-    builder_config:             release
-    builder_config_dir:         /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64
-    builder_delivery_dir:       /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/deliver
-    builder_local_build_dir:    /local/rexxlocal/oorexx/build
-    builder_local_dir:          /local/rexxlocal/oorexx
-    builder_scripts_dir:        /local/builder/scripts
-    builder_shared_dir:         /local/rexx/oorexx
-    builder_src_relative_path:  main/trunk
-    builder_system:             ubuntu
-    builder_target:             official
-    builder_target_branch:      official
+    builder_compiler            gcc
+    builder_config              release
+    builder_config_dir          /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64
+    builder_delivery_dir        /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/deliver
+    builder_local_build_dir     /local/rexxlocal/oorexx/build
+    builder_local_dir           /local/rexxlocal/oorexx
+    builder_scripts_dir         /local/builder/scripts
+    builder_shared_dir          /local/rexx/oorexx
+    builder_src_relative_path   main/trunk
+    builder_system              ubuntu
+    builder_target              official
+    builder_target_branch       official
+
+    Variables set for building with cmake:
+    CMAKE_BUILD_TYPE            Debug or Reldbg or Release
+
+    Variables set for building with gcc or clang:
+    C_INCLUDE_PATH              List of directories in which to look for header files when preprocessing C files
+    CPLUS_INCLUDE_PATH          List of directories in which to look for header files when preprocessing C++ files
+    CXXFLAGS                    Flags for the C++ compiler
+    CFLAGS                      Flags for the C compiler
+    CPPFLAGS                    Flags for the preprocessor
+    LDFLAGS                     Flags for the linker
+    LIBRARY_PATH                List of directories in which to look for libraries when linking
+
+    Variables set for building with Visual C++:
+    INCLUDE                     List of directories in which to look for header files when preprocessing files
+    LIB                         List of directories in which to look for libraries when linking
+
+    Variables set for execution:
+    DYLD_LIBRARY_PATH           MacOsX
+    LD_LIBRARY_PATH             Linux
+    PATH                        Linux, MacOsX, Windows
 
 
 [configure-smbd-to-follow-symbolic-links]: http://superuser.com/questions/555715/mac-os-x-10-8-configure-smbd-to-follow-symbolic-links "Configure smbd to follow symbolic links"
