@@ -39,7 +39,7 @@ declare_java()
 }
 
 
-bsf4oorexx_version()
+declare_bsf4oorexx_distribution()
 {
     echo "Setting environment for bsf4oorexx"
     export CLASSPATH
@@ -59,7 +59,7 @@ bsf4oorexx_version()
 }
 
 
-bsf4oorexx_svn()
+declare_bsf4oorexx_svn()
 {
     echo "Setting environment for bsf4oorexx svn"
     export CLASSPATH
@@ -71,11 +71,23 @@ bsf4oorexx_svn()
 
     # MacOs
     export DYLD_LIBRARY_PATH
-    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/$builder_config/$builder_bitness"
+    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
 
     # Ubuntu
     export LD_LIBRARY_PATH
-    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/$builder_config/$builder_bitness"
+    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
+}
+
+
+declare_gci_rebuilt()
+{
+    # MacOs
+    export DYLD_LIBRARY_PATH
+    prepend_path DYLD_LIBRARY_PATH "$GCI_HOME/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
+
+    # Ubuntu
+    export LD_LIBRARY_PATH
+    prepend_path LD_LIBRARY_PATH "$GCI_HOME/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
 }
 
 
@@ -83,14 +95,17 @@ declare_java
 
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/BSF4ooRexx_install_v452-20150820-beta/bsf4oorexx
 #export BSF4OOREXX_JAR=bsf4ooRexx-v452-20150820-bin.jar
-#bsf4oorexx_version
+#declare_bsf4oorexx_distribution
 
 export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
-bsf4oorexx_svn
+declare_bsf4oorexx_svn
+
+echo "Setting environment for GCI"
+export GCI_HOME=/Local/rexx/GCI/gci-source.1.1
+declare_gci_rebuilt
 
 echo "Setting environment for ICU"
 . /local/icu/setenv.sh
-
 
 echo "Setting environment for Dropbox scripts"
 prepend_path PATH "~/Dropbox/software/oorexx"

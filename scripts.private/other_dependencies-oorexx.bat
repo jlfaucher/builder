@@ -30,7 +30,7 @@ call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_45\
 call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_45\bin\client"
 
 :: GCI
-call shellscriptlib :prepend_path PATH "Y:\Local\rexx\GCI\gci-source.1.1\win%builder_bitness%"
+call shellscriptlib :prepend_path PATH "Y:\Local\rexx\GCI\gci-source.1.1\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
 
 :: NSIS
 call shellscriptlib :prepend_path PATH "E:\nsis\Nsis_longStrings"
@@ -41,12 +41,12 @@ call shellscriptlib :prepend_path PATH "Z:\jlfaucher\Dropbox\software\oorexx"
 :: windiff
 call shellscriptlib :prepend_path PATH "E:\windiff"
 
-::set BSF4OOREXX_HOME=Y:\Local\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150820-beta\bsf4oorexx
-::set BSF4OOREXX_JAR=bsf4ooRexx-v452-20150820-bin.jar
-::call :bsf4oorexx_version
+::set BSF4OOREXX_HOME=Y:\Local\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150825-beta\bsf4oorexx
+::set BSF4OOREXX_JAR=bsf4ooRexx-v452-20150825-bin.jar
+::call :declare_bsf4oorexx_distribution
 
 set BSF4OOREXX_HOME=Y:\Local\local\rexx\bsf4oorexx\svn\trunk
-call :bsf4oorexx_svn
+call :declare_bsf4oorexx_svn
 
 exit /B 0
 
@@ -78,7 +78,7 @@ call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_51\bin\se
 )
 
 :: GCI
-call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-sources.1.1\win%builder_bitness%"
+call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-sources.1.1\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
 
 :: NSIS
 call shellscriptlib :prepend_path PATH "C:\jlf\local\nsis\Nsis_longStrings"
@@ -94,10 +94,10 @@ call shellscriptlib :prepend_path PATH "C:\jlf\local\windiff"
 
 ::set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150825-beta
 ::set BSF4OOREXX_JAR=bsf4ooRexx-v452-20150825-bin.jar
-::call :bsf4oorexx_version
+::call :declare_bsf4oorexx_distribution
 
 set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\svn\trunk
-call :bsf4oorexx_svn
+call :declare_bsf4oorexx_svn
 
 :: unix-like
 call shellscriptlib :prepend_path PATH "C:\MT Toolkit\bin\cygwin\bin"
@@ -111,16 +111,16 @@ exit /B 0
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:bsf4oorexx_version
+:declare_bsf4oorexx_distribution
 echo "Setting environment for bsf4oorexx"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\%BSF4OOREXX_JAR%"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\install\%builder_bitness%"
 goto :eof
 
-:bsf4oorexx_svn
+:declare_bsf4oorexx_svn
 echo "Setting environment for bsf4oorexx svn"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\bin"
-call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\source_cc\%builder_config%\%builder_bitness%"
+call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\source_cc\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
 goto :eof
