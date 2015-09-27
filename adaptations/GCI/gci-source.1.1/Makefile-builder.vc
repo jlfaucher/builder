@@ -1,0 +1,56 @@
+# nmake /f Makefile-builder.vc
+# The bitness (32 | 64) and configuration (relase | debug) are taken from the environment.
+# Builder version.
+
+#
+# These	example	lines do the job for ORexx/Regina/Reginald on Win32 platforms.
+#
+REXX_INCLUDE_PATH=..
+
+#
+# There	is no need to change anything below for	known systems
+###############################################################################
+#
+OBJ=build\$(BUILDER_SYSTEM)\$(BUILDER_COMPILER)\$(BUILDER_CONFIG)\$(BUILDER_BITNESS)
+
+!IF "$(BUILDER_CONFIG)" == "debug"
+my_cdebug = -Zi /Od /D_DEBUG /DEBUGTYPE:CV
+!ENDIF
+
+.c{$(OBJ)}.obj:
+	cl -nologo -W4 -I$(REXX_INCLUDE_PATH) -Zi -LD -DDEBUG $(my_cdebug) -c -Fo$@ $<
+
+OBJS=$(OBJ)\gci_convert.obj $(OBJ)\gci_prepare.obj $(OBJ)\gci_tree.obj \
+     $(OBJ)\gci_helper.obj $(OBJ)\gci_rexxbridge.obj \
+     $(OBJ)\gci_rxfuncdefine.obj $(OBJ)\gci_call.obj $(OBJ)\gci_execute.obj \
+     $(OBJ)\gci_oslink.obj $(OBJ)\win32init.obj
+
+gci.dll: $(OBJ) $(OBJS)
+	cl -nologo $(my_cdebug) -W4 -Zi -LD	-Fe$@ $** gci_win32.def	/link
+
+$(OBJ):
+	mkdir $(OBJ)
+
+$(OBJS): gci.h embedded.h
+
+$(OBJ)\gci_convert.obj:	gci_convert.c gci_convert.h
+
+$(OBJ)\gci_call.obj: gci_call.c	gci_convert.h
+
+gci_convert.h:
+	copy gci_convert.win32.vc gci_convert.h
+
+gci_oslink.c: gci_oslink.w32
+	copy gci_oslink.w32 gci_oslink.c
+
+.PHONY:	clean cleaner distclean
+
+clean:
+	-del /f/q *.bak	err >nul 2>&1
+
+cleaner: clean
+	cd $(OBJ)
+	-del /f/q *.obj *.dll *.pdb *.ilk *.lib *.exp >nul 2>&1
+
+distclean: cleaner
+	-del /f/q .gdbinit* try* gci_convert.h >nul 2>&1
