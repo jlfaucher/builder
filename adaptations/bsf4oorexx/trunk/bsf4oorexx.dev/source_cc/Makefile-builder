@@ -1,14 +1,17 @@
-# debug, e.g.:    nmake /f Makefile-builder clean && nmake /f Makefile-builder
-# release, e.g.:  nmake /f Makefile-builder clean && nmake /f Makefile-builder RELEASE=1
+# nmake /f Makefile-builder clean && nmake /f Makefile-builder
 # builder version, rgf, 2009-09-07
+# The bitness (32 | 64) and configuration (relase | debug) are taken from the environment.
 
 INC_PATH	=  .;$(JAVA_HOME)\include;$(JAVA_HOME)\include\win32
 INCLUDE = $(INCLUDE);$(INC_PATH)
 OP_SYS          = -DWINDOWS
 
-BLD_PATH = $(BUILDER_CONFIG)\$(BUILDER_BITNESS)
+BLD_PATH = build\$(BUILDER_SYSTEM)\$(BUILDER_COMPILER)\$(BUILDER_CONFIG)\$(BUILDER_BITNESS)
+!IF "$(BUILDER_CONFIG)" == "release"
+RELEASE = 1
+!ENDIF
 
-all: $(BLD_PATH)\BSF4ooRexx.dll
+all: $(BLD_PATH) $(BLD_PATH)\BSF4ooRexx.dll
 
 REXX_LIBS = $(BUILDER_BUILD_DIR)\api\rexx.lib $(BUILDER_BUILD_DIR)\api\rexxapi.lib
 
@@ -29,6 +32,9 @@ DLL_LFLAGS = /nologo /DEBUG -debugtype:cv /SUBSYSTEM:Windows $(REXX_LIBS) $(DEF_
 #rgf-with-map DLL_LFLAGS = /nologo /DEBUG -debugtype:cv /SUBSYSTEM:Windows $(REXX_LIBS) $(DEF_FILE) /DLL  /mapinfo:exports
 !ENDIF
 
+
+$(BLD_PATH):
+    mkdir $(BLD_PATH)
 
 $(BLD_PATH)\BSF4ooRexx.dll: $(BLD_PATH)\BSF4ooRexx.obj
     link $(DLL_LFLAGS) $(BLD_PATH)\$(@B).obj bufferoverflowu.lib -out:$(BLD_PATH)\$(@B).dll
