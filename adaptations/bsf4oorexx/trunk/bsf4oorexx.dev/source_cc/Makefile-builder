@@ -26,7 +26,7 @@ EXE_LFLAGS = /nologo /SUBSYSTEM:Console $(REXX_LIBS) user32.lib comdlg32.lib gdi
 DLL_LFLAGS = /nologo /SUBSYSTEM:Windows $(REXX_LIBS) $(DEF_FILE) /DLL
 !ELSE # release not defined
 # Set the compile and link flags for a debug build
-OOREXX_CFLAGS =  /nologo /EHsc /Zi /Od /Gr /MTd $(WARNINGFLAGS) -DWINDOWS -DBSF4REXX_$(BUILDER_BITNESS)_BIT /c
+OOREXX_CFLAGS =  /nologo /EHsc /Fd$(BLD_PATH)\ /Zi /Od /Gr /MTd $(WARNINGFLAGS) -DWINDOWS -DBSF4REXX_$(BUILDER_BITNESS)_BIT /c
 EXE_LFLAGS = /nologo /DEBUG -debugtype:cv /SUBSYSTEM:Console $(REXX_LIBS) user32.lib comdlg32.lib gdi32.lib kernel32.lib
 DLL_LFLAGS = /nologo /DEBUG -debugtype:cv /SUBSYSTEM:Windows $(REXX_LIBS) $(DEF_FILE) /DLL
 #rgf-with-map DLL_LFLAGS = /nologo /DEBUG -debugtype:cv /SUBSYSTEM:Windows $(REXX_LIBS) $(DEF_FILE) /DLL  /mapinfo:exports
@@ -42,11 +42,11 @@ $(BLD_PATH)\BSF4ooRexx.dll: $(BLD_PATH)\BSF4ooRexx.obj
 $(BLD_PATH)\BSF4ooRexx.obj: BSF4ooRexx.cc
   cl $(OOREXX_CFLAGS) /Fo$(BLD_PATH)\$(@B).obj BSF4ooRexx.cc
 
-mostlyclean:
+mostlyclean: $(BLD_PATH)
     cd $(BLD_PATH)
 	del *.obj *.ilk *.lib *.exp  *.cod *.res *.map 1>nul 2>&1
 
-clean:
+clean: $(BLD_PATH)
     cd $(BLD_PATH)
     attrib -h *.suo 1>nul 2>&1
 	del       *.dll *.obj *.ilk *.pdb *.lib *.exp *.suo *.cod *.res *.sln *.map 1>nul 2>&1

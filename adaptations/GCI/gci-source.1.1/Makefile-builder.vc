@@ -14,7 +14,7 @@ REXX_INCLUDE_PATH=..
 OBJ=build\$(BUILDER_SYSTEM)\$(BUILDER_COMPILER)\$(BUILDER_CONFIG)\$(BUILDER_BITNESS)
 
 !IF "$(BUILDER_CONFIG)" == "debug"
-my_cdebug = -Zi /Od /D_DEBUG /DEBUGTYPE:CV
+my_cdebug = -Zi /Od /D_DEBUG /Fd$(OBJ)\ /DEBUGTYPE:CV
 !ENDIF
 
 .c{$(OBJ)}.obj:
@@ -25,7 +25,9 @@ OBJS=$(OBJ)\gci_convert.obj $(OBJ)\gci_prepare.obj $(OBJ)\gci_tree.obj \
      $(OBJ)\gci_rxfuncdefine.obj $(OBJ)\gci_call.obj $(OBJ)\gci_execute.obj \
      $(OBJ)\gci_oslink.obj $(OBJ)\win32init.obj
 
-gci.dll: $(OBJ) $(OBJS)
+all: $(OBJ) $(OBJ)\gci.dll
+
+$(OBJ)\gci.dll: $(OBJS)
 	cl -nologo $(my_cdebug) -W4 -Zi -LD	-Fe$@ $** gci_win32.def	/link
 
 $(OBJ):
@@ -45,12 +47,12 @@ gci_oslink.c: gci_oslink.w32
 
 .PHONY:	clean cleaner distclean
 
-clean:
+clean: $(OBJ)
 	-del /f/q *.bak	err >nul 2>&1
-
-cleaner: clean
 	cd $(OBJ)
 	-del /f/q *.obj *.dll *.pdb *.ilk *.lib *.exp >nul 2>&1
+
+cleaner: clean
 
 distclean: cleaner
 	-del /f/q .gdbinit* try* gci_convert.h >nul 2>&1
