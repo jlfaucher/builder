@@ -34,7 +34,7 @@ DLL_LFLAGS = /nologo /DEBUG -debugtype:cv /SUBSYSTEM:Windows $(REXX_LIBS) $(DEF_
 
 
 $(BLD_PATH):
-    mkdir $(BLD_PATH)
+    md $(BLD_PATH)
 
 $(BLD_PATH)\BSF4ooRexx.dll: $(BLD_PATH)\BSF4ooRexx.obj
     link $(DLL_LFLAGS) $(BLD_PATH)\$(@B).obj bufferoverflowu.lib -out:$(BLD_PATH)\$(@B).dll

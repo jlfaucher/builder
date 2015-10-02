@@ -29,7 +29,7 @@ gci.dll: $(OBJ) $(OBJS)
 	cl -nologo $(my_cdebug) -W4 -Zi -LD	-Fe$@ $** gci_win32.def	/link
 
 $(OBJ):
-	mkdir $(OBJ)
+	md $(OBJ)
 
 $(OBJS): gci.h embedded.h
 
