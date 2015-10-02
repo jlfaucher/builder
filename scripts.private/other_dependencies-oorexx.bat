@@ -78,7 +78,7 @@ call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_51\bin\se
 )
 
 :: GCI
-call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-sources.1.1\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
+call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-source.1.1\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
 
 :: NSIS
 call shellscriptlib :prepend_path PATH "C:\jlf\local\nsis\Nsis_longStrings"
