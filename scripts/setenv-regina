@@ -43,7 +43,6 @@ echo -n -e "\033]0;Regina $builder_target $builder_branch $builder_src_relative_
 export PATH
 export LD_LIBRARY_PATH
 export DYLD_LIBRARY_PATH
-export DYLD_FALLBACK_LIBRARY_PATH
 export C_INCLUDE_PATH
 export CPLUS_INCLUDE_PATH
 export LIBRARY_PATH
@@ -67,7 +66,6 @@ echo "Setting environment for running Regina"
 prepend_path PATH "$builder_delivery_dir/bin"
 prepend_path LD_LIBRARY_PATH "$builder_delivery_dir/lib"
 prepend_path DYLD_LIBRARY_PATH "$builder_delivery_dir/lib"
-prepend_path DYLD_FALLBACK_LIBRARY_PATH "$builder_delivery_dir/lib"
 
 ################################################################################
 # Other dependencies (like bsf4rexx)

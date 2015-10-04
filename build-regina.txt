@@ -134,7 +134,8 @@ make install
 # should replace "$(DESTDIR)$(bindir)/rexx "
 # by             "$(DESTDIR)$(bindir)/rexx$(binarybitprefix)$(EXE) "
 
-# Bypass the bug, when the error happens:
+# Bypass the bug, when the error happens (you are in the build directory):
+# You can copy-paste all the following lines in your shell.
 ln -s rexx32 ../delivery/bin/rexx
 # Create also aliases for the other binaries:
 ln -s regina32 ../delivery/bin/regina
