@@ -18,8 +18,20 @@ if ipret = "Regina" then do
    end
 
 parse source system . source
-
 system = translate(system)
+
+/* Problem with Regina :
+   Under MacOs, system=="UNIX", not "MACOSX" or "DARWIN"
+   Under Ubuntu, system=="UNIX", not "LINUX"*/
+if system == "UNIX" then do
+   "test `uname -s` = 'Darwin'"
+   if RC = 0 then system = "MACOSX"
+   else do
+       "test `uname -s` = 'Linux'"
+       if RC = 0 then system = "LINUX"
+   end
+end
+
 if left(system, 3) = "WIN" then do
    library = "GCI.DLL"
    CLib = "MSVCRT"
@@ -30,9 +42,12 @@ else if system = "OS/2" then do
    system = "OS/2"
    end
 else if system = "MACOSX" then do
+   /* If DYLD_FALLBACK_LIBRARY_PATH is defined and dlopen can't load libSystem.dylib
+      then add these directories (default value, see man dlopen) :
+      $HOME/lib:/usr/local/lib:/usr/lib */
    library = "libgci.dylib"
-   CLib = "System"
-   MathLib = "System"
+   CLib = "c" -- "System"
+   MathLib = "m" -- "System"
    end
 else do
    library = "libgci.so"
@@ -43,6 +58,8 @@ else do
       CLib = "libc.so.1"
    else
       CLib = "libc.so.6"
+      MathLib = "m" --"libm.so.6"
+      DlLib = "libdl.so.2"
    trace value tr
    end
 
@@ -99,9 +116,9 @@ say "Trying to copy string 'hello' to a string 'world' using the C library"
 stem.calltype = cdecl
 stem.0 = 2
 stem.1.name = "Target"
-stem.1.type = indirect string80
+stem.1.type = indirect string 80
 stem.2.name = "Source"
-stem.2.type = indirect string80
+stem.2.type = indirect string 80
 stem.return.type = ""           /* We are not interested in the return value */
 
 call funcDefine strcpy, CLib, "strcpy", stem
@@ -127,9 +144,9 @@ signal on syntax
 stem.!calltype = cdecl
 stem.0 = 2
 stem.1.!name = "Target"
-stem.1.!type = indirect string80
+stem.1.!type = indirect string 80
 stem.2.!name = "Source"
-stem.2.!type = indirect string80
+stem.2.!type = indirect string 80
 stem.!return.!type = ""
 
 call funcDefine strcpy, CLib, "strcpy", stem
@@ -155,10 +172,10 @@ say "library using the 'as function' feature"
 stem.calltype = cdecl as function
 stem.0 = 2
 stem.1.name = "String"
-stem.1.type = indirect string80
+stem.1.type = indirect string 80
 stem.2.name = "Character"
 stem.2.type = char
-stem.return.type = indirect string80
+stem.return.type = indirect string 80
 
 call funcDefine strrchr, CLib, "strrchr", stem
 
@@ -189,17 +206,20 @@ say "Trying to use the math library to compute some natural logarithms"
 stem.calltype = cdecl with parameters as function
 stem.0 = 1
 stem.1.name = "X"
-stem.1.type = float128
-stem.return.type = float128
+stem.1.type = float 128
+stem.return.type = float 128
+say "Trying logl float 128"
 call RxFuncDefine logl, MathLib, "logl", stem
 if RESULT \= 0 then do
-   stem.1.type = float96
-   stem.return.type = float96
+   stem.1.type = float 96
+   stem.return.type = float 96
+   say "Trying logl float 96"
    call RxFuncDefine logl, MathLib, "logl", stem
    end
 if RESULT \= 0 then do
-   stem.1.type = float64
-   stem.return.type = float64
+   stem.1.type = float 64
+   stem.return.type = float 64
+   say "Trying log float 64"
    call RxFuncDefine logl, MathLib, "log", stem
    end
 if RESULT \= 0 then do
@@ -210,10 +230,13 @@ if RESULT \= 0 then do
    return 1
    end
 
+signal on syntax name ignore_log_error
 say "some logarithms"
 do i = 1 to 5
    say "log("i")="logl(i)
    end
+ignore_log_error:
+signal on syntax
 
 call funcDrop logl
 say ""
@@ -223,33 +246,172 @@ say "You may look into the source."
 /*
  * This examples has removed all unnecessary stuff.
  */
+
+/*
+statvfs, statvfs64
+http://people.redhat.com/berrange/notes/largefile.html
+http://linux.die.net/man/2/statvfs
+*/
+
+/*
+MacOs:
+/usr/include/sys/_types/_types.h
+typedef unsigned int	__darwin_fsblkcnt_t;	/* Used by statvfs and fstatvfs */
+
+/usr/include/sys/_types/_fsblkcnt_t.h
+typedef __darwin_fsblkcnt_t		fsblkcnt_t;         // JLF : 32-bit (unsigned int)
+
+/usr/include/sys/statvfs.h
+#include <sys/_types/_fsblkcnt_t.h>
+struct statvfs {
+	unsigned long	f_bsize;	/* File system block size */
+	unsigned long	f_frsize;	/* Fundamental file system block size */
+	fsblkcnt_t	f_blocks;	/* Blocks on FS in units of f_frsize */
+	fsblkcnt_t	f_bfree;	/* Free blocks */
+	fsblkcnt_t	f_bavail;	/* Blocks available to non-root */
+	fsfilcnt_t	f_files;	/* Total inodes */
+	fsfilcnt_t	f_ffree;	/* Free inodes */
+	fsfilcnt_t	f_favail;	/* Free inodes for non-root */
+	unsigned long	f_fsid;		/* Filesystem ID */
+	unsigned long	f_flag;		/* Bit mask of values */
+	unsigned long	f_namemax;	/* Max file name length */
+};
+*/
+
+/*
+Ubuntu:
+/usr/include/bits/typesizes.h
+/* X32 kernel interface is 64-bit.  */
+#if defined __x86_64__ && defined __ILP32__
+# define __SYSCALL_ULONG_TYPE	__UQUAD_TYPE        // JLF: 64-bit even if WORDSIZE==32
+#else
+# define __SYSCALL_ULONG_TYPE	__ULONGWORD_TYPE    // JLF: 64-bit
+#endif
+#define __FSBLKCNT_T_TYPE	__SYSCALL_ULONG_TYPE
+
+/usr/include/bits/types.h
+/* quad_t is also 64 bits.  */
+#if __WORDSIZE == 64
+typedef unsigned long int __u_quad_t;
+#else
+__extension__ typedef unsigned long long int __u_quad_t;
+#endif
+#define __ULONGWORD_TYPE	unsigned long int
+/* We want __extension__ before typedef's that use nonstandard base types
+   such as `long long' in C89 mode.  */
+# define __STD_TYPE		__extension__ typedef
+#if __WORDSIZE == 32
+# define __UQUAD_TYPE		__u_quad_t
+#elif __WORDSIZE == 64
+# define __UQUAD_TYPE		unsigned long int
+#include <bits/typesizes.h>	/* Defines __*_T_TYPE macros.  */
+__STD_TYPE __FSBLKCNT_T_TYPE __fsblkcnt_t;
+__STD_TYPE __SYSCALL_ULONG_TYPE __syscall_ulong_t;
+
+/usr/include/sys/statvfs.h -> ../x86_64-linux-gnu/sys/statvfs.h
+struct statvfs
+  {
+    unsigned long int f_bsize;
+    unsigned long int f_frsize;
+#ifndef __USE_FILE_OFFSET64
+    __fsblkcnt_t f_blocks;      // JLF: 64-bit
+    __fsblkcnt_t f_bfree;
+    __fsblkcnt_t f_bavail;
+    __fsfilcnt_t f_files;
+    __fsfilcnt_t f_ffree;
+    __fsfilcnt_t f_favail;
+#else
+    __fsblkcnt64_t f_blocks;    // JLF: 64-bit
+    __fsblkcnt64_t f_bfree;
+    __fsblkcnt64_t f_bavail;
+    __fsfilcnt64_t f_files;
+    __fsfilcnt64_t f_ffree;
+    __fsfilcnt64_t f_favail;
+#endif
+    unsigned long int f_fsid;
+#ifdef _STATVFSBUF_F_UNUSED
+    int __f_unused;
+#endif
+    unsigned long int f_flag;
+    unsigned long int f_namemax;
+    int __f_spare[6];
+  };
+
+#ifdef __USE_LARGEFILE64
+struct statvfs64
+  {
+    unsigned long int f_bsize;
+    unsigned long int f_frsize;
+    __fsblkcnt64_t f_blocks;    // JLF: 64-bit
+    __fsblkcnt64_t f_bfree;
+    __fsblkcnt64_t f_bavail;
+    __fsfilcnt64_t f_files;
+    __fsfilcnt64_t f_ffree;
+    __fsfilcnt64_t f_favail;
+    unsigned long int f_fsid;
+#ifdef _STATVFSBUF_F_UNUSED
+    int __f_unused;
+#endif
+    unsigned long int f_flag;
+    unsigned long int f_namemax;
+    int __f_spare[6];
+  };
+#endif
+*/
+
 stem.calltype = cdecl as function
 stem.0 = 2
-stem.1.type = indirect string256
+stem.1.type = indirect string 256
 stem.2.type = indirect container
-stem.2.0 = 10                                /* statvfs64 */
-stem.2.1.type    = unsigned                  /* bsize */
-stem.2.2.type    = unsigned                  /* frsize */
-stem.2.3.type    = unsigned64                /* blocks */
-stem.2.4.type    = unsigned64                /* bfree */
-stem.2.5.type    = unsigned64                /* bavail */
-stem.2.6.type    = unsigned64                /* files */
-stem.2.7.type    = unsigned64                /* ffree */
-stem.2.8.type    = unsigned64                /* favail */
-stem.2.9.type    = unsigned                  /* fsid */
-stem.2.10.type   = string256                /* indifferent between unices */
+stem.2.0 = 11                                 /* statvfs64 */
+stem.2.1.type    = ulong                      /* bsize */
+stem.2.2.type    = ulong                      /* frsize */
+stem.2.3.type    = unsigned 64                /* blocks */
+stem.2.4.type    = unsigned 64                /* bfree */
+stem.2.5.type    = unsigned 64                /* bavail */
+stem.2.6.type    = unsigned 64                /* files */
+stem.2.7.type    = unsigned 64                /* ffree */
+stem.2.8.type    = unsigned 64                /* favail */
+stem.2.9.type    = ulong                      /* fsid */
+stem.2.10.type   = ulong                      /* flag */
+stem.2.11.type   = ulong                      /* namemax */
 stem.return.type = integer
-
-call funcDefine statvfs, CLib, "statvfs64", stem
+say "Trying statvfs64"
+call RxFuncDefine statvfs, CLib, "statvfs64", stem /* available under Linux */
+if RESULT \= 0 then do
+    stem.calltype = cdecl as function
+    stem.0 = 2
+    stem.1.type = indirect string256
+    stem.2.type = indirect container
+    stem.2.0 = 11                             /* statvfs */
+    stem.2.1.type    = ulong                  /* bsize */    /*mac,linux: unsigned long*/
+    stem.2.2.type    = ulong                  /* frsize */   /*mac,linux: unsigned long*/
+    stem.2.3.type    = unsigned               /* blocks */   /*mac: unsigned int, ubuntu: unsigned long int*/
+    stem.2.4.type    = unsigned               /* bfree */    /*mac: unsigned int, ubuntu: unsigned long int*/
+    stem.2.5.type    = unsigned               /* bavail */   /*mac: unsigned int, ubuntu: unsigned long int*/
+    stem.2.6.type    = unsigned               /* files */    /*mac: unsigned int, ubuntu: unsigned long int*/
+    stem.2.7.type    = unsigned               /* ffree */    /*mac: unsigned int, ubuntu: unsigned long int*/
+    stem.2.8.type    = unsigned               /* favail */   /*mac: unsigned int, ubuntu: unsigned long int*/
+    stem.2.9.type    = ulong                  /* fsid */     /*mac,linux: unsigned long*/
+    stem.2.10.type   = ulong                  /* flag */     /*mac,linux: unsigned long*/
+    stem.2.11.type   = ulong                  /* namemax */  /*mac,linux: unsigned long*/
+    stem.return.type = integer
+    say "Trying statvfs"
+    call funcDefine statvfs, CLib, "statvfs", stem /* available under MacOs & Linux */
+end
 
 args. = 0
 args.1.value = source
-args.2.value = 10    /* otherwise the argument becomes NULL */
+args.2.value = 11    /* otherwise the argument becomes NULL */
 if statvfs( args ) \= -1 then do
    say "statvfs-info of" source
-   say "block size =" args.2.1.value "byte"
-   size = trunc(args.2.3.value * args.2.1.value / (1024 * 1024))
-   avail = trunc(args.2.5.value * args.2.1.value / (1024 * 1024))
+   say "File system block size (bsize) =" args.2.1.value "byte"
+   say "Fundamental file system block size (frsize) =" args.2.2.value "byte"
+   say "Blocks on FS in units of frsize (blocks)=" args.2.3.value
+   say "Free blocks (bfree)=" args.2.4.value
+   say "Blocks available to non-root (bavail)=" args.2.5.value
+   size = trunc(args.2.3.value * args.2.2.value / (1024 * 1024))
+   avail = trunc(args.2.5.value * args.2.2.value / (1024 * 1024))
    say "file system size =" size"MB, available =" avail"MB"
    say "file nodes =" args.2.6.value "available =" args.2.8.value
    say "sid =" args.2.9.value
@@ -274,23 +436,23 @@ say "We use qsort of the C library for sorting some strings using arrays."
  */
 stem.calltype = cdecl with parameters as function
 stem.0 = 2
-stem.1.type = indirect string256
+stem.1.type = indirect string 256
 stem.2.type = integer
 stem.return.type = integer       /* handle, but who cares? */
-call funcDefine dlopen, "dl", "dlopen", stem
+call funcDefine dlopen, DlLib, "dlopen", stem
 
 stem.calltype = cdecl with parameters as function
 stem.0 = 2
 stem.1.type = integer            /* handle */
-stem.2.type = indirect string256
+stem.2.type = indirect string 256
 stem.return.type = integer       /* entry point address, but who cares? */
-call funcDefine dlsym, "dl", "dlsym", stem
+call funcDefine dlsym, DlLib, "dlsym", stem
 
 stem.calltype = cdecl with parameters as function
 stem.0 = 1
 stem.1.type = integer            /* handle */
 stem.return.type = integer
-call funcDefine dlclose, "dl", "dlclose", stem
+call funcDefine dlclose, DlLib, "dlclose", stem
 
 CLibHandle = dlopen( CLib, 1 /* RTLD_LAZY */ )
 if CLibHandle = 0 then do
@@ -308,7 +470,7 @@ stem.calltype = cdecl
 stem.0 = 4
 stem.1.type = indirect array
 stem.1.0 = 3
-stem.1.1.type = string95
+stem.1.1.type = string 95
 stem.2.type = integer
 stem.3.type = integer
 stem.4.type = integer
@@ -344,9 +506,9 @@ stem.0 = 4
 stem.1.name = "HWND"
 stem.1.type = unsigned
 stem.2.name = "Text"
-stem.2.type = indirect string1024
+stem.2.type = indirect string 1024
 stem.3.name = "Caption"
-stem.3.type = indirect string1024
+stem.3.type = indirect string 1024
 stem.4.name = "Type"
 stem.4.type = unsigned
 stem.return.type = integer
@@ -369,17 +531,17 @@ say "You may look into the source."
  */
 stem.calltype = stdcall as function
 stem.0 = 2
-stem.1.type = indirect string256
+stem.1.type = indirect string 256
 stem.2.type = indirect container
 stem.2.0 = 8                                 /* WIN32_FIND_DATA */
 stem.2.1.type = unsigned                     /* FileAttributes */
-stem.2.2.type = unsigned64                   /* Creation */
-stem.2.3.type = unsigned64                   /* Access */
-stem.2.4.type = unsigned64                   /* Write */
-stem.2.5.type = unsigned64                   /* Size */
-stem.2.6.type = unsigned64                   /* Reserved */
-stem.2.7.type = string259                    /* FileName */
-stem.2.8.type = string13                     /* AlternateFileName */
+stem.2.2.type = unsigned 64                   /* Creation */
+stem.2.3.type = unsigned 64                   /* Access */
+stem.2.4.type = unsigned 64                   /* Write */
+stem.2.5.type = unsigned 64                   /* Size */
+stem.2.6.type = unsigned 64                   /* Reserved */
+stem.2.7.type = string 259                    /* FileName */
+stem.2.8.type = string 13                     /* AlternateFileName */
 stem.return.type = integer
 
 stem2.calltype = stdcall with parameters
@@ -444,7 +606,7 @@ tm.9.type = integer /* tm_isdst */
 tm.10.type = string 32 /* reserved stuff sometimes used by the OS */
 
 time_t.0 = 1
-time_t.1.type = integer64 /* SURPRISE! some systems may use 64 bit data types
+time_t.1.type = integer 64 /* SURPRISE! some systems may use 64 bit data types
                            * already. We don't have problems with this,
                            * because we use double buffering.
                            */
@@ -463,9 +625,9 @@ call funcDefine localtime, CLib, "localtime", stem
 
 stem.calltype = cdecl
 stem.0 = 4
-stem.1.type = indirect string256  /* dest */
+stem.1.type = indirect string 256  /* dest */
 stem.2.type = unsigned            /* size(dest) */
-stem.3.type = indirect string256  /* template */
+stem.3.type = indirect string 256  /* template */
 stem.4.type = indirect container like tm
 stem.return.type = unsigned
 call funcDefine strftime, CLib, "strftime", stem
@@ -617,7 +779,7 @@ stem.3.3.type = unsigned
 stem.3.4.name = "cUnitAvail"
 stem.3.4.type = unsigned
 stem.3.5.name = "cbSector"
-stem.3.5.type = unsigned16
+stem.3.5.type = unsigned 16
 stem.4.name = "cbBuf"
 stem.4.type = unsigned
 stem.return.type = "unsigned"
