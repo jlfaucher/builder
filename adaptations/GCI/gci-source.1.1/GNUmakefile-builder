@@ -1,3 +1,4 @@
+# make -f GNUmakefile-builder configure (to create the rights symbolic links)
 # make -f GNUmakefile-builder
 # The bitness (32 | 64) and configuration (relase | debug) are taken from the environment.
 
@@ -23,7 +24,7 @@ ifeq	  "Linux"		      "$(shell uname -s)"
 		    OSL=unix
  else
   ifeq	   "x86_64"		      "$(shell uname -m)"
-		    CVT=linux.x86_64
+		    CVT=linux.86_64
 		    OSL=unix
   else
    ifeq	   "alpha"		      "$(shell uname -m)"
@@ -76,8 +77,7 @@ $(OBJS): gci.h embedded.h
 
 $(OBJ)/gci_convert.o: gci_convert.c gci_convert.h
 
-$(OBJ)/gci_call.o: gci_call.c gci_convert.h
-# Must disable optimization for this file
+# Must disable optimization for this file (-O0)
 $(OBJ)/gci_call.o: gci_call.c gci_convert.h
 	gcc $(MY_GCC_FLAGS) -O0 -c -o $@ $<
 

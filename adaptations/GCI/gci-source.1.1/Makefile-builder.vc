@@ -18,7 +18,7 @@ my_cdebug = -Zi /Od /D_DEBUG /Fd$(OBJ)\ /DEBUGTYPE:CV
 !ENDIF
 
 .c{$(OBJ)}.obj:
-	cl -nologo -W4 -I$(REXX_INCLUDE_PATH) -Zi -LD -DDEBUG $(my_cdebug) -c -Fo$@ $<
+	cl -nologo -W4 -I$(REXX_INCLUDE_PATH) -LD $(my_cdebug) -c -Fo$@ $<
 
 OBJS=$(OBJ)\gci_convert.obj $(OBJ)\gci_prepare.obj $(OBJ)\gci_tree.obj \
      $(OBJ)\gci_helper.obj $(OBJ)\gci_rexxbridge.obj \
@@ -37,7 +37,9 @@ $(OBJS): gci.h embedded.h
 
 $(OBJ)\gci_convert.obj:	gci_convert.c gci_convert.h
 
+# Must disable optimization for this file (/Od)
 $(OBJ)\gci_call.obj: gci_call.c	gci_convert.h
+	cl -nologo -W4 -I$(REXX_INCLUDE_PATH) -Zi -LD $(my_cdebug) /Od -c -Fo$@ $<
 
 gci_convert.h:
 	copy gci_convert.win32.vc gci_convert.h
