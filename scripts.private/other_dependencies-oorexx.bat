@@ -48,6 +48,12 @@ call shellscriptlib :prepend_path PATH "E:\windiff"
 set BSF4OOREXX_HOME=Y:\Local\local\rexx\bsf4oorexx\svn\trunk
 call :declare_bsf4oorexx_svn
 
+:: On this system, the default console code page is the OEMCP (437)
+:: That brings troubles when you execute a command which contains letters with accent.
+:: Change the default code page of the console to ACP (for european users like me : 1252).
+:: More details in the readme of ooRexxShell.
+chcp 1252
+
 exit /B 0
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -106,6 +112,12 @@ doskey ll=ls -lap $*
 doskey ls=ls -ap $*
 doskey mv=mv -i $*
 doskey cp=cp -i $*
+
+:: On this system, the default console code page is the OEMCP (437)
+:: That brings troubles when you execute a command which contains letters with accent.
+:: Change the default code page of the console to ACP (for european users like me : 1252).
+:: More details in the readme of ooRexxShell.
+chcp 1252
 
 exit /B 0
 
