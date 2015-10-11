@@ -264,49 +264,49 @@ static GCI_result decode( void *hidden,
             return GCI_UnsupportedType;
          pi->type = GCI_integer;
          pi->size = 8 * sizeof( long );
-         return GCI_OK;
+         break;
 
       case GCI_llong:
          if ( size > 0 )
             return GCI_UnsupportedType;
          pi->type = GCI_integer;
          pi->size = 8 * sizeof( long long );
-         return GCI_OK;
+         break;
 
       case GCI_pointer: // opaque
          if ( size > 0 )
             return GCI_UnsupportedType;
          pi->type = GCI_unsigned;
          pi->size = 8 * sizeof( void* );
-         return GCI_OK;
+         break;
 
       case GCI_size_t:
          if ( size > 0 )
             return GCI_UnsupportedType;
          pi->type = GCI_unsigned;
          pi->size = 8 * sizeof( size_t );
-         return GCI_OK;
+         break;
 
       case GCI_ssize_t:
          if ( size > 0 )
             return GCI_UnsupportedType;
          pi->type = GCI_integer;
          pi->size = 8 * sizeof( ssize_t );
-         return GCI_OK;
+         break;
 
       case GCI_ulong:
          if ( size > 0 )
             return GCI_UnsupportedType;
          pi->type = GCI_unsigned;
          pi->size = 8 * sizeof( unsigned  long );
-         return GCI_OK;
+         break;
 
       case GCI_ullong:
          if ( size > 0 )
             return GCI_UnsupportedType;
          pi->type = GCI_unsigned;
          pi->size = 8 * sizeof( unsigned  long long );
-         return GCI_OK;
+         break;
 
       default:
          return GCI_UnsupportedType;
