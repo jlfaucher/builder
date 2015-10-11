@@ -50,6 +50,7 @@ using symbolic links. You can use the following script to create those symbolic 
     ln -f -s $source/gci_convert.macX.all          $target/gci_convert.macX.all
     ln -f -s $source/gci_convert.win32.vc          $target/gci_convert.win32.vc
     ln -f -s $source/gci_oslink.macX               $target/gci_oslink.macX
+    ln -f -s $source/gci_rexxbridge.c              $target/gci_rexxbridge.c
     ln -f -s $source/gci_tree.c                    $target/gci_tree.c
     ln -f -s $source/gci_win32.def                 $target/gci_win32.def
     ln -f -s $source/GNUmakefile-builder           $target/GNUmakefile-builder
