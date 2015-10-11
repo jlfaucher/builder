@@ -9,7 +9,7 @@ REXX_INCLUDE_PATH=..
 HEADERDEF=-DUSE_REXXSAA_H -DRexxAllocateMemory=malloc \
 	  -DPCSZ=PSZ
 
-MY_GCC_FLAGS=-Wall -Wno-self-assign -I$(REXX_INCLUDE_PATH) $(HEADERDEF) -fPIC $(CPPFLAGS) $(CFLAGS)
+MY_GCC_FLAGS=-Wall -Wno-self-assign -I$(REXX_INCLUDE_PATH) $(HEADERDEF) -fPIC -DGCI_BITNESS=$(builder_bitness) $(CPPFLAGS) $(CFLAGS)
 
 #
 # There	is no need to change anything below for	known systems
