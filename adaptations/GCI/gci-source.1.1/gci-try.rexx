@@ -100,9 +100,12 @@ if \InternalGCI then do
       return 1
       end
    call RxFuncadd GciPrefixChar, "gci", "GciPrefixChar"
+   call RxFuncadd GciBitness, "gci", "GciBitness"
+   bitness = GciBitness()
    say "Your interpreter has no internal support of GCI"
    end
 else
+   bitness = 32 -- not (yet) supported
    say "Your interpreter has internal support of GCI"
 
 say ""
@@ -330,7 +333,7 @@ struct statvfs
 #endif
     unsigned long int f_fsid;
 #ifdef _STATVFSBUF_F_UNUSED
-    int __f_unused;
+    int __f_unused;         // JLF defined when -m32
 #endif
     unsigned long int f_flag;
     unsigned long int f_namemax;
@@ -363,7 +366,6 @@ stem.calltype = cdecl as function
 stem.0 = 2
 stem.1.type = indirect string 256
 stem.2.type = indirect container
-stem.2.0 = 11                                 /* statvfs64 */
 stem.2.1.type    = ulong                      /* bsize */
 stem.2.2.type    = ulong                      /* frsize */
 stem.2.3.type    = unsigned 64                /* blocks */
@@ -373,17 +375,28 @@ stem.2.6.type    = unsigned 64                /* files */
 stem.2.7.type    = unsigned 64                /* ffree */
 stem.2.8.type    = unsigned 64                /* favail */
 stem.2.9.type    = ulong                      /* fsid */
-stem.2.10.type   = ulong                      /* flag */
-stem.2.11.type   = ulong                      /* namemax */
+index = 10
+if bitness == 32 then do
+    stem.2.index.type = integer               /* unused */
+    index = index + 1
+end
+stem.2.index.type   = ulong                   /* flag */
+index = index + 1
+stem.2.index.type   = ulong                   /* namemax */
+index = index + 1
+stem.2.index.type   = array                   /* spare[6] */
+stem.2.index.0      = 6
+stem.2.index.1.type = integer
+stem.2.0 = index
 stem.return.type = integer
 say "Trying statvfs64"
-call RxFuncDefine statvfs, CLib, "statvfs64", stem /* available under Linux */
+call RxFuncDefine statvfs, CLib, "statvfs64", stem /* available under Ubuntu 14.04 */
 if RESULT \= 0 then do
     stem.calltype = cdecl as function
     stem.0 = 2
     stem.1.type = indirect string256
     stem.2.type = indirect container
-    stem.2.0 = 11                             /* statvfs */
+    stem.2.0 = 11
     stem.2.1.type    = ulong                  /* bsize */    /*mac,linux: unsigned long*/
     stem.2.2.type    = ulong                  /* frsize */   /*mac,linux: unsigned long*/
     stem.2.3.type    = unsigned               /* blocks */   /*mac: unsigned int, ubuntu: unsigned long int*/
@@ -395,6 +408,7 @@ if RESULT \= 0 then do
     stem.2.9.type    = ulong                  /* fsid */     /*mac,linux: unsigned long*/
     stem.2.10.type   = ulong                  /* flag */     /*mac,linux: unsigned long*/
     stem.2.11.type   = ulong                  /* namemax */  /*mac,linux: unsigned long*/
+    index = 11
     stem.return.type = integer
     say "Trying statvfs"
     call funcDefine statvfs, CLib, "statvfs", stem /* available under MacOs & Linux */
@@ -402,7 +416,7 @@ end
 
 args. = 0
 args.1.value = source
-args.2.value = 11    /* otherwise the argument becomes NULL */
+args.2.value = index    /* otherwise the argument becomes NULL */
 if statvfs( args ) \= -1 then do
    say "statvfs-info of" source
    say "File system block size (bsize) =" args.2.1.value "byte"
@@ -438,19 +452,19 @@ stem.calltype = cdecl with parameters as function
 stem.0 = 2
 stem.1.type = indirect string 256
 stem.2.type = integer
-stem.return.type = integer       /* handle, but who cares? */
+stem.return.type = pointer
 call funcDefine dlopen, DlLib, "dlopen", stem
 
 stem.calltype = cdecl with parameters as function
 stem.0 = 2
-stem.1.type = integer            /* handle */
+stem.1.type = pointer            /* handle */
 stem.2.type = indirect string 256
-stem.return.type = integer       /* entry point address, but who cares? */
+stem.return.type = pointer
 call funcDefine dlsym, DlLib, "dlsym", stem
 
 stem.calltype = cdecl with parameters as function
 stem.0 = 1
-stem.1.type = integer            /* handle */
+stem.1.type = pointer            /* handle */
 stem.return.type = integer
 call funcDefine dlclose, DlLib, "dlclose", stem
 
@@ -470,10 +484,10 @@ stem.calltype = cdecl
 stem.0 = 4
 stem.1.type = indirect array
 stem.1.0 = 3
-stem.1.1.type = string 95
-stem.2.type = integer
-stem.3.type = integer
-stem.4.type = integer
+stem.1.1.type = string 95   /* JLF: it's not indirect ! so not a pointer */
+stem.2.type = size_t
+stem.3.type = size_t
+stem.4.type = pointer
 stem.return.type = ""
 call funcDefine qsort10, CLib, "qsort", stem
 
@@ -482,8 +496,8 @@ args.1.value = 3
 args.1.1.value = "Ann"
 args.1.2.value = "Charles"
 args.1.3.value = "Betty"
-args.2.value = 3
-args.3.value = 96
+args.2.value = 3            /* JLF: 3 elements in the array */
+args.3.value = 96           /* JLF: an element is a string of 95 characters + the final 0 */
 args.4.value = strcmp
 say "Sorting (" args.1.1.value args.1.2.value args.1.3.value ") ..."
 call qsort10 args
