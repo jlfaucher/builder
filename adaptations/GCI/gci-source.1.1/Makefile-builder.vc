@@ -1,3 +1,4 @@
+# nmake /f Makefile-builder.vc configure (to create the rights symbolic links)
 # nmake /f Makefile-builder.vc
 # The bitness (32 | 64) and configuration (relase | debug) are taken from the environment.
 # Builder version.
@@ -17,8 +18,8 @@ OBJ=build\$(BUILDER_SYSTEM)\$(BUILDER_COMPILER)\$(BUILDER_CONFIG)\$(BUILDER_BITN
 my_cdebug = -Zi /Od /D_DEBUG /Fd$(OBJ)\ /DEBUGTYPE:CV
 !ENDIF
 
-my_cflags = -nologo -W4 -I$(REXX_INCLUDE_PATH) -LD $(my_cdebug) /DGCI_BITNESS=$(builder_bitness) -c
-my_lflags = -nologo -W4 -LD $(my_cdebug) /link
+my_cflags = -nologo -W4 -I$(REXX_INCLUDE_PATH) -LD $(my_cdebug) /DGCI_BITNESS=$(BUILDER_BITNESS) -c
+my_lflags = -nologo -W4 -LD $(my_cdebug)
 
 .c{$(OBJ)}.obj:
 	cl $(my_cflags) -Fo$@ $<
@@ -31,10 +32,11 @@ OBJS=$(OBJ)\gci_convert.obj $(OBJ)\gci_prepare.obj $(OBJ)\gci_tree.obj \
 all: $(OBJ) $(OBJ)\gci.dll
 
 $(OBJ)\gci.dll: $(OBJS)
-	cl $(my_lflags) -Fe$@ $** gci_win32.def
+	cl $(my_lflags) -Fe$@ $** gci_win32.def /link
 
 $(OBJ):
-	md $(OBJ)
+	:: md $(OBJ) --> creation of multiple directories not working on network drive
+	rexx -e "call rexxscriptlib; call CreateDirectoryVerbose '$(OBJ)'"
 
 $(OBJS): gci.h embedded.h
 
@@ -42,22 +44,21 @@ $(OBJ)\gci_convert.obj:	gci_convert.c gci_convert.h
 
 # Must disable optimization for this file (/Od)
 $(OBJ)\gci_call.obj: gci_call.c	gci_convert.h
-	cl $(my_cflags) /Od -Fo$@ $<
+	cl $(my_cflags) /Od -Fo$@ gci_call.c
 
-gci_convert.h:
+.PHONY:	configure clean cleaner distclean
+
+configure: clean
+	-del /f/q gci_convert.h
 	copy gci_convert.win32.vc gci_convert.h
-
-gci_oslink.c: gci_oslink.w32
+	-del /f/q gci_oslink.c
 	copy gci_oslink.w32 gci_oslink.c
-
-.PHONY:	clean cleaner distclean
 
 clean: $(OBJ)
 	-del /f/q *.bak	err >nul 2>&1
-	cd $(OBJ)
-	-del /f/q *.obj *.dll *.pdb *.ilk *.lib *.exp >nul 2>&1
+	-del /f/q $(OBJ)\*.obj $(OBJ)\*.dll $(OBJ)\*.pdb $(OBJ)\*.ilk $(OBJ)\*.lib $(OBJ)\*.exp >nul 2>&1
 
 cleaner: clean
 
 distclean: cleaner
-	-del /f/q .gdbinit* try* gci_convert.h >nul 2>&1
+	-del /f/q .gdbinit* try* gci_convert.h gci_oslink.c >nul 2>&1

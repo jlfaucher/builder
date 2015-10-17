@@ -79,7 +79,7 @@ $(OBJ)/gci_convert.o: gci_convert.c gci_convert.h
 
 # Must disable optimization for this file (-O0)
 $(OBJ)/gci_call.o: gci_call.c gci_convert.h
-	gcc $(MY_GCC_FLAGS) -O0 -c -o $@ $<
+	gcc $(MY_GCC_FLAGS) -O0 -c -o $@ gci_call.c
 
 .PHONY:	configure clean cleaner distclean
 
