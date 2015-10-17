@@ -2,9 +2,9 @@
 # builder version, rgf, 2009-09-07
 # The bitness (32 | 64) and configuration (relase | debug) are taken from the environment.
 
-INC_PATH	=  .;$(JAVA_HOME)\include;$(JAVA_HOME)\include\win32
+INC_PATH = .;$(JAVA_HOME)\include;$(JAVA_HOME)\include\win32
 INCLUDE = $(INCLUDE);$(INC_PATH)
-OP_SYS          = -DWINDOWS
+OP_SYS = -DWINDOWS
 
 BLD_PATH = build\$(BUILDER_SYSTEM)\$(BUILDER_COMPILER)\$(BUILDER_CONFIG)\$(BUILDER_BITNESS)
 !IF "$(BUILDER_CONFIG)" == "release"
@@ -21,7 +21,7 @@ DEF_FILE = /def:BSF4ooRexx-$(BUILDER_BITNESS).def
 
 !IF DEFINED(RELEASE)
 # Set the compile and link flags for a release build
-OOREXX_CFLAGS = /nologo /EHsc /O2 /Gr /Gs /FAcs /MT $(WARNINGFLAGS) -DWINDOWS -DBSF4REXX_$(BUILDER_BITNESS)_BIT /c /Fo$(BLD_PATH)\$(@B).obj
+OOREXX_CFLAGS = /nologo /EHsc /O2 /Gr /Gs /FAcs /MT $(WARNINGFLAGS) -DWINDOWS -DBSF4REXX_$(BUILDER_BITNESS)_BIT /c
 EXE_LFLAGS = /nologo /SUBSYSTEM:Console $(REXX_LIBS) user32.lib comdlg32.lib gdi32.lib kernel32.lib
 DLL_LFLAGS = /nologo /SUBSYSTEM:Windows $(REXX_LIBS) $(DEF_FILE) /DLL
 !ELSE # release not defined
@@ -34,7 +34,8 @@ DLL_LFLAGS = /nologo /DEBUG -debugtype:cv /SUBSYSTEM:Windows $(REXX_LIBS) $(DEF_
 
 
 $(BLD_PATH):
-    md $(BLD_PATH)
+	:: md $(BLD_PATH) --> creation of multiple directories not working on network drive
+	rexx -e "call rexxscriptlib; call CreateDirectoryVerbose '$(BLD_PATH)'"
 
 $(BLD_PATH)\BSF4ooRexx.dll: $(BLD_PATH)\BSF4ooRexx.obj
     link $(DLL_LFLAGS) $(BLD_PATH)\$(@B).obj bufferoverflowu.lib -out:$(BLD_PATH)\$(@B).dll
