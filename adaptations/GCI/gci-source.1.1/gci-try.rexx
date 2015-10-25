@@ -41,13 +41,14 @@ else if system = "OS/2" then do
    library = "GCI.DLL"
    system = "OS/2"
    end
-else if system = "MACOSX" then do
+else if system = "MACOSX" | system = "DARWIN" then do
    /* If DYLD_FALLBACK_LIBRARY_PATH is defined and dlopen can't load libSystem.dylib
       then add these directories (default value, see man dlopen) :
       $HOME/lib:/usr/local/lib:/usr/lib */
    library = "libgci.dylib"
-   CLib = "c" -- "System"
+   CLib = "libc.dylib" -- "System" -- "c" not supported by dlopen
    MathLib = "m" -- "System"
+   DlLib = "dl"
    end
 else do
    library = "libgci.so"
@@ -62,6 +63,12 @@ else do
       DlLib = "libdl.so.2"
    trace value tr
    end
+
+say "system=" system
+if var("library") then say "library=" library
+if var("CLib") then say "CLib=" CLib
+if var("MathLib") then say "MathLib=" MathLib
+if var("DlLib") then say "DlLib=" DlLib
 
 /*
  * Check for a builtin RxFuncDefine. Call it with errorneous arguments and
@@ -104,9 +111,10 @@ if \InternalGCI then do
    bitness = GciBitness()
    say "Your interpreter has no internal support of GCI"
    end
-else
+else do
    bitness = 32 -- not (yet) supported
    say "Your interpreter has internal support of GCI"
+end
 
 say ""
 
