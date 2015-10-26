@@ -13,7 +13,12 @@ RELEASE = 1
 
 all: $(BLD_PATH) $(BLD_PATH)\BSF4ooRexx.dll
 
+# No delivery with the old build system, must use the API in the build directory.
+!IF EXISTS("$(BUILDER_DELIVERY_DIR)\api")
+REXX_LIBS = $(BUILDER_DELIVERY_DIR)\api\rexx.lib $(BUILDER_DELIVERY_DIR)\api\rexxapi.lib
+!ELSE
 REXX_LIBS = $(BUILDER_BUILD_DIR)\api\rexx.lib $(BUILDER_BUILD_DIR)\api\rexxapi.lib
+!ENDIF
 
 WARNINGFLAGS = /W3 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE
 
