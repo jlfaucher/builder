@@ -38,3 +38,18 @@ The file sharing services do need a restart after changing the file.
         <string>/usr/sbin/smbd</string>
         <string>-no-symlinks</string>
 </array>
+[No longer works after upgrade to El-Capitan]
+This change has been overwritten when upgrading to El-Capitan.
+No longer possible to edit the file smbd.plist because of System Integrity Protection.
+I follow a procedure described in https://forums.developer.apple.com/thread/17944:
+sudo defaults write /Library/Preferences/com.apple.smbd.plist ProgramArguments -array-add -no-symlinks
+Does not work...
+Fallback:
+sudo cp /System/Library/LaunchDaemons/com.apple.smbd.plist /Library/LaunchDaemons/jlf.smbd.plist
+sudo chown root /Library/LaunchDaemons/jlf.smbd.plist
+edit jlf.smbd.plist:
+- re-apply the change described above
+- change the label com.apple.smbd to jlf.smbd (2 occurences)
+to do the first time, and to redo after each reboot:
+sudo launchctl unload /System/Library/LaunchDaemons/com.apple.smbd.plist
+sudo launchctl load -w /Library/LaunchDaemons/jlf.smbd.plist
