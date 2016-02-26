@@ -3,7 +3,8 @@ if defined echo echo %echo%
 
 
 if "%COMPUTERNAME%" == "WIN-7RUPB0TOBV1" goto :WIN-7RUPB0TOBV1
-if "%COMPUTERNAME%" == "CSCCHAAE667748" goto :CSCCHAAE667748
+if "%COMPUTERNAME%" == "CSCFRAAH783788" goto :CSCFRAAH783788
+
 exit /B 0
 
 
@@ -65,7 +66,7 @@ chcp 1252
 exit /B 0
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:CSCCHAAE667748
+:CSCFRAAH783788
 
 :: ooRexx build utilities
 call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\oorexx\official\build-utilities\trunk\platform\windows\bin"
@@ -84,13 +85,13 @@ call shellscriptlib :prepend_path PATH "c:\Program Files (x86)\Git\bin"
 
 :: Java
 if "%builder_bitness%" == "32" (
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_51\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_51\bin\client"
-set JAVA_HOME="C:\Program Files (x86)\Java\jdk1.7.0_45"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_74\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_74\bin\client"
+set JAVA_HOME="C:\Program Files (x86)\Java\jdk1.8.0_74"
 ) else (
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_51\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_51\bin\server"
-set JAVA_HOME="C:\Program Files\Java\jdk1.7.0_45"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_74\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_74\bin\server"
+set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_74"
 )
 set JAVA_HOME=%JAVA_HOME:"=%
 
