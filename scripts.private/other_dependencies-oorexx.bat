@@ -102,7 +102,7 @@ call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-source.1.1\bui
 call shellscriptlib :prepend_path PATH "C:\jlf\local\nsis\Nsis_longStrings"
 
 :: Dropbox scripts
-call shellscriptlib :prepend_path PATH "C:\Users\JFaucher\Dropbox\software\oorexx"
+call shellscriptlib :prepend_path PATH "C:\Users\JFaucher.EMEA\Dropbox\software\oorexx"
 
 :: csdiff
 call shellscriptlib :prepend_path PATH "C:\jlf\local\csdiff"
