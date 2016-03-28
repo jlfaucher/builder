@@ -64,6 +64,10 @@ declare_bsf4oorexx_svn()
     echo "Setting environment for bsf4oorexx svn"
     export CLASSPATH
     prepend_path CLASSPATH "$BSF4OOREXX_HOME"
+    # To avoid this error when using rexxj2.sh:
+    # [BSFManager.loadScriptingEngine()] unable to load language: rexx: java.lang.UnsatisfiedLinkError: no BSF4ooRexx in java.library.path
+    export BSF4Rexx_JavaStartupOptions
+    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
 
     # MacOs & Ubuntu
     export PATH
