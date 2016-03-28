@@ -52,4 +52,5 @@ edit jlf.smbd.plist:
 - change the label com.apple.smbd to jlf.smbd (2 occurences)
 to do the first time, and to redo after each reboot:
 sudo launchctl unload /System/Library/LaunchDaemons/com.apple.smbd.plist
+sudo launchctl unload /Library/LaunchDaemons/jlf.smbd.plist
 sudo launchctl load -w /Library/LaunchDaemons/jlf.smbd.plist
