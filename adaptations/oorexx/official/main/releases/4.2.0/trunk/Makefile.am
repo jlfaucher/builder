@@ -1085,7 +1085,7 @@ install-exec-local:
 	else \
 		$(install_sh_SCRIPT) rexx.cat $(DESTDIR)$(catdir)/rexx.cat; \
 	fi
-	$(install_sh_SCRIPT) $(build_os_platform_dir)/oorexx-config $(DESTDIR)$(prefix)/bin/oorexx-config
+	$(install_sh_SCRIPT) platform/unix/oorexx-config $(DESTDIR)$(prefix)/bin/oorexx-config
 	$(install_sh_SCRIPT) $(build_extensions_rxregexp_dir)/rxregexp.cls $(DESTDIR)$(prefix)/bin/rxregexp.cls
 	$(install_sh_SCRIPT) $(build_extensions_rxftp_dir)/rxftp.cls $(DESTDIR)$(prefix)/bin/rxftp.cls
 	$(install_sh_SCRIPT) $(build_extensions_csvstream_dir)/csvStream.cls $(DESTDIR)$(prefix)/bin/csvStream.cls
@@ -1093,8 +1093,9 @@ install-exec-local:
 	$(install_sh_SCRIPT) $(build_extensions_rxsock_dir)/streamsocket.cls $(DESTDIR)$(prefix)/bin/streamsocket.cls
 	$(install_sh_SCRIPT) $(build_extensions_rxsock_dir)/mime.cls $(DESTDIR)$(prefix)/bin/mime.cls
 	$(install_sh_SCRIPT) $(build_extensions_rxsock_dir)/smtp.cls $(DESTDIR)$(prefix)/bin/smtp.cls
+# JLF : bypass an install problem when building from outside the source tree (I do that...)
 	if test "$(ORX_SYS_STR)" != "AIX" -a "$(ORX_SYS_STR)" != "MACOSX"; then \
-		$(install_sh_SCRIPT) $(rexxapi_server_unix_dir)/rxapid $(DESTDIR)$(prefix)/bin/rxapid; \
+		$(install_sh_SCRIPT) rexxapi/server/platform/unix/rxapid $(DESTDIR)$(prefix)/bin/rxapid; \
 	fi
 
 	if test "$(ORX_SYS_STR)" = "MACOSX"; then \
