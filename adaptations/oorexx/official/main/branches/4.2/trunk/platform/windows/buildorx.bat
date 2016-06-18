@@ -51,6 +51,14 @@ REM Save LIB and INCLUDE
 REM
 set RXSAVE_LIB=%LIB%
 set RXSAVE_INCLUDE=%INCLUDE%
+
+set component=%1
+set args=%2 %3 %4 %5 %6 %7 %8 %9
+echo component=%component%
+echo args=%args%
+if defined component goto %component%
+
+:rxapi
 REM
 REM *** REXXAPI 1st to build
 REM
@@ -58,103 +66,144 @@ rem REM *** Rexxapi
 rem REM Rexxapi before oryxk for ORDAPI.C
 REM
 @ECHO Building Rexxapi..
+%SRC_DRV%
 CD  %OR_REXXAPISRC%
 IF %USELOGFILE% equ 1 ( NMAKE /F REXXAPI.MAK >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F REXXAPI.MAK )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:interpreter
 REM
 REM *** Interpreter
 REM
 @ECHO Building Interpreter....
+set ICU_OPTION=
+if defined HAVE_ICU set ICU_OPTION="HAVE_ICU=%HAVE_ICU%"
+%SRC_DRV%
 CD  %OR_INTERPRETER_SRC%
-IF %USELOGFILE% equ 1 ( NMAKE /F INTERPRETER.MAK >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F INTERPRETER.MAK )
+IF %USELOGFILE% equ 1 ( NMAKE /F INTERPRETER.MAK %ICU_OPTION% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F INTERPRETER.MAK %ICU_OPTION% )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
 REM *** orexxole
 REM
 :OREXXOLE
 @ECHO Building OREXXOLE..
+%SRC_DRV%
 CD  %OR_OLEOBJECTSRC%
 IF %USELOGFILE% equ 1 ( NMAKE /F OREXXOLE.MAK >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F OREXXOLE.MAK )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rexxutil
 REM
 REM *** Rexxutil. Note that RexxUtil needs to be built before rexx.img is created.
 REM
 @ECHO Building Rexxutil..
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_EXTENSIONS%\rexxutil\platform\windows\rexxutil.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_EXTENSIONS%\rexxutil\platform\windows\rexxutil.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rexximage
 REM
-REM *** These are the commmand lanuchers, need the interpreter and rexxapi
+REM *** These are the commmand launchers, need the interpreter and rexxapi
 REM
 @ECHO Building rexximage command launcher
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_WINKERNELSRC%\rexximage.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_WINKERNELSRC%\rexximage.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rexx
 @ECHO Building rexx command launcher
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_UTILITIES%\rexx\platform\windows\rexx.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_UTILITIES%\rexx\platform\windows\rexx.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rexxhide
 @ECHO Building rexxhide command launcher
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_UTILITIES%\platform\windows\rexxhide\rexxhide.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_UTILITIES%\platform\windows\rexxhide\rexxhide.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rexxpaws
 @ECHO Building rexxpaws command launcher
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_UTILITIES%\platform\windows\rexxpaws\rexxpaws.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_UTILITIES%\platform\windows\rexxpaws\rexxpaws.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rexxc
 @ECHO Building rexxc command launcher
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_UTILITIES%\rexxc\platform\windows\rexxc.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_UTILITIES%\rexxc\platform\windows\rexxc.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rexx.img
 @ECHO Building REXX.IMG ...
+%BUILD_DRV%
 CD %OR_OUTDIR%
 IF %USELOGFILE% equ 1 ( REXXIMAGE >>%OR_ERRLOG% 2>&1 ) else ( REXXIMAGE )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rxsubcom
 @ECHO Building RXSUBCOM and RXQUEUE..
+%SRC_DRV%
 CD  %OR_UTILITIES%\rxsubcom\platform\windows
 IF %USELOGFILE% equ 1 ( NMAKE /F rxsubcom.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F rxsubcom.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
+
+:rxqueue
+%SRC_DRV%
 CD  %OR_UTILITIES%\rxqueue\platform\windows
 IF %USELOGFILE% equ 1 ( NMAKE /F rxqueue.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F rxqueue.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
-
+:rxwinsys
 @ECHO Building rxwinsys.dll
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_EXTENSIONS%\platform\windows\rxwinsys\rxwinsys.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_EXTENSIONS%\platform\windows\rxwinsys\rxwinsys.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rxsock
 REM *** rxsock
 REM
 @ECHO Building RxSock..
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_WINKERNELSRC%\rxsock.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_WINKERNELSRC%\rxsock.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
+:rxmath
 REM *** rxmath
 REM
 @ECHO Building RxMath..
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_WINKERNELSRC%\rxmath.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_WINKERNELSRC%\rxmath.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
-
+:rxregexp
 REM *** rxregexp
 REM
 @ECHO Building RXREGEXP...
+%SRC_DRV%
 CD  %OR_REGEXPSRC%
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_WINKERNELSRC%\rxregexp.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_WINKERNELSRC%\rxregexp.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
 REM *** hostemu
 REM
 :HOSTEMU
 @ECHO Building HOSTEMU..
+%SRC_DRV%
 CD  %OR_HOSTEMUSRC%
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_WINKERNELSRC%\hostemu.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_WINKERNELSRC%\hostemu.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
 
+:misc
 REM
 REM *** Miscellaneous extensions that consist of class files only.  The files
 REM     are copied to the build directory so that they are all in a central
@@ -165,30 +214,18 @@ REM
 @ECHO Building miscellaneous extensions
 IF %USELOGFILE% equ 1 ( NMAKE /F %OR_WINKERNELSRC%\misc.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F %OR_WINKERNELSRC%\misc.mak )
 if ERRORLEVEL 1 goto error
+if defined component goto arounderr
 
-
-REM *** oodialog
-REM
-@ECHO Building OODIALOG..
-CD  %OR_OODIALOGSRC%
-IF %USELOGFILE% equ 1 ( NMAKE /F OODIALOG.MAK >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F OODIALOG.MAK )
-if ERRORLEVEL 1 goto error
-
-
-ECHO Building OODIALOG classes
-CD %OR_OUTDIR%
-IF %USELOGFILE% equ 1 ( REXX %OR_OODIALOGSRC%\build_ooDialog_cls.rex >>%OR_ERRLOG% 2>&1 ) else ( REXX %OR_OODIALOGSRC%\build_ooDialog_cls.rex )
-if ERRORLEVEL 1 goto error
-
-
+%SRC_DRV%
 CD %SRC_DIR%
 
 REM @ECHO Building ORXSCRPT..
+REM %SRC_DRV%
 REM CD  %OR_ORXSCRIPTSRC%
 REM IF %USELOGFILE% equ 1 ( NMAKE /F ORXSCRPT.MAK >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F ORXSCRPT.MAK )
 REM if ERRORLEVEL 1 goto error
 
-
+:apisamples
 REM *** API samples
 REM
 @ECHO Building API Samples..
@@ -196,57 +233,118 @@ set LIB=%LIB%;%OR_OUTDIR%
 set INCLUDE=%OR_OUTDIR%;%SAMPLEPATH%;%INCLUDE%
 @ECHO Include path is %INCLUDE%
 
+%SRC_DRV%
 CD  %OR_APISAMPLESRC%\callrxnt
 IF %USELOGFILE% equ 1 ( NMAKE /F callrxnt.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F callrxnt.mak )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_APISAMPLESRC%\callrxwn
 IF %USELOGFILE% equ 1 ( NMAKE /F callrxwn.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F callrxwn.mak )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_APISAMPLESRC%\rexxexit
 IF %USELOGFILE% equ 1 ( NMAKE /F rexxexit.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F rexxexit.mak )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_APISAMPLESRC%\wpipe\wpipe1
 IF %USELOGFILE% equ 1 ( NMAKE /F rexxapi1.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F rexxapi1.mak )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_APISAMPLESRC%\wpipe\wpipe2
 IF %USELOGFILE% equ 1 ( NMAKE /F rexxapi2.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F rexxapi2.mak )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_APISAMPLESRC%\wpipe\wpipe3
 IF %USELOGFILE% equ 1 ( NMAKE /F rexxapi3.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F rexxapi3.mak )
 if ERRORLEVEL 1 goto error
 
+goto arounderr
+
+:oodialog
+REM *** oodialog
+REM
+@ECHO Building standard OODIALOG..
+%SRC_DRV%
+CD  %OR_OODIALOGSRC%
+IF %USELOGFILE% equ 1 ( NMAKE /F OODIALOG.MAK %args% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F OODIALOG.MAK %args%)
+if ERRORLEVEL 1 goto error
+
+:oodialog_classes
+ECHO Building standard OODIALOG classes
+%BUILD_DRV%
+CD %OR_OUTDIR%
+IF %USELOGFILE% equ 1 ( REXX %OR_OODIALOGSRC%\build_ooDialog_cls.rex >>%OR_ERRLOG% 2>&1 ) else ( REXX %OR_OODIALOGSRC%\build_ooDialog_cls.rex )
+if ERRORLEVEL 1 goto error
+
+:oodialog_samples
 @ECHO Building OODialog Samples..
+%SRC_DRV%
 CD  %OR_OODIALOGSAMPLES%\res
 IF %USELOGFILE% equ 1 ( NMAKE /F res.mak MACHINE=%CPU% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F res.mak MACHINE=%CPU% )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_OODIALOGSAMPLES%\controls\ListView\rc
 IF %USELOGFILE% equ 1 ( NMAKE /F res.mak MACHINE=%CPU% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F res.mak MACHINE=%CPU% )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_OODIALOGSAMPLES%\userGuide\exercises\Exercise04\Extras\DlgData\res
 IF %USELOGFILE% equ 1 ( NMAKE /F res.mak MACHINE=%CPU% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F res.mak MACHINE=%CPU% )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_OODIALOGSAMPLES%\userGuide\exercises\Exercise05\res
 IF %USELOGFILE% equ 1 ( NMAKE /F res.mak MACHINE=%CPU% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F res.mak MACHINE=%CPU% )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_OODIALOGSAMPLES%\userGuide\exercises\Exercise06\Product\res
 IF %USELOGFILE% equ 1 ( NMAKE /F res.mak MACHINE=%CPU% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F res.mak MACHINE=%CPU% )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_OODIALOGSAMPLES%\userGuide\exercises\Exercise07\Product\res
 IF %USELOGFILE% equ 1 ( NMAKE /F res.mak MACHINE=%CPU% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F res.mak MACHINE=%CPU% )
 if ERRORLEVEL 1 goto error
 
+%SRC_DRV%
 CD  %OR_OODIALOGSAMPLES%\userGuide\exercises\Exercise08\Product\res
 IF %USELOGFILE% equ 1 ( NMAKE /F res.mak MACHINE=%CPU% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F res.mak MACHINE=%CPU% )
+if ERRORLEVEL 1 goto error
+
+goto arounderr
+
+:oodialog_unicode
+:oodialogA
+REM *** oodialog
+REM
+@ECHO Building byte-char version of OODIALOG.WCHAR..
+%SRC_DRV%
+CD  %OR_OODIALOGSRCW%
+IF %USELOGFILE% equ 1 ( NMAKE /F OODIALOG.MAK "WCHAR=0" %args% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F OODIALOG.MAK "WCHAR=0" %args%)
+if ERRORLEVEL 1 goto error
+if /i "%component%" neq "oodialog_unicode" goto oodialogW_classes
+
+:oodialogW
+REM *** oodialog
+REM
+@ECHO Building wide-char version of OODIALOG.WCHAR..
+%SRC_DRV%
+CD  %OR_OODIALOGSRCW%
+IF %USELOGFILE% equ 1 ( NMAKE /F OODIALOG.MAK "WCHAR=1" %args% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F OODIALOG.MAK "WCHAR=1" %args%)
+if ERRORLEVEL 1 goto error
+
+:oodialogW_classes
+ECHO Building OODIALOG.WCHAR classes
+%BUILD_DRV%
+CD %OR_OUTDIR%
+IF %USELOGFILE% equ 1 ( REXX %OR_OODIALOGSRCW%\build_ooDialog_cls.rex >>%OR_ERRLOG% 2>&1 ) else ( REXX %OR_OODIALOGSRCW%\build_ooDialog_cls.rex )
 if ERRORLEVEL 1 goto error
 
 goto arounderr

@@ -36,27 +36,36 @@
 
 # NOTE: If for some reason there is a problem with setting the compiler version
 # in this section, simply comment out everything except the setting of the
-# proper VCPPx macro for your system.
+# proper VCPP macro for your system.
 #
 # These compiler defines allow the support of different versions of Mircrosoft's
 # Visual C++ compiler.  The build has not necessarily been tested on all of the
 # following versions, so some of the !IFDEF statements may need to be adjusted.
-# VCPP10 == Visual C++ 2010
-# VCPP9 == Visual C++ 2008
-# VCPP8 == Visual C++ 2005
-# VCPP7 == Visual C++ 2003
-# VCPP6 == Visual C++ 6.0
+# VCPP == 14 ==> Visual C++ 2015
+# VCPP == 12 ==> Visual C++ 2013
+# VCPP == 11 ==> Visual C++ 2012
+# VCPP == 10 ==> Visual C++ 2010
+# VCPP ==  9 ==> Visual C++ 2008
+# VCPP ==  8 ==> Visual C++ 2005
+# VCPP ==  7 ==> Visual C++ 2003
+# VCPP ==  6 ==> Visual C++ 6.0
 #
-!IF "$(MSVCVER)" == "10.0"
-VCPP10 = 1
+!IF "$(MSVCVER)" == "14.0"
+VCPP = 14
+!ELSEIF "$(MSVCVER)" == "12.0"
+VCPP = 12
+!ELSEIF "$(MSVCVER)" == "11.0"
+VCPP = 11
+!ELSEIF "$(MSVCVER)" == "10.0"
+VCPP = 10
 !ELSEIF "$(MSVCVER)" == "9.0"
-VCPP9 = 1
+VCPP = 9
 !ELSEIF "$(MSVCVER)" == "8.0"
-VCPP8 = 1
+VCPP = 8
 !ELSEIF "$(MSVCVER)" == "7.0"
-VCPP7 = 1
+VCPP = 7
 !ELSEIF "$(MSVCVER)" == "6.0"
-VCPP6 = 1
+VCPP = 6
 !ELSE
 !ERROR MSVCVER does not appear to be set. Check windows-build.txt for details
 !ENDIF
@@ -98,9 +107,9 @@ VER_DEF = -DORX_VER=$(ORX_MAJOR) -DORX_REL=$(ORX_MINOR) -DORX_MOD=$(ORX_MOD_LVL)
 WARNING_FLAGS = /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE
 
 # Visual C++ 6.0 chokes on /Wp64 and in Visual C++ 9.0 the flag is deprecated
-!IFDEF VCPP7
+!IF $(VCPP) == 7
 WARNING_FLAGS = /Wp64 $(WARNING_FLAGS)
-!ELSE IFDEF VCPP8
+!ELSEIF $(VCPP) == 8
 WARNING_FLAGS = /Wp64 $(WARNING_FLAGS)
 !ENDIF
 
@@ -118,30 +127,47 @@ WARNING_FLAGS = /W4 /wd4100 /wd4706 /wd4701 $(WARNING_FLAGS)
 WARNING_FLAGS = /W3 $(WARNING_FLAGS)
 !ENDIF
 
-!IFDEF VCPP10
-Z_FLAGS =
-!ELSE IFDEF VCPP9
-Z_FLAGS =
-!ELSE IFDEF VCPP8
+!IF $(VCPP) >= 8
 Z_FLAGS =
 !ELSE
 Z_FLAGS = -Zd
 !ENDIF
 
+!IF $(VCPP) >= 14
+HAVE_INTTYPES_H = /DHAVE_INTTYPES_H
+!ENDIF
+
 #
 # set up the compile flags used in addition to the $(cflags) windows sets
 #
+# JLF notes :
+# /O1 =  /Og /Os /Oy /Ob2 /Gs /GF /Gy       # smallest code in the majority of cases
+# /O2 = /Og /Oi /Ot /Oy /Ob2 /Gs /GF /Gy    # fastest code in the majority of cases
+# /Ox = /Og /Oi /Ot /Oy /Ob2                # favors execution speed over smaller size
+# The /Oy option makes using the debugger more difficult because the compiler suppresses frame pointer information.
+# Specify the /Oy- option after any other optimization compiler options (/Z7, /Zi, /ZI).
+#
+# /Gs       # Controls stack probes.
+# /MD       # Creates a multithreaded DLL using MSVCRT.lib.
+# /MDd      # Creates a debug multithreaded DLL using MSVCRTD.lib.
+# /MT       # Creates a multithreaded executable file using LIBCMT.lib.
+# /MTd      # Creates a debug multithreaded executable file using LIBCMTD.lib.
+# /Zi       # Generates complete debugging information.
+
 !IF "$(NODEBUG)" == "1"
-my_cdebug = $(Z_FLAGS) -O2 /Gr /DNDEBUG /Gs #Gs added by IH
+#JLF : better to have debug infos in release build, may help in case of crash
+#my_cdebug = $(Z_FLAGS)     -O2 /Gr /DNDEBUG               /Gs #Gs added by IH
+my_cdebug =  $(Z_FLAGS) -Zi -O2 /Gr /DNDEBUG /DEBUGTYPE:CV /Gs #Gs added by IH
 #added by IH for the NT queue pull problem
 cflags_noopt=/nologo /D:_X86_ /DWIN32 $(WARNING_FLAGS) -c /Ox /Gf /Gr /DNDEBUG /Gs /DNULL=0
 !ELSE
 my_cdebug = -Zi /Od /Gr /D_DEBUG /DEBUGTYPE:CV
+#/DCHECKOREFS /DMEMPROFILE /DVERBOSE_GC
 #added by IH for the NT queue pull problem
 cflags_noopt=/nologo /D:_X86_ /DWIN32 $(WARNING_FLAGS) -c $(my_cdebug) /DNULL=0
 !ENDIF
 
-cflags_common=/EHsc /nologo /D:_X86_ /DWIN32 $(VER_DEF) $(WARNING_FLAGS) -c $(my_cdebug) $(MK_ASM) $(RXDBG) /DNULL=0
+cflags_common=/EHsc /nologo /D:_X86_ /DWIN32 $(VER_DEF) $(WARNING_FLAGS) -c $(my_cdebug) $(MK_ASM) $(RXDBG) /DNULL=0 $(HAVE_INTTYPES_H)
 
 # ooRexx has always been using a statically linked CRT.
 !IFDEF NOCRTDLL
@@ -169,8 +195,17 @@ Tp=
 #
 # set up the Link flags used in addition to the $(cflags) windows sets
 #
+# JLF notes :
+# /opt:ref  # Eliminates functions and/or data that are never referenced
+            # If /DEBUG is specified, the default for /OPT is NOREF (otherwise, it is REF),
+            # and all functions are preserved in the image. To override this default and
+            # optimize a debugging build, specify /OPT:REF.
+            # The /OPT:REF option disables incremental linking.
+
 !IF "$(NODEBUG)" == "1"
-my_ldebug =
+#JLF : better to have debug infos in release build, may help in case of crash
+#my_ldebug =
+my_ldebug =/DEBUG -debugtype:cv /opt:ref
 !ELSE
 my_ldebug = /PROFILE /DEBUG -debugtype:cv
 !ENDIF
