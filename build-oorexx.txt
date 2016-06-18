@@ -26,6 +26,8 @@ Under MacOs, which is the main machine (host of the virtual machines):
                     trunk/
             official/                   svn sources of ooRexx
                 main/
+                    branches/
+                        4.2             next minor release to deliver
                     releases/
                         4.2.0/          last delivered version (older : 4.1.1, 4.1.0, 4.0.1, 4.0.0, 3.2.0, 3.1.2)
                             trunk/
@@ -41,6 +43,9 @@ Under MacOs, which is the main machine (host of the virtual machines):
                         trunk/          macos/clang/[debug|reldbg|release]/[32|64]/
                 official/
                     main/
+                        branches
+                            4.2/
+                                trunk/  macos/clang/[debug|reldbg|release]/[32|64]/
                         releases/
                             4.2.0/
                                 trunk/  macos/clang/[debug|reldbg|release]/[32|64]/
@@ -72,6 +77,9 @@ The build directory is put inside the VM because of bad performances when access
                         trunk/          ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
                 official/
                     main/
+                        branches
+                            4.2/
+                                trunk/  ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
                         releases/
                             4.2.0/
                                 trunk/  ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
@@ -105,6 +113,9 @@ E:\local\
                         trunk/          win/cl/[debug|reldbg|release]/[32|64]/
                 official/
                     main/
+                        branches
+                            4.2/
+                                trunk/  win/cl/[debug|reldbg|release]/[32|64]/
                         releases/
                             4.2.0/
                                 trunk/  win/cl/[debug|reldbg|release]/[32|64]/
@@ -178,43 +189,6 @@ git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
 
 
 --------------------------------------------------------------------------------
-CHANGE THAT MUST BE APPLIED
---------------------------------------------------------------------------------
-To official/main/trunk/CMakeLists.txt
-
-WITHOUT THIS CHANGE, IT'S IMPOSSIBLE TO MANAGE SEVERAL DELIVERIES IN
-DIFFERENT INSTALL DIRECTORIES (under MacOs & Linux).
-OTHER PROBLEM: UNDER MACOS, THE DETECTION OF THE LIB DIRECTORY DOES NOT WORK.
-
-Changes to apply to
-main/trunk/CMakeLists.txt
-
---- CMakeLists.txt	(revision 10943)
-+++ CMakeLists.txt	(working copy)
-@@ -190,7 +190,10 @@
-    ENDMACRO ()
-
- else ()
--   set (CMAKE_INSTALL_PREFIX /usr)
-+   if (NOT DEFINED CMAKE_INSTALL_PREFIX)
-+      set (CMAKE_INSTALL_PREFIX "/usr")
-+   endif ()
-+
-    set (catdir ${CMAKE_INSTALL_PREFIX}/bin)
-    set (INSTALL_EXECUTABLE_DIR ${CMAKE_INSTALL_PREFIX}/bin)
-    set (INSTALL_CLS_DIR ${CMAKE_INSTALL_PREFIX}/bin)
-@@ -198,6 +201,9 @@
-    set (INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-    set (INSTALL_SAMPLES_DIR ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME})
-    find_path(INSTALL_LIB_DIR libc.so PATHS ${CMAKE_INSTALL_PREFIX}/lib/* ${CMAKE_INSTALL_PREFIX}/lib64)
-+   if (${INSTALL_LIB_DIR} STREQUAL "INSTALL_LIB_DIR-NOTFOUND")
-+      set (INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
-+   endif ()
-    set (INSTALL_MAN_DIR ${CMAKE_INSTALL_PREFIX}/share/man)
- endif ()
-
-
---------------------------------------------------------------------------------
 Builder scripts
 --------------------------------------------------------------------------------
 
@@ -232,6 +206,18 @@ cd \local\rexx\oorexx
 mklink /d scripts \local\builder\scripts
 # Need also this link, because symlink not dereferenced
 mklink /d scripts.private \local\builder\scripts.private
+
+
+--------------------------------------------------------------------------------
+CHANGE THAT MUST BE APPLIED BEFORE THE FIRST BUILD
+--------------------------------------------------------------------------------
+
+See the directory builder/adaptations.
+The files in the subdirectories are either new files or existing files that have
+been adaptated for some reasons.
+You can copy manually these files or you can execute the script create_links which
+will create symbolic links (recommended to benefit of the  future updates under
+builder/adaptations). This script can be re-executed as much as you want.
 
 
 --------------------------------------------------------------------------------
@@ -267,24 +253,6 @@ cdbuild
 $builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static
 make install
 
----------------------------------------
-
-ADAPTATION FOR OLD BUILD SYSTEM
-The following files must be adapted to support a build directory outside the source directory.
-They are already adapted for executor, but not adapted for official.
-
-TODROP :
-Makefile.am
-Replace (one occurence)
-$(rexxapi_server_unix_dir)/rxapid
-by
-rexxapi/server/platform/unix/rxapid
-
-Makefile.am
-# JLF : bypass an install problem when building from outside the source tree (I do that...)
-	if test "$(ORX_SYS_STR)" != "AIX" -a "$(ORX_SYS_STR)" != "MACOSX"; then \
-		$(install_sh_SCRIPT) rexxapi/server/platform/unix/rxapid $(DESTDIR)$(prefix)/bin/rxapid; \
-	fi
 
 --------------------------------------------------------------------------------
 Windows build
@@ -318,36 +286,3 @@ cdtrunk
 makeorx_verbose %BUILD_TYPE%
 :: oodialog is not built by default
 makeorx_verbose %BUILD_TYPE% oodialog
-
----------------------------------------
-
-ADAPTATION FOR OLD BUILD SYSTEM
-The following files must be adapted to support a build directory outside the source directory.
-They are already adapted for executor, but not adapted for official.
-
-makeorx.bat :
-The executor version can be used as-is for ooRexx.
-You must copy cl_infos.cpp in trunk.
-
-orxdb.bat :
-The executor version can be used for ooRexx, but some changes must be applied :
-Search for
-    OODIALOGSRCW
-    m17n
-and remove the part in relation with this text.
-Add set OR_ORYXINCL=%OR_ORYXINCL% -I%OR_OODIALOGSRC%\
-
-lib\orxwin32.mak :
-The executor version can be used as-is for ooRexx.
-
-platform\windows\buildorx.bat :
-The executor version can be reused as-is for ooRexx.
-
-test\trunk\external\API\Makefile.windows :
-Replace
-!IF DEFINED(OOREXX_BUILD_HOME)
-by
-!IF DEFINED(BUILDER_BUILD_DIR)
-API_LIB = $(BUILDER_BUILD_DIR)\api
-API_INCLUDE = $(BUILDER_BUILD_DIR)\api
-!ELSE IF DEFINED(OOREXX_BUILD_HOME)
