@@ -190,7 +190,10 @@ if (WIN32)
    ENDMACRO ()
 
 else ()
-   set (CMAKE_INSTALL_PREFIX /usr)
+   if (NOT DEFINED CMAKE_INSTALL_PREFIX)
+      set (CMAKE_INSTALL_PREFIX "/usr")
+   endif ()
+
    set (catdir ${CMAKE_INSTALL_PREFIX}/bin)
    set (INSTALL_EXECUTABLE_DIR ${CMAKE_INSTALL_PREFIX}/bin)
    set (INSTALL_CLS_DIR ${CMAKE_INSTALL_PREFIX}/bin)
@@ -198,7 +201,11 @@ else ()
    set (INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
    set (INSTALL_SAMPLES_DIR ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME})
    find_path(INSTALL_LIB_DIR libc.so PATHS ${CMAKE_INSTALL_PREFIX}/lib/* ${CMAKE_INSTALL_PREFIX}/lib64)
+   if (${INSTALL_LIB_DIR} STREQUAL "INSTALL_LIB_DIR-NOTFOUND")
+      set (INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
+   endif ()
    set (INSTALL_MAN_DIR ${CMAKE_INSTALL_PREFIX}/share/man)
+   set (CMAKE_INSTALL_RPATH "@executable_path/../lib")
 endif ()
 
 # Set compiler and linker flags common to all build environments
