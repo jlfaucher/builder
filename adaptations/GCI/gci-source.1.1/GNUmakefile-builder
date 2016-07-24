@@ -66,7 +66,7 @@ all: $(OBJ) $(OBJ)/libgci$(DLEXT)
 
 $(OBJ)/libgci$(DLEXT): $(OBJS)
 	gcc -Wall -I. -g -shared $(LDFLAGS)	\
-	    -L$(builder_delivery_dir)/lib -lrexx -lrexxapi \
+	    -L$(builder_delivery_dir)/bin -L$(builder_delivery_dir)/lib -lrexx -lrexxapi \
 	    -fPIC	\
 	    -o $@ $^
 

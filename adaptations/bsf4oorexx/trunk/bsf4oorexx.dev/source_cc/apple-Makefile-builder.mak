@@ -23,7 +23,7 @@ INC_PATH = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin -I.
 # The path to the header files of ooRexx is declared in CPLUS_INCLUDE_PATH
 
 CFLAGS_BSF = -fPIC -DUSE_OREXX -DUNIX -DBSF4REXX_$(builder_bitness)_BIT
-LDFLAGS_BSF = -shared -dynamiclib -L$(builder_delivery_dir)/lib -lrexx -lrexxapi
+LDFLAGS_BSF = -shared -dynamiclib -L$(builder_delivery_dir)/bin -L$(builder_delivery_dir)/lib -lrexx -lrexxapi
 
 # --------------------------------------------------------
 all: $(BLD_PATH) $(BLD_PATH)/libBSF4ooRexx.dylib
