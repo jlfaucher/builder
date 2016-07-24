@@ -188,6 +188,28 @@ cd /local/rexx/oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
 
 
+# [MacOs & Linux]
+
+# Create a link to the directory incubator:
+cdexecutor5
+ln -s ../executor/incubator incubator
+
+# Create a link to the directory sandbox
+cdexecutor5
+ln -s ../executor/sandbox sandbox
+
+
+:: [Windows]
+
+:: Create a link to the directory incubator:
+cdexecutor5
+mklink /d incubator ..\executor\incubator
+
+:: Create a link to the directory sandbox
+cdexecutor5
+mklink /d sandbox ..\executor\sandbox
+
+
 --------------------------------------------------------------------------------
 Builder scripts
 --------------------------------------------------------------------------------
