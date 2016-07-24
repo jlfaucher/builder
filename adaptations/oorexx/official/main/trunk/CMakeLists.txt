@@ -53,8 +53,6 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set (CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
-
-
 #/*----------------------------------------------------------------------------*/
 #/* Project settings                                                           */
 #/*----------------------------------------------------------------------------*/
@@ -125,6 +123,14 @@ endif ()
 include_directories(BEFORE api api/${ORX_PLATFORM_DIR})
 
 
+# Rexx search path
+set (CMAKE_REXXPATH ${CMAKE_CURRENT_BINARY_DIR}/bin)
+if (ORX_REXXPATH)
+    message(STATUS "Setting REXX search path to ${ORX_REXXPATH}")
+    set (CMAKE_REXXPATH ${ORX_REXXPATH})
+endif()
+
+
 # Common install variables
    SET(CPACK_PACKAGE_VERSION_MAJOR ${ORX_MAJOR})
    SET(CPACK_PACKAGE_VERSION_MINOR ${ORX_MINOR})
@@ -189,25 +195,29 @@ if (WIN32)
      set(NSIS_COMPONENT_SHORTCUTS_Docs "${NSIS_COMPONENT_SHORTCUTS_Docs}\n!insertmacro ConfigureDocShortCut \"${name}\" \"${file}\"")
    ENDMACRO ()
 
-else ()
-   if (NOT DEFINED CMAKE_INSTALL_PREFIX)
-      set (CMAKE_INSTALL_PREFIX "/usr")
-   endif ()
-
-   set (catdir ${CMAKE_INSTALL_PREFIX}/bin)
-   set (INSTALL_EXECUTABLE_DIR ${CMAKE_INSTALL_PREFIX}/bin)
-   set (INSTALL_CLS_DIR ${CMAKE_INSTALL_PREFIX}/bin)
-   set (INSTALL_REX_DIR ${CMAKE_INSTALL_PREFIX}/bin)
-   set (INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
-   set (INSTALL_SAMPLES_DIR ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME})
-   find_path(INSTALL_LIB_DIR libc.so PATHS ${CMAKE_INSTALL_PREFIX}/lib/* ${CMAKE_INSTALL_PREFIX}/lib64)
+ else ()
+   if (APPLE )
+     set (CMAKE_INSTALL_PREFIX ~/Applications/ooRexx${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL})
+     set (INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/bin)
+     set (CMAKE_INSTALL_RPATH @executable_path)
+   else ()
+     set (CMAKE_INSTALL_PREFIX /usr)
+        find_path(INSTALL_LIB_DIR libc.so PATHS ${CMAKE_INSTALL_PREFIX}/lib ${CMAKE_INSTALL_PREFIX}/lib64)
+   # at least on Ubuntu above doesn't seem to work; use fallback:
    if (${INSTALL_LIB_DIR} STREQUAL "INSTALL_LIB_DIR-NOTFOUND")
       set (INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
    endif ()
-   set (INSTALL_MAN_DIR ${CMAKE_INSTALL_PREFIX}/share/man)
-   set (CMAKE_INSTALL_RPATH "@executable_path/../lib")
-endif ()
 
+
+   endif ()
+   set (catdir ${CMAKE_REXXPATH})
+   set (INSTALL_EXECUTABLE_DIR ${CMAKE_INSTALL_PREFIX}/bin)
+   set (INSTALL_CLS_DIR ${CMAKE_REXXPATH})
+   set (INSTALL_REX_DIR ${CMAKE_REXXPATH})
+   set (INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+   set (INSTALL_SAMPLES_DIR ${CMAKE_REXXPATH}/samples)
+   set (INSTALL_MAN_DIR ${CMAKE_INSTALL_PREFIX}/share/man)
+endif ()
 # Set compiler and linker flags common to all build environments
 include_directories(${PROJECT_BINARY_DIR})
 if (WIN32)
@@ -220,6 +230,7 @@ if (WIN32)
             /DORX_SYS_STR="${CMAKE_SYSTEM_NAME}"
             /DORX_CATDIR="${catdir}"
             /DORX_SHARED_LIBRARY_EXT="${CMAKE_SHARED_LIBRARY_SUFFIX}"
+            /DORX_REXXPATH="${CMAKE_REXXPATH}"
             /D_CRT_SECURE_NO_DEPRECATE
             /D_CRT_SECURE_NO_WARNINGS
             /D_CRT_NONSTDC_NO_DEPRECATE
@@ -240,6 +251,7 @@ else ()
             -DORX_SYS_STR="${CMAKE_SYSTEM_NAME}"
             -DORX_CATDIR="${catdir}" -D_GNU_SOURCE
             -DORX_SHARED_LIBRARY_EXT="${CMAKE_SHARED_LIBRARY_SUFFIX}"
+            -DORX_REXXPATH="${CMAKE_REXXPATH}"
             -D${ORX_SYS_STR} -DOPSYS_${ORX_SYS_STR} -DHAVE_CONFIG_H)
     set (ORX_SYSLIB_DL dl)
     set (ORX_SYSLIB_PTHREAD pthread)
@@ -947,7 +959,7 @@ if (XALAN_EXECUTABLE)
     generate_message_file(${build_messages_dir}/errnumssubcom.xml ${build_messages_dir}/errnumssubcom.xsl)
     generate_message_file(${build_messages_dir}/errnumsrexxc.xml ${build_messages_dir}/errnumsrexxc.xsl)
     generate_message_file(${build_interpreter_dir}/platform/windows/winmsgtb.rc ${build_interpreter_dir}/platform/windows/WinMessageResource.xsl)
-    generate_message_file(${build_interpreter_dir}/platform/unix/rexx.cat ${build_interpreter_dir}/platform/unix/UnixGencat.xsl)
+    generate_message_file(${build_interpreter_dir}/platform/unix/gencat.inp ${build_interpreter_dir}/platform/unix/UnixGencat.xsl)
 
     generate_class_header(PrimitiveBehaviourNames.h PrimitiveBehaviourNames.xsl)
     generate_class_header(PrimitiveBehaviours.cpp PrimitiveBehaviours.xsl)
@@ -963,7 +975,7 @@ if (XALAN_EXECUTABLE)
                        ${build_messages_dir}/errnumssubcom.xml
                        ${build_messages_dir}/errnumsrexxc.xml
                        ${build_interpreter_dir}/platform/windows/winmsgtb.rc
-                       ${build_interpreter_dir}/platform/unix/rexx.cat
+                       ${build_interpreter_dir}/platform/unix/gencat.inp
                        ${build_behaviour_dir}/PrimitiveBehaviourNames.h
                        ${build_behaviour_dir}/PrimitiveBehaviours.cpp
                        ${build_behaviour_dir}/VirtualFunctionTable.cpp
@@ -1542,7 +1554,7 @@ install(PROGRAMS ${SAMPLES_SOURCE}/usetree.rex COMPONENT Samples DESTINATION ${I
 
 if (NOT WIN32)
    add_custom_command(OUTPUT rexx.cat
-              COMMAND gencat rexx.cat ${CMAKE_CURRENT_SOURCE_DIR}/${build_messages_dir}/gencat.inp
+              COMMAND gencat rexx.cat ${CMAKE_CURRENT_SOURCE_DIR}/${build_interpreter_dir}/platform/unix/gencat.inp
               DEPENDS ${image_class_files} ${platform_rexx_img_depends}
               WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
    add_custom_target(rexx_cat ALL DEPENDS rexx.cat)
@@ -1569,7 +1581,7 @@ if (NOT WIN32)
    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${build_platform_dir}/rexx.sh DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME} PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE OWNER_READ GROUP_READ WORLD_READ)
    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${build_platform_dir}/rexx.csh DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME} PERMISSIONS OWNER_EXECUTE GROUP_EXECUTE WORLD_EXECUTE OWNER_READ GROUP_READ WORLD_READ)
    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${build_platform_dir}/rxapid.service DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME})
-
+   install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${build_platform_dir}/50-rxapid.preset DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME})
    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${build_samples_dir}/readme DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME})
 endif ()
 
@@ -1858,7 +1870,7 @@ endif ()
 if (BUILD_RPM)
    # Set up the desktop menu
    SET(ORX_DESKTOP_DIR     ${CMAKE_INSTALL_PREFIX}/share/applications)
-   SET(ORX_PIXMAPS_DIR     ${CMAKE_INSTALL_PREFIX}/share/icons)
+   SET(ORX_PIXMAPS_DIR     ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/48x48/apps)
    configure_file(${ORX_PLATFORM_DIR}/menu/rexxtry.desktop.in ${PROJECT_BINARY_DIR}/rexxtry.desktop)
    INSTALL (FILES ${PROJECT_BINARY_DIR}/rexxtry.desktop DESTINATION ${ORX_DESKTOP_DIR})
    #INSTALL (FILES ${ORX_PLATFORM_DIR}/menu/rexxtry.xml DESTINATION ${ORX_DESKTOP_DIR})
