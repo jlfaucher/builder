@@ -222,9 +222,9 @@ builder/adaptations). This script can be re-executed as much as you want.
 
 --------------------------------------------------------------------------------
 MacOs & Ubuntu build
+NEW BUILD SYSTEM (cmake)
 --------------------------------------------------------------------------------
 
-# [NEW BUILD SYSTEM (cmake)]
 # Build the 64-bit release configuration of ooRexx official/main/trunk:
 # MacOs
 cd /local/rexx/oorexx
@@ -237,8 +237,27 @@ cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
 
+# To build a rpm (Ubuntu only):
+# OS_DIST is optional on the following command. It is used to modify the install package name.
+# Note JLF : Under Linux, `uname` could be replaced by `lsb_release -i -s`-`lsb_release -r -s`
+cdbuild
+cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir -DBUILD_RPM=1 -DOS_DIST=`uname`
+make
+cpack -G RPM
 
-# [OLD BUILD SYSTEM (configure) + adaptations (see below)]
+# To build a deb (MacOs & Ubuntu):
+# OS_DIST is optional on the following command. It is used to modify the install package name.
+cdbuild
+cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir -DBUILD_DEB=1 -DOS_DIST=`uname`
+make
+cpack -G DEB
+
+
+--------------------------------------------------------------------------------
+MacOs & Ubuntu build
+OLD BUILD SYSTEM (configure) + adaptations
+--------------------------------------------------------------------------------
+
 # Build the 64-bit release configuration of executor master branch:
 # MacOs
 cd /local/rexx/oorexx
@@ -256,9 +275,9 @@ make install
 
 --------------------------------------------------------------------------------
 Windows build
+NEW BUILD SYSTEM (cmake)
 --------------------------------------------------------------------------------
 
-:: [NEW BUILD SYSTEM (cmake)]
 :: Build the 64-bit release configuration of ooRexx official/main/trunk:
 :: Local directory in the virtual machine for Windows
 e:
@@ -273,7 +292,11 @@ nmake install
 nmake nsis_template_installer
 
 
-:: [OLD BUILD SYSTEM (configure) + adaptations (see below)]
+--------------------------------------------------------------------------------
+Windows build
+OLD BUILD SYSTEM (configure) + adaptations
+--------------------------------------------------------------------------------
+
 :: Build the 64-bit release configuration of executor master branch:
 :: Local directory in the virtual machine for Windows
 e:
