@@ -79,9 +79,17 @@ else ()
 endif ()
 
 find_package(Subversion)
-if(SUBVERSION_FOUND AND IS_DIRECTORY ".svn")
-  Subversion_WC_INFO(${PROJECT_SOURCE_DIR} ORX)
-  set(ORX_BLD_LVL ${ORX_WC_REVISION})
+if(SUBVERSION_FOUND)
+  # If the specified directory is not an SVN working copy then Subversion_WC_INFO will
+  # return an error and the generation of the makefile will be aborted.
+  # So call Subversion_WC_INFO only if svn info doesn't return an error.
+  # (the test AND IS_DIRECTORY ".svn" is too restrictive : .svn is not necessarily in trunk)
+  execute_process(COMMAND ${Subversion_SVN_EXECUTABLE} info ${PROJECT_SOURCE_DIR}
+    RESULT_VARIABLE Subversion_svn_info_result)
+  if(${Subversion_svn_info_result} EQUAL 0)
+    Subversion_WC_INFO(${PROJECT_SOURCE_DIR} ORX)
+    set(ORX_BLD_LVL ${ORX_WC_REVISION})
+  endif()
 endif()
 
 
