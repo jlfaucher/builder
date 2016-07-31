@@ -238,8 +238,23 @@ See the directory builder/adaptations.
 The files in the subdirectories are either new files or existing files that have
 been adaptated for some reasons.
 You can copy manually these files or you can execute the script create_links which
-will create symbolic links (recommended to benefit of the  future updates under
+will create HARD links (recommended to benefit of the  future updates under
 builder/adaptations). This script can be re-executed as much as you want.
+
+Careful:
+SVN does not manage correctly the symbolic links.
+It does not see the file referenced by the link.
+Instead, SVN sees something like that (a text file of 1 line) whose status is "~"
+(Obstructed):
+link /local/builder/adaptations/oorexx/official/main/trunk/CMakeLists.txt
+When the corresponding file in the SVN repository is modified, then SVN compares
+this new version with the pseudo file of 1 line, and there is systematically a conflict.
+That's why the script creates HARD links.
+
+Remember:
+You can see the number of hard links with ls -l (second column):
+-rw-r--r--@  2 jlfaucher  admin  109081 31 jul 08:39 CMakeLists.txt
+-rw-r--r--   1 jlfaucher  admin     340 18 jui 09:39 CONTRIBUTORS
 
 
 --------------------------------------------------------------------------------
