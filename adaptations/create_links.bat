@@ -149,5 +149,5 @@ setlocal
 set link=%1
 set target=%2
 if exist %link% %doit% del /F /Q %link%
-%doit% mklink %link% %target%
+%doit% mklink /H %link% %target%
 endlocal
