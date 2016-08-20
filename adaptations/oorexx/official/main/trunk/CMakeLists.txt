@@ -239,7 +239,7 @@ if (WIN32)
             /DORX_BLD=${ORX_BLD_LVL}
             /DORX_VER_STR=${ORX_VER_STR}
             /DOOREXX_COPY_YEAR="${ORX_COPY_YEAR}"
-            /DORX_SYS_STR="${CMAKE_SYSTEM_NAME}"
+            /DORX_SYS_STR="${ORX_SYS_STR}"
             /DORX_CATDIR="${catdir}"
             /DORX_SHARED_LIBRARY_EXT="${CMAKE_SHARED_LIBRARY_SUFFIX}"
             /DORX_REXXPATH="${CMAKE_REXXPATH}"
@@ -260,7 +260,7 @@ if (WIN32)
 else ()
    add_definitions(-DORX_VER=${ORX_MAJOR} -DORX_REL=${ORX_MINOR} -DORX_MOD=${ORX_MOD_LVL} -DORX_FIX=0
             -DOOREXX_COPY_YEAR="${ORX_COPY_YEAR}"
-            -DORX_SYS_STR="${CMAKE_SYSTEM_NAME}"
+            -DORX_SYS_STR="${ORX_SYS_STR}"
             -DORX_CATDIR="${catdir}" -D_GNU_SOURCE
             -DORX_SHARED_LIBRARY_EXT="${CMAKE_SHARED_LIBRARY_SUFFIX}"
             -DORX_REXXPATH="${CMAKE_REXXPATH}"
@@ -409,6 +409,7 @@ set (build_extensions_rexxutil_dir ${build_extensions_dir}/rexxutil)
 set (build_extensions_rexxutil_platform_dir ${build_extensions_rexxutil_dir}/${ORX_PLATFORM_DIR})
 set (build_extensions_rxftp_dir ${build_extensions_dir}/rxftp)
 set (build_extensions_csvstream_dir ${build_extensions_dir}/csvStream)
+set (build_extensions_json_dir ${build_extensions_dir}/json)
 set (build_extensions_rxmath_dir ${build_extensions_dir}/rxmath)
 set (build_extensions_rxregexp_dir ${build_extensions_dir}/rxregexp)
 set (build_extensions_rxsock_dir ${build_extensions_dir}/rxsock)
@@ -1484,6 +1485,7 @@ endif ()
 copy_build_file(rxregexp.cls ${build_extensions_rxregexp_dir})
 copy_build_file(rxftp.cls ${build_extensions_rxftp_dir})
 copy_build_file(csvStream.cls ${build_extensions_csvstream_dir})
+copy_build_file(json.cls ${build_extensions_json_dir})
 copy_build_file(socket.cls ${build_extensions_rxsock_dir})
 copy_build_file(socket6.cls ${build_extensions_rxsock_dir})
 copy_build_file(streamsocket.cls ${build_extensions_rxsock_dir})
@@ -1497,6 +1499,7 @@ add_custom_target(class_files ALL DEPENDS
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rxregexp.cls
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rxftp.cls
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/csvStream.cls
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/json.cls
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/socket.cls
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/streamsocket.cls
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/mime.cls
@@ -1509,6 +1512,7 @@ install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rxregexp.cls COMPONENT Core DEST
 install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rxftp.cls COMPONENT Core DESTINATION ${INSTALL_CLS_DIR})
 
 install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/csvStream.cls COMPONENT Core DESTINATION ${INSTALL_CLS_DIR})
+install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/json.cls COMPONENT Core DESTINATION ${INSTALL_CLS_DIR})
 
 install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/socket.cls COMPONENT Core DESTINATION ${INSTALL_CLS_DIR})
 install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/streamsocket.cls COMPONENT Core DESTINATION ${INSTALL_CLS_DIR})
@@ -1916,12 +1920,13 @@ if (BUILD_RPM)
    endif ()
    set(CPACK_RPM_PACKAGE_LICENSE "CPL 1.0")
    set(CPACK_RPM_PACKAGE_URL "http://www.oorexx.org/")
-   set(CPACK_PACKAGE_CONTACT "wdashley@sourceforge.net")
+   set(CPACK_PACKAGE_CONTACT "sahananda@users.sf.net")
    set(CPACK_PACKAGING_INSTALL_PREXIX "${CMAKE_INSTALL_PREFIX}")
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/platform/unix/rpm_post.in ${CMAKE_CURRENT_SOURCE_DIR}/platform/unix/rpm_post)
    set(CPACK_RPM_POST_INSTALL_SCRIPT_FILE ${CMAKE_SOURCE_DIR}/platform/unix/rpm_post)
    set(CPACK_RPM_PRE_UNINSTALL_SCRIPT_FILE ${CMAKE_SOURCE_DIR}/platform/unix/rpm_preun)
-#   set(CPACK_RPM_PACKAGE_REQUIRES "csh")
+# remove 'csh'-dependency as it doesn't seem to be required
+#  set(CPACK_RPM_PACKAGE_REQUIRES "csh")
    if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "s390x")
       set(orx_install_arch "s390x")
    elseif (${INSTALL_LIB_DIR} STREQUAL ${CMAKE_INSTALL_PREFIX}/lib64)
@@ -1931,7 +1936,7 @@ if (BUILD_RPM)
    endif ()
    set(CPACK_RPM_PACKAGE_ARCHITECTURE ${orx_install_arch})
    if (DEFINED OS_DIST)
-      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${orx_install_arch}.${OS_DIST}")
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${OS_DIST}.${orx_install_arch}")
    else ()
       set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${orx_install_arch}")
    endif ()
@@ -1977,11 +1982,12 @@ if (BUILD_DEB)
    endif ()
    set(CPACK_DEBIAN_PACKAGE_SECTION "devel")
    set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "http://www.oorexx.org/")
-   set(CPACK_PACKAGE_CONTACT "wdashley@sourceforge.net")
-   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "David Ashley <wdashley@sourceforge.net>")
+   set(CPACK_PACKAGE_CONTACT "sahananda@users.sf.net")
+   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "sahananda@users.sf.net")
    set(CPACK_PACKAGING_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/platform/unix/debian/cmake/postinst.in ${CMAKE_CURRENT_SOURCE_DIR}/platform/unix/debian/cmake/postinst)
-   set(CPACK_DEBIAN_PACKAGE_DEPENDS "csh")
+# remove 'csh'-dependency as it doesn't seem to be required
+#  set(CPACK_DEBIAN_PACKAGE_DEPENDS "csh")
    # we need to copy these files so we can change the permissions
    file(COPY ${CMAKE_SOURCE_DIR}/platform/unix/debian/cmake/postinst
            DESTINATION ${CMAKE_BINARY_DIR}
@@ -2001,7 +2007,7 @@ if (BUILD_DEB)
       set(orx_install_arch "i386")
    endif ()
    if (DEFINED OS_DIST)
-      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${orx_install_arch}.${OS_DIST}")
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${OS_DIST}.${orx_install_arch}")
    else ()
       set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${orx_install_arch}")
    endif ()
@@ -2026,7 +2032,7 @@ if (BUILD_PKG)
    endif ()
    set(orx_install_arch "x86_64")
    if (DEFINED OS_DIST)
-      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${orx_install_arch}.${OS_DIST}")
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${OS_DIST}.${orx_install_arch}")
    else ()
       set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${orx_install_arch}")
    endif ()
@@ -2035,7 +2041,7 @@ if (BUILD_PKG)
    set (CPACK_PACKAGE_ICON ${ORX_PLATFORM_DIR}/oorexx.png)
    #set (CPACK_BUNDLE_ICON ${CPACK_PACKAGE_ICON})
 
-   set(CPACK_PACKAGE_CONTACT "wdashley@sourceforge.net")
+   set(CPACK_PACKAGE_CONTACT "sahananda@users.sf.net")
    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
 "Open Object Rexx is an object-oriented scripting language. The language
 is designed for both beginners and experienced Rexx programmers. It is
