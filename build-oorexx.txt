@@ -306,7 +306,7 @@ cd /local/rexx/oorexx
 cdtrunk
 ./bootstrap
 cdbuild
-$builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static
+$builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static CPPFLAGS=-DSTRONG_TYPES
 make install
 
 
