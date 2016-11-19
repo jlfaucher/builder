@@ -28,12 +28,12 @@ call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Git\bin"
 
 :: Java
 if "%builder_bitness%" == "32" (
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_45\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_45\bin\client"
-set JAVA_HOME="C:\Program Files (x86)\Java\jdk1.8.0_31"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_111\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_111\bin\client"
+set JAVA_HOME="C:\Program Files (x86)\Java\jdk1.8.0_111"
 ) else (
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_45\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_45\bin\server"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_111\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_111\bin\server"
 set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_31"
 )
 set JAVA_HOME=%JAVA_HOME:"=%
