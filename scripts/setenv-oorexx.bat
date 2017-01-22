@@ -66,8 +66,13 @@ doskey cdtests=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
 :: mklink /d ooRexxShell ..\..\executor\incubator\ooRexxShell
 :: move DocMusings DocMusings.svn
 :: mklink /d DocMusings ..\..\executor\incubator\DocMusings
+
+:: From the directory executor\incubator, reference some subdirectories in official :
+:: mklink /d ooSQLite ..\..\official\incubator\ooSQLite
+:: mklink /d regex ..\..\official\incubator\regex
+
 echo Setting environment for incubator
-set oorexx_incubator=%builder_shared_dir%\official\incubator
+set oorexx_incubator=%builder_shared_dir%\%builder_target%\incubator
 set oorexx_incubator_drv=%builder_shared_drv%
 call shellscriptlib :prepend_path PATH "%oorexx_incubator%"
 doskey cdincubator=%oorexx_incubator_drv% ^& cd %oorexx_incubator%
@@ -85,18 +90,16 @@ echo Setting environment for ooRexxShell
 call shellscriptlib :prepend_path PATH "%oorexx_incubator%\oorexxshell"
 doskey cdoorexxshell=%oorexx_incubator_drv% ^& cd %oorexx_incubator%\oorexxshell
 
-::echo Setting environment for ooSQLite
-::prepend_path PATH $oorexx_incubator/ooSQLite/bin/linux
-::prepend_path LD_LIBRARY_PATH $oorexx_incubator/ooSQLite/bin/linux
-::prepend_path DYLD_LIBRARY_PATH $oorexx_incubator/ooSQLite/bin/linux
-::prepend_path DYLD_FALLBACK_LIBRARY_PATH $oorexx_incubator/ooSQLite/bin/linux
-::alias cdoosqlite='cd $oorexx_incubator/ooSQLite'
+:: echo Setting environment for ooSQLite
+:: prepend_path PATH $oorexx_incubator/ooSQLite/bin/windows
+:: alias cdoosqlite='cd $oorexx_incubator/ooSQLite'
 
 :: Replace the directory official/sandbox/jlf by a symbolic link to executor/sandbox/jlf
 :: move jlf jlf.svn
 :: mklink /d jlf ..\..\executor\sandbox\jlf
+
 echo Setting environment for the sandbox
-set oorexx_sandbox=%builder_shared_dir%\official\sandbox
+set oorexx_sandbox=%builder_shared_dir%\%builder_target%\sandbox
 set oorexx_sandbox_drv=%builder_shared_drv%
 doskey cdsandbox=%oorexx_sandbox_drv% ^& cd %oorexx_sandbox%
 doskey cdsandboxjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandbox%\jlf
