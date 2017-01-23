@@ -78,10 +78,10 @@ call shellscriptlib :prepend_path PATH "C:\jlf\local\xalan-c"
 call shellscriptlib :prepend_path PATH "C:\MT Toolkit\bin\xmlsoft.org\bin"
 
 :: Batik
-set BATIK_ROOT=C:\jlf\Downloads\Software\Batik\batik-1.8
+set BATIK_ROOT=C:\jlf\local\Batik\batik-1.8
 
 :: Git
-call shellscriptlib :prepend_path PATH "c:\Program Files (x86)\Git\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
 
 :: Java
 if "%builder_bitness%" == "32" (
