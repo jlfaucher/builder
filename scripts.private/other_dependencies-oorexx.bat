@@ -37,6 +37,7 @@ call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_121\bin\s
 set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_111"
 )
 set JAVA_HOME=%JAVA_HOME:"=%
+call shellscriptlib :prepend_path PATH "%JAVA_HOME%\bin"
 
 :: GCI
 call shellscriptlib :prepend_path PATH "Y:\Local\rexx\GCI\gci-source.1.1\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
@@ -94,6 +95,7 @@ call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_111\bin\s
 set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_74"
 )
 set JAVA_HOME=%JAVA_HOME:"=%
+call shellscriptlib :prepend_path PATH "%JAVA_HOME%\bin"
 
 :: GCI
 call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-source.1.1\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
