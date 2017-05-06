@@ -102,9 +102,9 @@ actions()
 
     local source=$BUILDER/adaptations/bsf4oorexx/trunk/bsf4oorexx.dev/source_cc
     local target=$BSF4OOREXX/svn/trunk/bsf4oorexx.dev/source_cc
-    $action $source/Makefile-builder              $target/Makefile-builder
-    $action $source/apple-Makefile-builder.mak    $target/apple-Makefile-builder.mak
-    $action $source/lin_bsf4rexx-builder.mak      $target/lin_bsf4rexx-builder.mak
+    $action $source/Makefile-builder-windows  $target/Makefile-builder-windows
+    $action $source/Makefile-builder-macosx   $target/Makefile-builder-macosx
+    $action $source/Makefile-builder-linux    $target/Makefile-builder-linux
 
 
     ################################################################################

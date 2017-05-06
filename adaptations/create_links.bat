@@ -105,9 +105,9 @@ goto :main
 
     set target=%BUILDER%\adaptations\bsf4oorexx\trunk\bsf4oorexx.dev\source_cc
     set source=%BSF4OOREXX%\svn\trunk\bsf4oorexx.dev\source_cc
-    call :%action% %source%\Makefile-builder              %target%\Makefile-builder
-    call :%action% %source%\apple-Makefile-builder.mak    %target%\apple-Makefile-builder.mak
-    call :%action% %source%\lin_bsf4rexx-builder.mak      %target%\lin_bsf4rexx-builder.mak
+    call :%action% %source%\Makefile-builder-windows      %target%\Makefile-builder-windows
+    call :%action% %source%\Makefile-builder-macosx       %target%\Makefile-builder-macosx
+    call :%action% %source%\Makefile-builder-linux        %target%\Makefile-builder-linux
 
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
