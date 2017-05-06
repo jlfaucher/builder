@@ -16,9 +16,9 @@ help()
 
 mklink()
 {
-    source=$1
-    target=$2
-    execute=$3
+    local source=$1
+    local target=$2
+    local execute=$3
     # Symbolic links are not supported by SVN, better to create hard links
     $execute ln -f $source $target
 }
@@ -38,12 +38,12 @@ do_mklink()
 
 diff_mini()
 {
-    source=$1
-    target=$2
+    local source=$1
+    local target=$2
     if [ -e $source ]
     then
         diff $source $target > /dev/null 2>&1
-        error=$?
+        local error=$?
         if [ $error -eq 1 ]; then echo $source; fi
     fi
 }
@@ -51,12 +51,12 @@ diff_mini()
 
 diff_view()
 {
-    source=$1
-    target=$2
+    local source=$1
+    local target=$2
     if [ -e $source ]
     then
         diff $source $target > /dev/null 2>&1
-        error=$?
+        local error=$?
         if [ $error -eq 1 ]
         then
             echo $source
@@ -68,7 +68,7 @@ diff_view()
 
 actions()
 {
-    action=$1
+    local action=$1
 
     # Replace by your path (no space !)
     BUILDER=/local/builder
@@ -81,8 +81,8 @@ actions()
     # GCI/gci-source.1.1
     ################################################################################
 
-    source=$BUILDER/adaptations/GCI/gci-source.1.1
-    target=$GCI/gci-source.1.1
+    local source=$BUILDER/adaptations/GCI/gci-source.1.1
+    local target=$GCI/gci-source.1.1
     $action $source/gci-try.rexx                  $target/gci-try.rexx
     $action $source/gci.h                         $target/gci.h
     $action $source/gci_convert.linux.86_64       $target/gci_convert.linux.86_64
@@ -100,8 +100,8 @@ actions()
     # bsf4oorexx/trunk
     ################################################################################
 
-    source=$BUILDER/adaptations/bsf4oorexx/trunk/bsf4oorexx.dev/source_cc
-    target=$BSF4OOREXX/svn/trunk/bsf4oorexx.dev/source_cc
+    local source=$BUILDER/adaptations/bsf4oorexx/trunk/bsf4oorexx.dev/source_cc
+    local target=$BSF4OOREXX/svn/trunk/bsf4oorexx.dev/source_cc
     $action $source/Makefile-builder              $target/Makefile-builder
     $action $source/apple-Makefile-builder.mak    $target/apple-Makefile-builder.mak
     $action $source/lin_bsf4rexx-builder.mak      $target/lin_bsf4rexx-builder.mak
@@ -111,28 +111,28 @@ actions()
     # oorexx/official/main/branches/4.2
     ################################################################################
 
-    source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk/api/platform/windows
-    target=$OOREXX/official/main/branches/4.2/trunk/api/platform/windows
+    local source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk/api/platform/windows
+    local target=$OOREXX/official/main/branches/4.2/trunk/api/platform/windows
     $action $source/rexxapitypes.h                $target/rexxapitypes.h
 
-    source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk
-    target=$OOREXX/official/main/branches/4.2/trunk
+    local source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk
+    local target=$OOREXX/official/main/branches/4.2/trunk
     $action $source/cl_infos.cpp                  $target/cl_infos.cpp
     $action $source/Makefile.am                   $target/Makefile.am
     $action $source/makeorx_verbose.bat           $target/makeorx_verbose.bat
     $action $source/makeorx.bat                   $target/makeorx.bat
     $action $source/orxdb.bat                     $target/orxdb.bat
 
-    source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk/interpreter/platform/windows
-    target=$OOREXX/official/main/branches/4.2/trunk/interpreter/platform/windows
+    local source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk/interpreter/platform/windows
+    local target=$OOREXX/official/main/branches/4.2/trunk/interpreter/platform/windows
     $action $source/PlatformDefinitions.h         $target/PlatformDefinitions.h
 
-    source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk/lib
-    target=$OOREXX/official/main/branches/4.2/trunk/lib
+    local source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk/lib
+    local target=$OOREXX/official/main/branches/4.2/trunk/lib
     $action $source/orxwin32.mak                  $target/orxwin32.mak
 
-    source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk/platform/windows
-    target=$OOREXX/official/main/branches/4.2/trunk/platform/windows
+    local source=$BUILDER/adaptations/oorexx/official/main/branches/4.2/trunk/platform/windows
+    local target=$OOREXX/official/main/branches/4.2/trunk/platform/windows
     $action $source/buildorx.bat                  $target/buildorx.bat
 
 
@@ -140,28 +140,28 @@ actions()
     # oorexx/official/main/releases/4.2.0
     ################################################################################
 
-    source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/api/platform/windows
-    target=$OOREXX/official/main/releases/4.2.0/trunk/api/platform/windows
+    local source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/api/platform/windows
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/api/platform/windows
     $action $source/rexxapitypes.h                $target/rexxapitypes.h
 
-    source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk
-    target=$OOREXX/official/main/releases/4.2.0/trunk
+    local source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk
+    local target=$OOREXX/official/main/releases/4.2.0/trunk
     $action $source/cl_infos.cpp                  $target/cl_infos.cpp
     $action $source/Makefile.am                   $target/Makefile.am
     $action $source/makeorx_verbose.bat           $target/makeorx_verbose.bat
     $action $source/makeorx.bat                   $target/makeorx.bat
     $action $source/orxdb.bat                     $target/orxdb.bat
 
-    source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/interpreter/platform/windows
-    target=$OOREXX/official/main/releases/4.2.0/trunk/interpreter/platform/windows
+    local source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/interpreter/platform/windows
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/interpreter/platform/windows
     $action $source/PlatformDefinitions.h         $target/PlatformDefinitions.h
 
-    source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/lib
-    target=$OOREXX/official/main/releases/4.2.0/trunk/lib
+    local source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/lib
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/lib
     $action $source/orxwin32.mak                  $target/orxwin32.mak
 
-    source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/platform/windows
-    target=$OOREXX/official/main/releases/4.2.0/trunk/platform/windows
+    local source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/platform/windows
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/platform/windows
     $action $source/buildorx.bat                  $target/buildorx.bat
 
 
@@ -169,8 +169,8 @@ actions()
     # oorexx/official/main/trunk
     ################################################################################
 
-    source=$BUILDER/adaptations/oorexx/official/main/trunk
-    target=$OOREXX/official/main/trunk
+    local source=$BUILDER/adaptations/oorexx/official/main/trunk
+    local target=$OOREXX/official/main/trunk
     $action $source/CMakeLists.txt                $target/CMakeLists.txt
 
 
@@ -178,8 +178,8 @@ actions()
     # oorexx/official/test/branches/4.2.0
     ################################################################################
 
-    source=$BUILDER/adaptations/oorexx/official/test/branches/4.2.0/trunk/external/API
-    target=$OOREXX/official/test/branches/4.2.0/trunk/external/API
+    local source=$BUILDER/adaptations/oorexx/official/test/branches/4.2.0/trunk/external/API
+    local target=$OOREXX/official/test/branches/4.2.0/trunk/external/API
     $action $source/Makefile.windows              $target/Makefile.windows
 
 
@@ -187,8 +187,8 @@ actions()
     # oorexx/official/test/trunk
     ################################################################################
 
-    source=$BUILDER/adaptations/oorexx/official/test/trunk/external/API
-    target=$OOREXX/official/test/trunk/external/API
+    local source=$BUILDER/adaptations/oorexx/official/test/trunk/external/API
+    local target=$OOREXX/official/test/trunk/external/API
     $action $source/Makefile.windows              $target/Makefile.windows
 
 
