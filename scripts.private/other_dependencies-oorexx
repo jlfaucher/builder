@@ -49,13 +49,15 @@ declare_bsf4oorexx_distribution()
     export PATH
     prepend_path PATH "$BSF4OOREXX_HOME"
 
+    BSF4OOREXX_LIBRARY_PATH=$BSF4OOREXX_HOME/install/$builder_bitness
+
     # MacOs
     export DYLD_LIBRARY_PATH
-    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_HOME/install/$builder_bitness"
+    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"
 
     # Ubuntu
     export LD_LIBRARY_PATH
-    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_HOME/install/$builder_bitness"
+    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"
 }
 
 
@@ -64,34 +66,45 @@ declare_bsf4oorexx_svn()
     echo "Setting environment for bsf4oorexx svn"
     export CLASSPATH
     prepend_path CLASSPATH "$BSF4OOREXX_HOME"
-    # To avoid this error when using rexxj2.sh:
-    # [BSFManager.loadScriptingEngine()] unable to load language: rexx: java.lang.UnsatisfiedLinkError: no BSF4ooRexx in java.library.path
-    export BSF4Rexx_JavaStartupOptions
-    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
 
     # MacOs & Ubuntu
     export PATH
     prepend_path PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/bin"
 
+    BSF4OOREXX_LIBRARY_PATH=$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness
+
     # MacOs
     export DYLD_LIBRARY_PATH
-    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
+    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"
 
     # Ubuntu
     export LD_LIBRARY_PATH
-    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
+    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"
+
+    # To avoid these errors when using rexxj2.sh under MacOS:
+    # error1
+    #     [BSFManager.loadScriptingEngine()] unable to load language: rexx: java.lang.UnsatisfiedLinkError: no BSF4ooRexx in java.library.path
+    # error2
+    #     SEVERE: [BSFManager] Exception :
+    #     java.lang.UnsatisfiedLinkError: /local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib: dlopen(/local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib, 1): Library not loaded: @rpath/librexx.5.0.0.dylib
+    #     Referenced from: /local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib
+    #     Reason: image not found
+    export BSF4Rexx_JavaStartupOptions
+    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$BSF4OOREXX_LIBRARY_PATH"
 }
 
 
 declare_gci_rebuilt()
 {
+    GCI_LIBRARY_PATH=$GCI_HOME/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness
+
     # MacOs
     export DYLD_LIBRARY_PATH
-    prepend_path DYLD_LIBRARY_PATH "$GCI_HOME/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
+    prepend_path DYLD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
 
     # Ubuntu
     export LD_LIBRARY_PATH
-    prepend_path LD_LIBRARY_PATH "$GCI_HOME/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness"
+    prepend_path LD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
 }
 
 
