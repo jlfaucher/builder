@@ -69,6 +69,9 @@ exit /B 0
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :CSCFRAAH783788
 
+:: TEMPORARY workaround: "mt.exe" not found after installation of SDK 10
+set PATH=C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0\x64;%PATH%
+
 :: ooRexx build utilities
 call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\oorexx\official\build-utilities\trunk\platform\windows\bin"
 
