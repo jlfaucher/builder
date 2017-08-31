@@ -43,7 +43,9 @@ $(BLD_PATH):
 	rexx -e "call rexxscriptlib; call CreateDirectoryVerbose '$(BLD_PATH)'"
 
 $(BLD_PATH)\BSF4ooRexx.dll: $(BLD_PATH)\BSF4ooRexx.obj
-    link $(DLL_LFLAGS) $(BLD_PATH)\$(@B).obj bufferoverflowu.lib -out:$(BLD_PATH)\$(@B).dll
+    rem JLF : remove bufferoverflowu.lib, I have a link error with it :-(
+    rem link $(DLL_LFLAGS) $(BLD_PATH)\$(@B).obj bufferoverflowu.lib -out:$(BLD_PATH)\$(@B).dll
+    link $(DLL_LFLAGS) $(BLD_PATH)\$(@B).obj -out:$(BLD_PATH)\$(@B).dll
 
 $(BLD_PATH)\BSF4ooRexx.obj: BSF4ooRexx.cc
   cl $(OOREXX_CFLAGS) /Fo$(BLD_PATH)\$(@B).obj BSF4ooRexx.cc
