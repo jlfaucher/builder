@@ -28,13 +28,13 @@ call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
 
 :: Java
 if "%builder_bitness%" == "32" (
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_121\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_121\bin\client"
-set JAVA_HOME="C:\Program Files (x86)\Java\jdk1.8.0_111"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_144\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_144\bin\client"
+set JAVA_HOME="C:\Program Files (x86)\Java\jdk1.8.0_144"
 ) else (
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_121\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_121\bin\server"
-set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_111"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_144\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_144\bin\server"
+set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_144"
 )
 set JAVA_HOME=%JAVA_HOME:"=%
 call shellscriptlib :prepend_path PATH "%JAVA_HOME%\bin"
@@ -150,6 +150,9 @@ goto :eof
 :declare_bsf4oorexx_svn
 echo "Setting environment for bsf4oorexx svn"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%"
+call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\jars\janino\commons-compiler.jar"
+call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\jars\janino\janino.jar"
+
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\bin"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\source_cc\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
 goto :eof
