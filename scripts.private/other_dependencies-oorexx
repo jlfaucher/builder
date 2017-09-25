@@ -66,6 +66,8 @@ declare_bsf4oorexx_svn()
     echo "Setting environment for bsf4oorexx svn"
     export CLASSPATH
     prepend_path CLASSPATH "$BSF4OOREXX_HOME"
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME/jars/janino/commons-compiler.jar"
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME/jars/janino/janino.jar"
 
     # MacOs & Ubuntu
     export PATH
@@ -90,7 +92,7 @@ declare_bsf4oorexx_svn()
     #     Referenced from: /local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib
     #     Reason: image not found
     export BSF4Rexx_JavaStartupOptions
-    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$BSF4OOREXX_LIBRARY_PATH"
+    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$builder_delivery_dir/lib:$BSF4OOREXX_LIBRARY_PATH"
 }
 
 
