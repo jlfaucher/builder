@@ -42,7 +42,7 @@ diff_mini()
     local target=$2
     if [ -e $source ]
     then
-        diff $source $target > /dev/null 2>&1
+        diff --strip-trailing-cr $source $target > /dev/null 2>&1
         local error=$?
         if [ $error -eq 1 ]; then echo $source; fi
     fi
@@ -55,12 +55,12 @@ diff_view()
     local target=$2
     if [ -e $source ]
     then
-        diff $source $target > /dev/null 2>&1
+        diff --strip-trailing-cr $source $target > /dev/null 2>&1
         local error=$?
         if [ $error -eq 1 ]
         then
             echo $source
-            diff $source $target
+            diff --strip-trailing-cr $source $target
         fi
     fi
 }
