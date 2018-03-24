@@ -51,6 +51,9 @@ call shellscriptlib :prepend_path PATH "Z:\jlfaucher\Dropbox\software\oorexx"
 :: windiff
 call shellscriptlib :prepend_path PATH "E:\windiff"
 
+:: cmake
+call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
+
 ::set BSF4OOREXX_HOME=Y:\Local\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150825-beta\bsf4oorexx
 ::set BSF4OOREXX_JAR=bsf4ooRexx-v452-20150825-bin.jar
 ::call :declare_bsf4oorexx_distribution

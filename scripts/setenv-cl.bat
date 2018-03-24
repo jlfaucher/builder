@@ -17,6 +17,18 @@ call set compiler_option=%%%compiler%%%
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Visual Studio 2017 (internal version: 17.0)
+
+:cl_17
+if 17 GTR %CL_MAX% goto cl_14
+set cl_dir=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build
+if exist "%cl_dir%" (
+    call "%cl_dir%\vcvarsall.bat" %compiler_option%
+    if errorlevel 1 goto error
+    exit /b 0
+)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Visual Studio 2015 (internal version: 14.O, cl version 19.00 ==> _MSC_VER 1900)
 
 :cl_14
