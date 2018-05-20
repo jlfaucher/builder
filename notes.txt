@@ -57,3 +57,25 @@ to do the first time, and to redo after each reboot:
 sudo launchctl unload /System/Library/LaunchDaemons/com.apple.smbd.plist
 sudo launchctl unload /Library/LaunchDaemons/jlf.smbd.plist
 sudo launchctl load -w /Library/LaunchDaemons/jlf.smbd.plist
+
+
+--------------------------------------------------------------------------------
+Old build system: autoconf - automake
+--------------------------------------------------------------------------------
+
+https://stackoverflow.com/questions/2531827/what-are-makefile-am-and-makefile-in
+
+DEVELOPER runs these:
+
+1) autoconf - creates shippable configure script (which the installer will run to make the Makefile)
+    configure.in -> autoconf -> configure (script) <---- Note! configure.in is depreciated.
+    configure.ac -> autoconf -> configure (script) <---- Now use configure.ac / (*.ac = autoconf)
+2) automake - creates shippable Makefile.in (which configure will later read to make the Makefile)
+    Makefile.am -> automake -> Makefile.in / (*.am = automake)
+
+INSTALLER runs these:
+
+1) ./configure - creates the Makefile (from Makefile.in).
+    Makefile.in -> configure -> Makefile (*.in = input file)
+2) make - creates the application (from the Makefile just created).
+3) sudo make install - installs the application
