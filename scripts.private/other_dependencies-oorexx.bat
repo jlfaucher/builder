@@ -118,6 +118,9 @@ call shellscriptlib :prepend_path PATH "C:\jlf\local\csdiff"
 :: windiff
 call shellscriptlib :prepend_path PATH "C:\jlf\local\windiff"
 
+:: cmake
+call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
+
 ::set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150825-beta
 ::set BSF4OOREXX_JAR=bsf4ooRexx-v452-20150825-bin.jar
 ::call :declare_bsf4oorexx_distribution
