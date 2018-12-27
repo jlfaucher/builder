@@ -14,7 +14,8 @@ where
 
 For real examples, see:
 
-- [Build ooRexx][build_oorexx]
+- [Build Executor][build_executor] (instructions to build Executor from scratch)
+- [Build ooRexx][build_oorexx] (the infrastructure I use for Official trunk/releases/branches, Executor)
 - [Build Regina][build_regina]
 
 
@@ -81,5 +82,6 @@ If a script named setenv-"directory" exists in the directory of private scripts 
 
 
 [configure-smbd-to-follow-symbolic-links]: http://superuser.com/questions/555715/mac-os-x-10-8-configure-smbd-to-follow-symbolic-links "Configure smbd to follow symbolic links"
-[build_oorexx]: https://github.com/jlfaucher/builder/blob/master/build-oorexx.txt "Build ooRexx"
-[build_regina]: https://github.com/jlfaucher/builder/blob/master/build-regina.txt "Build Regina"
+[build_executor]: build-executor.txt "Build Executor"
+[build_oorexx]: build-oorexx.txt "Build ooRexx"
+[build_regina]: build-regina.txt "Build Regina"

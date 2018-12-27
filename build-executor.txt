@@ -1,0 +1,55 @@
+This file is a subset of build-oorexx.txt, limited to the build of executor.
+
+
+# MacOs
+mkdir oorexx
+cd oorexx
+git clone https://github.com/jlfaucher/builder.git
+ln -s builder/scripts .
+git clone https://github.com/jlfaucher/executor.git
+mkdir -p build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/build
+. scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+cdtrunk
+./bootstrap
+cdbuild
+$builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static CPPFLAGS=-DSTRONG_TYPES
+make install
+
+
+# Ubuntu
+mkdir oorexx
+cd oorexx
+git clone https://github.com/jlfaucher/builder.git
+ln -s builder/scripts .
+git clone https://github.com/jlfaucher/executor.git
+mkdir -p build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/build
+. scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
+cdtrunk
+./bootstrap
+cdbuild
+$builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static CPPFLAGS=-DSTRONG_TYPES
+make install
+
+
+# Windows
+# Prerequisite
+# - No space in the path to the current directory.
+# - Visual Studio 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+# - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+# - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
+# - Install xalan-c: https://xalan.apache.org/xalan-c/
+# - Adapt scripts.private\other_dependencies-oorexx.bat to your COMPUTERNAME:
+#     - add killer.exe in PATH.
+#     - add NSIS in PATH.
+#     - add xalan-c in PATH.
+mkdir oorexx
+cd oorexx
+git clone https://github.com/jlfaucher/builder.git
+mklink /d scripts builder\scripts
+mklink /d scripts.private builder\scripts.private
+git clone https://github.com/jlfaucher/executor.git
+mkdir build\executor.master\sandbox\jlf\trunk\win\cl\release\64
+call scripts\setenv build\executor.master\sandbox\jlf\trunk\win\cl\release\64
+cdtrunk
+makeorx_verbose %BUILD_TYPE%
+makeorx_verbose %BUILD_TYPE% oodialog_unicode
