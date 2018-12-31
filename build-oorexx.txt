@@ -327,6 +327,14 @@ Windows build
 NEW BUILD SYSTEM (cmake)
 --------------------------------------------------------------------------------
 
+# Prerequisite
+# - No space in the path to the current directory.
+# - Visual Studio 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+# - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+# - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
+# - Install xalan-c: https://xalan.apache.org/xalan-c/
+
+
 :: Build the 64-bit release configuration of ooRexx official/main/trunk:
 :: Local directory in the virtual machine for Windows
 e:
@@ -346,6 +354,18 @@ Windows build
 OLD BUILD SYSTEM (configure) + adaptations
 --------------------------------------------------------------------------------
 
+# Prerequisite
+# - No space in the path to the current directory.
+# - Visual Studio 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+# - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+# - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
+# - Install xalan-c: https://xalan.apache.org/xalan-c/
+# - Adapt scripts.private\other_dependencies-oorexx.bat to your COMPUTERNAME:
+#     - add killer.exe in PATH.
+#     - add NSIS in PATH.
+#     - add xalan-c in PATH.
+
+
 :: Build the 64-bit release configuration of executor master branch:
 :: Local directory in the virtual machine for Windows
 e:
@@ -356,5 +376,5 @@ cd \local\rexx\oorexx
 call scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64
 cdtrunk
 makeorx_verbose %BUILD_TYPE%
-:: oodialog is not built by default
-makeorx_verbose %BUILD_TYPE% oodialog
+:: oodialog is not built by default.
+makeorx_verbose %BUILD_TYPE% oodialog_unicode
