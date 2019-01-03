@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# 2019 jan 02 after upgrade to High Sierra and installation of Xcode 10.1
+# Xcode 10.1 doesn't support stdlibc++ anymore
+# https://github.com/MDAnalysis/mdanalysis/issues/2144
+# ld: library not found for -lstdc++
+export MACOSX_DEPLOYMENT_TARGET=10.9
+export CXXFLAGS="-stdlib=libc++ -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET $CXXFLAGS"
+export LDFLAGS="-stdlib=libc++ -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET $LDFLAGS"
+
+# REMEMBER
+# cmake has a cache in the build directory, where the value of the environment variable MACOSX_DEPLOYMENT_TARGET is stored.
+# This cache CMakeCache.txt must be deleted otherwise the new value is not taken into account.
