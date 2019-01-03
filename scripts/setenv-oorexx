@@ -102,8 +102,8 @@ alias cdtransformxml='cd $oorexx_transformxml'
 prepend_path PATH "$oorexx_docmusings"
 
 echo "Setting environment for ooRexxShell"
-prepend_path PATH "$oorexx_incubator/oorexxshell"
-alias cdoorexxshell='cd $oorexx_incubator/oorexxshell'
+prepend_path PATH "$oorexx_incubator/ooRexxShell"
+alias cdoorexxshell='cd $oorexx_incubator/ooRexxShell'
 
 # echo "Setting environment for ooSQLite"
 # prepend_path PATH "$oorexx_incubator/ooSQLite/bin/linux"
