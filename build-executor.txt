@@ -9,10 +9,8 @@ ln -s builder/scripts .
 git clone https://github.com/jlfaucher/executor.git
 mkdir -p build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/build
 . scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
-cdtrunk
-./bootstrap
 cdbuild
-$builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static CPPFLAGS=-DSTRONG_TYPES
+cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
 
 
@@ -24,10 +22,8 @@ ln -s builder/scripts .
 git clone https://github.com/jlfaucher/executor.git
 mkdir -p build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/build
 . scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
-cdtrunk
-./bootstrap
 cdbuild
-$builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static CPPFLAGS=-DSTRONG_TYPES
+cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
 
 
@@ -50,6 +46,6 @@ mklink /d scripts.private builder\scripts.private
 git clone https://github.com/jlfaucher/executor.git
 mkdir build\executor.master\sandbox\jlf\trunk\win\cl\release\64
 call scripts\setenv build\executor.master\sandbox\jlf\trunk\win\cl\release\64
-cdtrunk
-makeorx_verbose %BUILD_TYPE%
-makeorx_verbose %BUILD_TYPE% oodialog_unicode
+cdbuild
+cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% %builder_src_dir%
+nmake install

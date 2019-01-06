@@ -180,6 +180,7 @@ mklink /d DocMusings ..\..\executor\incubator\DocMusings
 move jlf jlf.svn
 mklink /d jlf ..\..\executor\sandbox\jlf
 
+
 --------------------------------------------------------------------------------
 Getting the git sources of executor5
 --------------------------------------------------------------------------------
@@ -272,16 +273,19 @@ You can see the number of hard links with ls -l (second column):
 --------------------------------------------------------------------------------
 MacOs & Ubuntu build
 NEW BUILD SYSTEM (cmake)
+Build the 64-bit release configuration of official ooRexx trunk, executor master branch
 --------------------------------------------------------------------------------
 
-# Build the 64-bit release configuration of ooRexx official/main/trunk:
-# MacOs
 cd /local/rexx/oorexx
+# MacOs ooRexx
 . scripts/setenv build/official/main/trunk/macos/clang/release/64/
-# Ubuntu
-cd /local/rexx/oorexx
+# MacOs executor
+. scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+# Ubuntu ooRexx
 . scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/
-# MacOs & Ubuntu
+# Ubuntu executor
+. scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+# Now build...
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
@@ -305,26 +309,27 @@ cpack -G DEB
 --------------------------------------------------------------------------------
 MacOs & Ubuntu build
 OLD BUILD SYSTEM (configure) + adaptations
+Build the 64-bit release configuration of official ooRexx release 4.2.0
 --------------------------------------------------------------------------------
 
-# Build the 64-bit release configuration of executor master branch:
 # MacOs
 cd /local/rexx/oorexx
-. scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+. scripts/setenv build/official/main/releases/4.2.0/trunk/macos/clang/release/
 # Ubuntu
 cd /local/rexx/oorexx
-. scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
+. scripts/setenv /local/rexxlocal/oorexx/build/official/main/releases/4.2.0/trunk/macos/clang/release/
 # MacOs & Ubuntu
 cdtrunk
 ./bootstrap
 cdbuild
-$builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static CPPFLAGS=-DSTRONG_TYPES
+$builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static
 make install
 
 
 --------------------------------------------------------------------------------
 Windows build
 NEW BUILD SYSTEM (cmake)
+Build the 64-bit release configuration of official ooRexx trunk, executor master branch
 --------------------------------------------------------------------------------
 
 # Prerequisite
@@ -335,14 +340,17 @@ NEW BUILD SYSTEM (cmake)
 # - Install xalan-c: https://xalan.apache.org/xalan-c/
 
 
-:: Build the 64-bit release configuration of ooRexx official/main/trunk:
 :: Local directory in the virtual machine for Windows
 e:
 cd \local\rexxlocal\oorexx
 :: Shared directory
 y:
 cd \local\rexx\oorexx
-call scripts\setenv e:build\official\main\trunk\win\cl\release\64
+:: ooRexx
+call scripts\setenv e:build\official\main\trunk\win\cl\release\64\
+:: executor
+call scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64\
+:: Now build...
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %builder_src_dir%
 nmake install
@@ -351,7 +359,8 @@ nmake nsis_template_installer
 
 --------------------------------------------------------------------------------
 Windows build
-OLD BUILD SYSTEM (configure) + adaptations
+OLD BUILD SYSTEM (makeorx) + adaptations
+Build the 64-bit release configuration of official ooRexx release 4.2.0
 --------------------------------------------------------------------------------
 
 # Prerequisite
@@ -366,14 +375,13 @@ OLD BUILD SYSTEM (configure) + adaptations
 #     - add xalan-c in PATH.
 
 
-:: Build the 64-bit release configuration of executor master branch:
 :: Local directory in the virtual machine for Windows
 e:
 cd \local\rexxlocal\oorexx
 :: Shared directory
 y:
 cd \local\rexx\oorexx
-call scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64
+call scripts\setenv e:build\official\main\releases\4.2.0\trunk\macos\clang\release\
 cdtrunk
 makeorx_verbose %BUILD_TYPE%
 :: oodialog is not built by default.
