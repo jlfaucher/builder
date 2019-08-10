@@ -284,7 +284,7 @@ cd /local/rexx/oorexx
 # Ubuntu ooRexx
 . scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/
 # Ubuntu executor
-. scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+. scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
 # Now build...
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
