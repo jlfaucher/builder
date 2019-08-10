@@ -4,6 +4,8 @@ if defined echo echo %echo%
 
 if "%COMPUTERNAME%" == "WIN-7RUPB0TOBV1" goto :WIN-7RUPB0TOBV1
 if "%COMPUTERNAME%" == "CSCFRAAH783788" goto :CSCFRAAH783788
+if "%COMPUTERNAME%" == "FRPC0A8CN6" goto :FRPC0A8CN6
+
 
 exit /B 0
 
@@ -71,6 +73,7 @@ exit /B 0
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :CSCFRAAH783788
+:FRPC0A8CN6
 
 :: TEMPORARY workaround: "mt.exe" not found after installation of SDK 10
 set PATH=C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0\x64;%PATH%
@@ -92,12 +95,12 @@ call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
 
 :: Java
 if "%builder_bitness%" == "32" (
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_191\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_191\bin\client"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_201\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_201\bin\client"
 set JAVA_HOME="C:\Program Files (x86)\Java\jdk1.8.0_74"
 ) else (
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_191\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_191\bin\server"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_201\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_201\bin\server"
 set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_74"
 )
 set JAVA_HOME=%JAVA_HOME:"=%
@@ -110,7 +113,7 @@ call shellscriptlib :prepend_path PATH "C:\jlf\local\rexx\GCI\gci-source.1.1\bui
 call shellscriptlib :prepend_path PATH "C:\jlf\local\nsis\Nsis_longStrings"
 
 :: Dropbox scripts
-call shellscriptlib :prepend_path PATH "C:\Users\JFaucher.EMEA\Dropbox\software\oorexx"
+call shellscriptlib :prepend_path PATH "C:\Users\JFaucher.EAD\Dropbox\software\oorexx"
 
 :: csdiff
 call shellscriptlib :prepend_path PATH "C:\jlf\local\csdiff"
