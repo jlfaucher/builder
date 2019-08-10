@@ -38,6 +38,7 @@ set drv=%drive%
 :: Iterate over each directory, from deeper to root.
 :: If a script named setenv-<dir>.bat exists in the directory of scripts then execute it.
 :: If a script named setenv-<dir>.bat exists in the directory of private scripts then execute it.
+:: If a script named setenv-<dir>.bat exists in the current directory then execute it.
 :loop
 if "%dir%"=="%drv%" goto :endloop
 call shellscriptlib :basename "%dir%"
@@ -53,6 +54,15 @@ if exist "%script%" (
 )
 :: Private script
 set script="%builder_scripts_dir%.private\setenv-%current%.bat"
+set script=%script:&=^&%
+set script=%script:"=%
+if exist "%script%" (
+    echo Running "%script%"
+    call "%script%" "%dir%"
+    if errorlevel 1 exit /b 1
+)
+:: Script in current dirrectory
+set script="%dir%\setenv-%current%.bat"
 set script=%script:&=^&%
 set script=%script:"=%
 if exist "%script%" (
