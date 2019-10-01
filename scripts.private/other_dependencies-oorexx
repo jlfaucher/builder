@@ -112,12 +112,12 @@ declare_gci_rebuilt()
 
 declare_java
 
-#export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/BSF4ooRexx_install_v452-20150820-beta/bsf4oorexx
-#export BSF4OOREXX_JAR=bsf4ooRexx-v452-20150820-bin.jar
-#declare_bsf4oorexx_distribution
+export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20190830-beta/bsf4oorexx
+export BSF4OOREXX_JAR=bsf4ooRexx-v641-20190830-bin.jar
+declare_bsf4oorexx_distribution
 
-export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
-declare_bsf4oorexx_svn
+#export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
+#declare_bsf4oorexx_svn
 
 echo "Setting environment for GCI"
 export GCI_HOME=/Local/rexx/GCI/gci-source.1.1

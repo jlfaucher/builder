@@ -95,12 +95,12 @@ call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
 
 :: Java
 if "%builder_bitness%" == "32" (
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_201\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_201\bin\client"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_221\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_221\bin\client"
 set JAVA_HOME="C:\Program Files (x86)\Java\jdk1.8.0_74"
 ) else (
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_201\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_201\bin\server"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_221\bin"
+call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_221\bin\server"
 set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_74"
 )
 set JAVA_HOME=%JAVA_HOME:"=%
@@ -124,12 +124,12 @@ call shellscriptlib :prepend_path PATH "C:\jlf\local\windiff"
 :: cmake
 call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
 
-::set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150825-beta
-::set BSF4OOREXX_JAR=bsf4ooRexx-v452-20150825-bin.jar
-::call :declare_bsf4oorexx_distribution
+set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20190830-beta\bsf4oorexx
+set BSF4OOREXX_JAR=bsf4ooRexx-v641-20190830-bin.jar
+call :declare_bsf4oorexx_distribution
 
-set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\svn\trunk
-call :declare_bsf4oorexx_svn
+::set BSF4OOREXX_HOME=C:\jlf\local\rexx\bsf4oorexx\svn\trunk
+::call :declare_bsf4oorexx_svn
 
 :: unix-like
 call shellscriptlib :prepend_path PATH "C:\MT Toolkit\bin\cygwin\bin"
