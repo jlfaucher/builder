@@ -1453,7 +1453,7 @@ if (WIN32)
    set (OOD_MOD_LVL 4)
    set (OOD_BLD_LVL 11506)
    set (OOD_VER_STR "4.2.4.11506")
-   set (OOD_COPY_YEAR "2005-2018")
+   set (OOD_COPY_YEAR "2005-2019")
    set (OOD_SVN_REVSION 11506)
 
    #################### ooshapes.dll ################
@@ -2185,7 +2185,7 @@ if (BUILD_RPM)
 
    set(CPACK_RPM_PACKAGE_VERSION ${ORX_VERSION})
    set(CPACK_RPM_PACKAGE_RELEASE ${CPACK_PACKAGE_RELEASE})
-   set(CPACK_RPM_PACKAGE_LICENSE "CPL 1.0")
+   set(CPACK_RPM_PACKAGE_LICENSE "CPL")
    set(CPACK_RPM_PACKAGE_URL "http://www.oorexx.org/")
    set(CPACK_PACKAGE_CONTACT "sahananda@users.sf.net")
    set(CPACK_RPM_PACKAGE_GROUP "Development/Languages")
