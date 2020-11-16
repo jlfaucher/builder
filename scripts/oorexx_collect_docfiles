@@ -54,6 +54,7 @@ collect_into()
     copy_file ./rexxextensions/tmp/en-US/pdf/rexxextensions.pdf
     copy_file ./rexxgtk/tmp/en-US/pdf/rexxgtk.pdf
     copy_file ./rexxpg/tmp/en-US/pdf/rexxpg.pdf
+    copy_file ./rexxapi/tmp/en-US/pdf/rexxapi.pdf
     copy_file ./rexxref/tmp/en-US/pdf/rexxref.pdf
     copy_file ./rxftp/tmp/en-US/pdf/rxftp.pdf
     copy_file ./rxmath/tmp/en-US/pdf/rxmath.pdf
@@ -72,6 +73,7 @@ collect_into()
     copy_file ./rexxextensions/tmp/en-US/html/rexxextensions-html.zip
     copy_file ./rexxgtk/tmp/en-US/html/rexxgtk-html.zip
     copy_file ./rexxpg/tmp/en-US/html/rexxpg-html.zip
+    copy_file ./rexxapi/tmp/en-US/html/rexxapi-html.zip
     copy_file ./rexxref/tmp/en-US/html/rexxref-html.zip
     copy_file ./rxftp/tmp/en-US/html/rxftp-html.zip
     copy_file ./rxmath/tmp/en-US/html/rxmath-html.zip

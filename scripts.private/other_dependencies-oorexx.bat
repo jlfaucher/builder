@@ -13,42 +13,51 @@ exit /B 0
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :WIN-7RUPB0TOBV1
 
+:: Shared folders parameterized in VMWARE:
+:: name "jlfaucher" folder "jlfaucher" Read & Write
+:: name "local" folder "local" Read & Write
+
+:: X: is the shared folders root of VMWARE mounted with:  if not exist x: net use x: "\\vmware-host\Shared Folders"
+:: Y: is the SMBD folder                   mounted with:  if not exist y: net use Y: \\jlfaucher.local\Local1
+:: Y: seems faster than X:
+set HOST_DRIVE=Y:
+
 :: ooRexx build utilities
-call shellscriptlib :prepend_path PATH "y:\Local\rexx\oorexx\official\build-utilities\trunk\platform\windows\bin"
+call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\local\rexx\oorexx\official\build-utilities\trunk\platform\windows\bin"
 
 :: Xalan-C
 call shellscriptlib :prepend_path PATH "E:\xalan-c"
 
 :: xsltproc
-call shellscriptlib :prepend_path PATH "Y:\Local\XmlToolSet\xsltproc\bin"
+call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\local\XmlToolSet\xsltproc\bin"
 
 :: Batik
-set BATIK_ROOT=Y:\Local\XmlToolSet\batik-1.7
+set BATIK_ROOT=%HOST_DRIVE%\local\XmlToolSet\batik-1.13
+set BATIK_RASTERIZER_JAR=%BATIK_ROOT%\batik-rasterizer-1.13.jar
 
 :: Git
 call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
 
 :: Java
 if "%builder_bitness%" == "32" (
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_144\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files (x86)\Java\jre1.8.0_144\bin\client"
-set JAVA_HOME="C:\Program Files (x86)\Java\jdk1.8.0_144"
+set JAVA_HOME="32 bits no more available"
+set JAVA_JVM_FOLDER=
 ) else (
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_144\bin"
-call shellscriptlib :prepend_path PATH "C:\Program Files\Java\jre1.8.0_144\bin\server"
-set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_144"
+set JAVA_HOME="C:\Program Files\Java\jdk-14.0.1"
+set JAVA_JVM_FOLDER=bin\server
 )
 set JAVA_HOME=%JAVA_HOME:"=%
 call shellscriptlib :prepend_path PATH "%JAVA_HOME%\bin"
+call shellscriptlib :prepend_path PATH "%JAVA_HOME%\%JAVA_JVM_FOLDER%"
 
 :: GCI
-call shellscriptlib :prepend_path PATH "Y:\Local\rexx\GCI\gci-source.1.1\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
+call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\local\rexx\GCI\gci-source.1.1\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
 
 :: NSIS
 call shellscriptlib :prepend_path PATH "E:\nsis\Nsis_longStrings"
 
 :: Dropbox scripts
-call shellscriptlib :prepend_path PATH "Z:\jlfaucher\Dropbox\software\oorexx"
+call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\jlfaucher\Dropbox\software\oorexx"
 
 :: windiff
 call shellscriptlib :prepend_path PATH "E:\windiff"
@@ -56,12 +65,12 @@ call shellscriptlib :prepend_path PATH "E:\windiff"
 :: cmake
 call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
 
-::set BSF4OOREXX_HOME=Y:\Local\local\rexx\bsf4oorexx\BSF4ooRexx_install_v452-20150825-beta\bsf4oorexx
-::set BSF4OOREXX_JAR=bsf4ooRexx-v452-20150825-bin.jar
-::call :declare_bsf4oorexx_distribution
+set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20200130-beta\bsf4oorexx
+set BSF4OOREXX_JAR=bsf4ooRexx-v641-20200130-bin.jar
+call :declare_bsf4oorexx_distribution
 
-set BSF4OOREXX_HOME=Y:\Local\local\rexx\bsf4oorexx\svn\trunk
-call :declare_bsf4oorexx_svn
+::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\svn\trunk
+::call :declare_bsf4oorexx_svn
 
 :: On this system, the default console code page is the OEMCP (437)
 :: That brings troubles when you execute a command which contains letters with accent.
@@ -89,6 +98,7 @@ call shellscriptlib :prepend_path PATH "C:\MT Toolkit\bin\xmlsoft.org\bin"
 
 :: Batik
 set BATIK_ROOT=C:\jlf\local\Batik\batik-1.8
+set BATIK_RASTERIZER_JAR=%BATIK_ROOT%\batik-rasterizer.jar
 
 :: Git
 call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
@@ -153,7 +163,8 @@ exit /B 0
 echo "Setting environment for bsf4oorexx"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\%BSF4OOREXX_JAR%"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%"
-call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\install\%builder_bitness%"
+:: For the next line to work, you must copy manually the dynamic librairies from install/lib to 32 and 64, and rename them by removing the end of the filename
+call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\%builder_bitness%"
 goto :eof
 
 :declare_bsf4oorexx_svn
@@ -161,7 +172,6 @@ echo "Setting environment for bsf4oorexx svn"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\jars\janino\commons-compiler.jar"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\jars\janino\janino.jar"
-
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\bin"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\source_cc\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
 goto :eof

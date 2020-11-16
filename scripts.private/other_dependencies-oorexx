@@ -128,3 +128,7 @@ echo "Setting environment for ICU"
 
 echo "Setting environment for Dropbox scripts"
 prepend_path PATH "~/Dropbox/software/oorexx"
+
+echo "Setting environment for BATIK"
+export BATIK_ROOT=/local/XmlToolSet/batik-1.13
+export BATIK_RASTERIZER_JAR=$BATIK_ROOT/batik-rasterizer-1.13.jar

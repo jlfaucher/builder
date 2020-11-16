@@ -17,7 +17,19 @@ call set compiler_option=%%%compiler%%%
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Visual Studio 2017 (internal version: 17.0)
+:: Visual Studio 2019 (internal version: 16.0, cl version 19.20)
+
+:cl_19
+if 19 GTR %CL_MAX% goto cl_17
+set cl_dir=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build
+if exist "%cl_dir%" (
+    call "%cl_dir%\vcvarsall.bat" %compiler_option%
+    if errorlevel 1 goto error
+    exit /b 0
+)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Visual Studio 2017 (internal version: 15.0, cl version 19.10)
 
 :cl_17
 if 17 GTR %CL_MAX% goto cl_14
@@ -78,6 +90,23 @@ exit /B 1
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 DOCUMENTATION
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+https://en.wikipedia.org/wiki/Microsoft_Visual_Studio
+Product name                Codename        Internal version    cl.exe version      Release date
+Visual Studio	            N/A	            4.0	                0.0	                April 1995
+Visual Studio 97            Boston          5.0                 0.0                 February 1997
+Visual Studio 6.0           Aspen           6.0                 0.0                 June 1998
+Visual Studio .NET (2002)   Rainier         7.0                 0.0                 February 13, 2002
+Visual Studio .NET 2003     Everett         7.1                 13.0                April 24, 2003
+Visual Studio 2005          Whidbey         8.0                 14.00               November 7, 2005
+Visual Studio 2008          Orcas           9.0                 15.00               November 19, 2007
+Visual Studio 2010          Dev10/Rosario   10.0                16.00               April 12, 2010
+Visual Studio 2012          Dev11           11.0                17.00               September 12, 2012
+Visual Studio 2013          Dev12           12.0                18.00               October 17, 2013
+Visual Studio 2015          Dev14           14.0                19.00               July 20, 2015
+Visual Studio 2017          Dev15           15.0                19.10               March 07, 2017
+Visual Studio 2019          Dev16           16.0                19.20               April 02, 2019
+
 
 Visual Studio includes
 32-bit, x86-hosted, native and cross compilers for x86, x64, and ARM targets.
