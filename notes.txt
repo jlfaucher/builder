@@ -2,6 +2,11 @@
 Technical infos
 --------------------------------------------------------------------------------
 
+MacOs File sharing (System preferences/sharing/File sharing)
+The name jlfaucher.local is defined in this screen.
+Can be modified (button Edit under the field Computer name)
+
+
 MacOs NFS share
 ---------------
 MacOs /etc/exports
@@ -27,7 +32,8 @@ net use
  Y:        \\jlfaucher.local\Local1         Microsoft Windows Network
  Z:        \\vmware-host\Shared Folders     VMware Shared Folders
 
-Must mount Local1 (exported by MacOs) which contains this symbolic link to have
+Must mount Local1 (exported by MacOs - System preferences/sharing/File sharing)
+which contains this symbolic link to have
 the directory 'Local' under Y:
 /Local
 /Local1
