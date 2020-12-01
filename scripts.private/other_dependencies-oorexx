@@ -21,9 +21,8 @@ declare_java()
         if test -z "$JAVA_HOME"
         then
             # Ubuntu
-            JAVA_HOME=`readlink -f \`which java\``  # .../jre/bin/java
-            JAVA_HOME=`dirname "$JAVA_HOME"`        # .../jre/bin
-            JAVA_HOME=`dirname "$JAVA_HOME"`        # .../jre
+            JAVA_HOME=`readlink -f \`which java\``  # .../bin/java
+            JAVA_HOME=`dirname "$JAVA_HOME"`        # .../bin
             JAVA_HOME=`dirname "$JAVA_HOME"`        # ...
         fi
         export JAVA_HOME
@@ -32,11 +31,29 @@ declare_java()
     # you need to have a JDK installed, let INCLUDE point to its include directories to be able to resolve "jni.h"
     prepend_path INCLUDE "$JAVA_HOME/include"
     # libjvm.dylib
+    local JVMDIR
     # MacOs
-    prepend_path DYLD_LIBRARY_PATH "$JAVA_HOME/jre/lib/server"
+    JVMDIR="$JAVA_HOME/jre/lib/server"; if test -f "$JVMDIR/libjvm.dylib"; then prepend_path DYLD_LIBRARY_PATH "$JVMDIR"; fi    # legacy
+    JVMDIR="$JAVA_HOME/lib/server"; if test -f "JVMDIR/libjvm.dylib"; then prepend_path DYLD_LIBRARY_PATH "JVMDIR"; fi          # from openjdk 11
     # Ubuntu
-    prepend_path LD_LIBRARY_PATH "$JAVA_HOME/jre/lib/amd64/server"
+    JVMDIR="$JAVA_HOME/jre/lib/amd64/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi   # legacy
+    JVMDIR="$JAVA_HOME/lib/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi             # from openjdk 11
 }
+# MacOs 10.13
+# JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
+
+# Ubuntu 16
+# JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+#   ./lib/amd64/server/libjvm.so
+# echo $LD_LIBRARY_PATH
+#   /Local/rexx/GCI/gci-source.1.1/build/ubuntu/gcc/release/64
+#   /local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20201022-beta/bsf4oorexx/install/64
+#   /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server
+#   /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/delivery/lib
+
+# Ubuntu 20
+# JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+#   ./lib/server/libjvm.so
 
 
 declare_bsf4oorexx_distribution()
@@ -112,8 +129,8 @@ declare_gci_rebuilt()
 
 declare_java
 
-export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20191126-beta/bsf4oorexx
-export BSF4OOREXX_JAR=bsf4ooRexx-v641-20191126-bin.jar
+export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20201022-beta/bsf4oorexx
+export BSF4OOREXX_JAR=bsf4ooRexx-v641-20201022-bin.jar
 declare_bsf4oorexx_distribution
 
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk

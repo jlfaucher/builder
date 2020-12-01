@@ -151,7 +151,7 @@ fi
 # Export some settings, to be used from child process
 ################################################################################
 
-# See ~/.bashrc which calls : . ~/.bash_env
+# See ~/.bashrc which defines : $BASH_ENV and $ENV = . ~/.bash_env
 # See ~/.bash_env which calls : . "$rexx_environment"
 # See oorexxshell.rex which expands the aliases : bash -O expand_aliases
 

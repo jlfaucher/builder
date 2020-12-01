@@ -65,8 +65,8 @@ call shellscriptlib :prepend_path PATH "E:\windiff"
 :: cmake
 call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
 
-set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20200130-beta\bsf4oorexx
-set BSF4OOREXX_JAR=bsf4ooRexx-v641-20200130-bin.jar
+set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20201022-beta\bsf4oorexx
+set BSF4OOREXX_JAR=bsf4ooRexx-v641-20201022-bin.jar
 call :declare_bsf4oorexx_distribution
 
 ::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\svn\trunk
@@ -163,8 +163,8 @@ exit /B 0
 echo "Setting environment for bsf4oorexx"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\%BSF4OOREXX_JAR%"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%"
-:: For the next line to work, you must copy manually the dynamic librairies from install/lib to 32 and 64, and rename them by removing the end of the filename
-call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\%builder_bitness%"
+:: For the next line to work, you must copy manually the dynamic librairies from install/lib to install\32 and install\64, and rename them by removing the end of the filename
+call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\install\%builder_bitness%"
 goto :eof
 
 :declare_bsf4oorexx_svn
