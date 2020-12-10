@@ -151,9 +151,14 @@ fi
 # Export some settings, to be used from child process
 ################################################################################
 
-# See ~/.bashrc which defines : $BASH_ENV and $ENV = . ~/.bash_env
-# See ~/.bash_env which calls : . "$rexx_environment"
-# See oorexxshell.rex which expands the aliases : bash -O expand_aliases
+# See ~/.profile which defines $ENV = . ~/.bash_env ($BASH_ENV no longer defined)
+# See ~/.bashrc which calls ~/.bash_env
+# See ~/.bash_env which calls : . "$REXX_ENVIRONMENT"
+# See oorexxshell.rex which executes bash and sh in interactive mode, to have the aliases
 
-export rexx_environment=$builder_config_dir/rexx_environment
-alias > "$rexx_environment"
+export REXX_ENVIRONMENT=$builder_config_dir/rexx_environment
+alias > "$REXX_ENVIRONMENT"
+
+# Because of MacOs SIP, I have to redeclare these variables if I want bsf4ooRexx working.
+echo "export LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
+echo "export DYLD_LIBRARY_PATH=`echo $DYLD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
