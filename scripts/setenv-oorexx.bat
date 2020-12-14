@@ -117,6 +117,10 @@ doskey cdmutablebuffer=%oorexx_samples_drv% ^& cd %oorexx_samples%\mutablebuffer
 doskey cdrgfutil2=%oorexx_samples_drv% ^& cd %oorexx_samples%\rgf_util2
 doskey cdtrace=%oorexx_samples_drv% ^& cd %oorexx_samples%\trace
 
+set oorexx_demos=%oorexx_sandbox%\jlf\demos
+set oorexx_demos_drv=%oorexx_sandbox_drv%
+doskey cddemos=%oorexx_demos_drv% ^& cd %oorexx_demos%
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Other dependencies (like NSIS, BSF4ooRexx)
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -132,6 +132,9 @@ alias cdmutablebuffer='cd $oorexx_samples/mutablebuffer'
 alias cdrgfutil2='cd $oorexx_samples/rgf_util2'
 alias cdtrace='cd $oorexx_samples/trace'
 
+export oorexx_demos=$oorexx_sandbox/jlf/demos
+alias cddemos='cd $oorexx_demos'
+
 ################################################################################
 # Other dependencies (like bsf4oorexx)
 ################################################################################
