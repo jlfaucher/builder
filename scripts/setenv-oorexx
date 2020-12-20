@@ -44,6 +44,8 @@ alias cddocs='cd $oorexx_doc_dir'
 # PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u: \w\a\]$PS1"
 # By assigning this value to PS1, which does not overwrite the title, I can see *my* title :
 # PS1='\w\$ '
+# Ubuntu 20 : I have PROMPT_COMMAND=__vte_prompt_command, and that overwrites the title.
+# Unset this variable if you have no title.
 echo -n -e "\033]0;ooRexx $builder_target $builder_branch $builder_src_relative_path $builder_config $builder_bitness\007"
 
 export PATH
