@@ -155,6 +155,18 @@ goto :main
     call :%action% %source%\makeorx.bat                   %target%\makeorx.bat
     call :%action% %source%\orxdb.bat                     %target%\orxdb.bat
 
+    set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\api
+    set source=%OOREXX%\official\main\releases\4.2.0\trunk\api
+    call :%action% %source%\oorexxapi.h                   %target%\oorexxapi.h
+
+    :: set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
+    :: set source%$OOREXX%\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
+    :: call :%action% $source\rexxutil.cpp                    %target%\rexxutil.cpp
+
+    set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\interpreter\api
+    set source=%OOREXX%\official\main\releases\4.2.0\trunk\interpreter\api
+    call :%action% %source%\ThreadContextStubs.cpp        %target%\ThreadContextStubs.cpp
+
     set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\interpreter\platform\windows
     set source=%OOREXX%\official\main\releases\4.2.0\trunk\interpreter\platform\windows
     call :%action% %source%\PlatformDefinitions.h         %target%\PlatformDefinitions.h

@@ -152,6 +152,18 @@ actions()
     $action $source/makeorx.bat                   $target/makeorx.bat
     $action $source/orxdb.bat                     $target/orxdb.bat
 
+    local source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/api
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/api
+    $action $source/oorexxapi.h                   $target/oorexxapi.h
+
+    local source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/extensions/rexxutil/platform/unix
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/extensions/rexxutil/platform/unix
+    $action $source/rexxutil.cpp                  $target/rexxutil.cpp
+
+    local source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/interpreter/api
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/interpreter/api
+    $action $source/ThreadContextStubs.cpp        $target/ThreadContextStubs.cpp
+
     local source=$BUILDER/adaptations/oorexx/official/main/releases/4.2.0/trunk/interpreter/platform/windows
     local target=$OOREXX/official/main/releases/4.2.0/trunk/interpreter/platform/windows
     $action $source/PlatformDefinitions.h         $target/PlatformDefinitions.h

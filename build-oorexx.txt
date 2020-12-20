@@ -314,14 +314,15 @@ Build the 64-bit release configuration of official ooRexx release 4.2.0
 
 # MacOs
 cd /local/rexx/oorexx
-. scripts/setenv build/official/main/releases/4.2.0/trunk/macos/clang/release/
+. scripts/setenv build/official/main/releases/4.2.0/trunk/macos/clang/release/64
 # Ubuntu
 cd /local/rexx/oorexx
-. scripts/setenv /local/rexxlocal/oorexx/build/official/main/releases/4.2.0/trunk/macos/clang/release/
+. scripts/setenv /local/rexxlocal/oorexx/build/official/main/releases/4.2.0/trunk/ubuntu/gcc/release/64
 # MacOs & Ubuntu
 cdtrunk
 ./bootstrap
 cdbuild
+ln -s $builder_src_dir/oorexx.ver      # must do that otherwise not found
 $builder_src_dir/configure --prefix=$builder_delivery_dir --disable-static
 make install
 
@@ -381,7 +382,7 @@ cd \local\rexxlocal\oorexx
 :: Shared directory
 y:
 cd \local\rexx\oorexx
-call scripts\setenv e:build\official\main\releases\4.2.0\trunk\macos\clang\release\
+call scripts\setenv e:build\official\main\releases\4.2.0\trunk\win\cl\release\64
 cdtrunk
 makeorx_verbose %BUILD_TYPE%
 :: oodialog is not built by default.
