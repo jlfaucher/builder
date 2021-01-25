@@ -2,26 +2,28 @@ This file is a subset of build-oorexx.txt, limited to the build of executor.
 
 
 # MacOs
+mkdir rexx
+cd rexx
+git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
-git clone https://github.com/jlfaucher/builder.git
-ln -s builder/scripts .
 git clone https://github.com/jlfaucher/executor.git
 mkdir -p build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/build
-. scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
 
 
 # Ubuntu
+mkdir rexx
+cd rexx
+git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
-git clone https://github.com/jlfaucher/builder.git
-ln -s builder/scripts .
 git clone https://github.com/jlfaucher/executor.git
 mkdir -p build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/build
-. scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
@@ -30,22 +32,50 @@ make install
 # Windows
 # Prerequisite
 # - No space in the path to the current directory.
-# - Visual Studio 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+# - Visual Studio 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
 # - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
-# - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
-# - Install xalan-c: https://xalan.apache.org/xalan-c/
-# - Adapt scripts.private\other_dependencies-oorexx.bat to your COMPUTERNAME:
-#     - add killer.exe in PATH.
-#     - add NSIS in PATH.
-#     - add xalan-c in PATH.
+mkdir rexx
+cd rexx
+git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
-git clone https://github.com/jlfaucher/builder.git
-mklink /d scripts builder\scripts
-mklink /d scripts.private builder\scripts.private
 git clone https://github.com/jlfaucher/executor.git
 mkdir build\executor.master\sandbox\jlf\trunk\win\cl\release\64
-call scripts\setenv build\executor.master\sandbox\jlf\trunk\win\cl\release\64
+call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\win\cl\release\64
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% %builder_src_dir%
 nmake install
+#
+# Optional: if you want colors in ooRexxShell, build GCI.
+cd rexx
+mkdir GCI
+cd GCI
+copy ..\builder\adaptations\GCI\rexxsaa.h
+mkdir gci-source.1.1
+cd gci-source.1.1
+# Get the file gci-source.1.1.zip from https://sourceforge.net/projects/rexx-gci/files/rexx-gci/Version 1.1/
+# Unzip here
+# Nextline: Confirm all overwritings
+copy ..\..\builder\adaptations\GCI\gci-source.1.1\*.*
+nmake /f Makefile-builder.vc configure
+nmake /f Makefile-builder.vc
+
+
+# Optional for all platforms : install BSF4ooRexx
+cd rexx
+mkdir bsf4oorexx
+cd bsf4oorexx
+mkdir
+# Adjust the following lines by using the lost recent version. Currently, only beta versions are available.
+# Get the file BSF4ooRexx_install_v641-20201217-beta.zip from https://sourceforge.net/projects/bsf4oorexx/files/beta/20200928/
+# Unzip in BSF4ooRexx_install_v641-20201217-beta
+cd BSF4ooRexx_install_v641-20201217-beta
+cd bsf4oorexx
+cd install
+mkdir 64
+copy lib\BSF4ooRexx.dll-64-amd64     64\BSF4ooRexx.dll
+cp lib/libBSF4ooRexx.dylib-64-x86_64 64/libBSF4ooRexx.dylib
+cp lib/libBSF4ooRexx.so-64-amd64     64/libBSF4ooRexx.so
+# Adjust the private scripts in builder to reference the right BSF4ooRexx:
+# - builder\scripts.private\other_dependencies-oorexx.bat
+# - builder/scripts.private/other_dependencies-oorexx
