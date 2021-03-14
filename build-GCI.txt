@@ -1,0 +1,23 @@
+--------------------------------------------------------------------------------
+Build GCI
+--------------------------------------------------------------------------------
+
+mkdir rexx
+cd rexx
+mkdir GCI
+cd GCI
+copy ..\builder\adaptations\GCI\rexxsaa.h
+mkdir gci-source.1.1
+cd gci-source.1.1
+# Get the file gci-source.1.1.zip from https://sourceforge.net/projects/rexx-gci/files/rexx-gci/Version 1.1/
+# Unzip here
+# Nextline: Confirm all overwritings
+copy ..\..\builder\adaptations\GCI\gci-source.1.1\*.*
+
+# MacOs & Ubuntu
+make -f GNUmakefile-builder configure
+make -f GNUmakefile-builder
+
+# Windows
+nmake /f Makefile-builder.vc configure
+nmake /f Makefile-builder.vc

@@ -1,0 +1,28 @@
+--------------------------------------------------------------------------------
+# Optional for all platforms : install BSF4ooRexx
+--------------------------------------------------------------------------------
+
+This is not the standard installation procedure.
+It's a "no install" procedure:
+- 3 files to copy & rename
+- 2 scripts to update
+- ZERO impact on your system
+
+mkdir rexx
+cd rexx
+mkdir bsf4oorexx
+cd bsf4oorexx
+mkdir
+# Adjust the following lines by using the most recent version. Currently, only beta versions are available.
+# Get the file BSF4ooRexx_install_v641-20201217-beta.zip from https://sourceforge.net/projects/bsf4oorexx/files/beta/20200928/
+# Unzip in BSF4ooRexx_install_v641-20201217-beta
+cd BSF4ooRexx_install_v641-20201217-beta
+cd bsf4oorexx
+cd install
+mkdir 64
+copy lib\BSF4ooRexx.dll-64-amd64     64\BSF4ooRexx.dll
+cp lib/libBSF4ooRexx.dylib-64-x86_64 64/libBSF4ooRexx.dylib
+cp lib/libBSF4ooRexx.so-64-amd64     64/libBSF4ooRexx.so
+# Adjust the private scripts in builder to reference the right BSF4ooRexx:
+# - builder\scripts.private\other_dependencies-oorexx.bat
+# - builder/scripts.private/other_dependencies-oorexx

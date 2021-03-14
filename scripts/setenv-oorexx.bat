@@ -62,10 +62,11 @@ doskey cdtest=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
 doskey cdtests=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
 
 :: From the directory official\incubator, reference some subdirectories in executor :
-:: move ooRexxShell ooRexxShell.svn
-:: mklink /d ooRexxShell ..\..\executor\incubator\ooRexxShell
-:: move DocMusings DocMusings.svn
-:: mklink /d DocMusings ..\..\executor\incubator\DocMusings
+:: mklink /d ooRexxShell-executor ..\..\executor\incubator\ooRexxShell
+:: mklink /d DocMusings-executor ..\..\executor\incubator\DocMusings
+
+:: From the directory official/sandbox, reference some subdirectories in executor :
+:: mklink /d jlf-executor ..\..\executor\sandbox\jlf
 
 :: From the directory executor\incubator, reference some subdirectories in official :
 :: mklink /d ooSQLite ..\..\official\incubator\ooSQLite
@@ -78,7 +79,8 @@ call shellscriptlib :prepend_path PATH "%oorexx_incubator%"
 doskey cdincubator=%oorexx_incubator_drv% ^& cd %oorexx_incubator%
 
 echo Setting environment for DocMusings
-set oorexx_docmusings=%oorexx_incubator%\docmusings
+set oorexx_docmusings=%oorexx_incubator%\docmusings-executor
+if not exist "%oorexx_docmusings%" set oorexx_docmusings=%oorexx_incubator%\docmusings
 set oorexx_docmusings_drv=%oorexx_incubator_drv%
 doskey cddocmusings=%oorexx_docmusings_drv% ^& cd %oorexx_docmusings%
 set oorexx_transformxml=%oorexx_docmusings%\transformxml
@@ -87,25 +89,25 @@ doskey cdtransformxml=%oorexx_transformxml_drv% ^& cd %oorexx_transformxml%
 call shellscriptlib :prepend_path PATH "%oorexx_docmusings%"
 
 echo Setting environment for ooRexxShell
-call shellscriptlib :prepend_path PATH "%oorexx_incubator%\oorexxshell"
-doskey cdoorexxshell=%oorexx_incubator_drv% ^& cd %oorexx_incubator%\oorexxshell
+set oorexx_oorexxshell=%oorexx_incubator%/ooRexxShell-executor
+if not exist "%oorexx_oorexxshell%" set oorexx_oorexxshell=%oorexx_incubator%/ooRexxShell
+call shellscriptlib :prepend_path PATH "%oorexx_oorexxshell%"
+doskey cdoorexxshell=%oorexx_incubator_drv% ^& cd %oorexx_oorexxshell%
 
 :: echo Setting environment for ooSQLite
 :: prepend_path PATH $oorexx_incubator/ooSQLite/bin/windows
 :: alias cdoosqlite='cd $oorexx_incubator/ooSQLite'
 
-:: Replace the directory official/sandbox/jlf by a symbolic link to executor/sandbox/jlf
-:: move jlf jlf.svn
-:: mklink /d jlf ..\..\executor\sandbox\jlf
-
 echo Setting environment for the sandbox
 set oorexx_sandbox=%builder_shared_dir%\%builder_target%\sandbox
-set oorexx_sandbox_drv=%builder_shared_drv%
 doskey cdsandbox=%oorexx_sandbox_drv% ^& cd %oorexx_sandbox%
-doskey cdsandboxjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandbox%\jlf
+set oorexx_sandbox_drv=%builder_shared_drv%
+set oorexx_sandboxjlf=%oorexx_sandbox%\jlf-executor
+if not exist "%oorexx_sandboxjlf%" set oorexx_sandboxjlf=%oorexx_sandbox%\jlf
+doskey cdsandboxjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandboxjlf%
 
 echo Setting environment for the sandbox samples
-set oorexx_samples=%oorexx_sandbox%\jlf\samples
+set oorexx_samples=%oorexx_sandboxjlf%\samples
 set oorexx_samples_drv=%oorexx_sandbox_drv%
 call shellscriptlib :prepend_path PATH "%oorexx_samples%"
 doskey cdsamples=%oorexx_samples_drv% ^& cd %oorexx_samples%
@@ -117,7 +119,7 @@ doskey cdmutablebuffer=%oorexx_samples_drv% ^& cd %oorexx_samples%\mutablebuffer
 doskey cdrgfutil2=%oorexx_samples_drv% ^& cd %oorexx_samples%\rgf_util2
 doskey cdtrace=%oorexx_samples_drv% ^& cd %oorexx_samples%\trace
 
-set oorexx_demos=%oorexx_sandbox%\jlf\demos
+set oorexx_demos=%oorexx_sandboxjlf%\demos
 set oorexx_demos_drv=%oorexx_sandbox_drv%
 doskey cddemos=%oorexx_demos_drv% ^& cd %oorexx_demos%
 
@@ -135,7 +137,7 @@ if exist "%other_dependencies%" (
 )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Compatibility with old build system (oorexx <= 4.2, executor)
+:: Compatibility with old build system (oorexx <= 4.2)
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :: Old build system : rexximage must be in the path during the build.
