@@ -49,14 +49,6 @@ export C_INCLUDE_PATH
 export CPLUS_INCLUDE_PATH
 export LIBRARY_PATH
 
-# add to front of path
-prepend_path()
-{
-  if eval test -z "\"\$$1\"" || ! eval test -z "\"\${$1##*:$2:*}\"" -o -z "\"\${$1%%*:$2}\"" -o -z "\"\${$1##$2:*}\"" -o -z "\"\${$1##$2}\"" ; then
-    eval "$1=$2:\$$1"
-  fi
-}
-
 prepend_path PATH "$builder_shared_dir/scripts"
 
 echo "Setting environment for building with GNU Cobol"
