@@ -1,11 +1,11 @@
 #/*----------------------------------------------------------------------------*/
 #/*                                                                            */
-#/* Copyright (c) 2014-2020 Rexx Language Association. All rights reserved.    */
+#/* Copyright (c) 2014-2021 Rexx Language Association. All rights reserved.    */
 #/*                                                                            */
 #/* This program and the accompanying materials are made available under       */
 #/* the terms of the Common Public License v1.0 which accompanies this         */
 #/* distribution. A copy is also available at the following address:           */
-#/* http://www.oorexx.org/license.html                                         */
+#/* https://www.oorexx.org/license.html                                        */
 #/*                                                                            */
 #/* Redistribution and use in source and binary forms, with or                 */
 #/* without modification, are permitted provided that the following            */
@@ -45,7 +45,7 @@ if (APPLE)
     cmake_minimum_required (VERSION 3.12)
 else()
 #for other platforms
-    cmake_minimum_required (VERSION 2.8)
+    cmake_minimum_required (VERSION 2.8.12)
 endif()
 cmake_policy(VERSION 2.8...3.3)
 include(CheckIncludeFile)
@@ -54,6 +54,7 @@ include(CheckFunctionExists)
 include(CheckSymbolExists)
 include(CheckCSourceCompiles)
 include(CheckStructHasMember)
+include(GNUInstallDirs)
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
@@ -122,19 +123,9 @@ endif()
 find_package(Subversion)
 if(SUBVERSION_FOUND)
   set(ORX_WC_REVISION 0)
-  # If the specified directory is not an SVN working copy then Subversion_WC_INFO will
-  # return an error and the generation of the makefile will be aborted.
-  # So call Subversion_WC_INFO only if svn info doesn't return an error.
-  # (the test AND IS_DIRECTORY ".svn" is too restrictive : .svn is not necessarily in trunk)
-  execute_process(COMMAND ${Subversion_SVN_EXECUTABLE} info ${PROJECT_SOURCE_DIR}
-    RESULT_VARIABLE Subversion_svn_info_result)
-  if(${Subversion_svn_info_result} EQUAL 0)
-    Subversion_WC_INFO(${PROJECT_SOURCE_DIR} ORX)
-    set(ORX_BLD_LVL ${ORX_WC_REVISION})
-  endif()
+  Subversion_WC_INFO(${PROJECT_SOURCE_DIR} ORX IGNORE_SVN_FAILURE)
+  set(ORX_BLD_LVL ${ORX_WC_REVISION})
 endif()
-
-
 message(STATUS "SVN Revision Number is ${ORX_BLD_LVL}")
 
 if (WIN32)
@@ -250,7 +241,6 @@ if (WIN32)
 
  else ()
 
-# ------------->
    # 2019-01-08, as per Enrico Sorichetti's advice about applying the RPATH settings for maximum flexibility
    # do not skip the full RPATH for the build tree
    SET( CMAKE_SKIP_BUILD_RPATH  FALSE)
@@ -268,29 +258,16 @@ if (WIN32)
    # add the automatically determined parts of the RPATH
    # which point to directories outside the build tree to the install RPATH
    SET( CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-# <------------
 
-   # if the user didn't specify a CMAKE_INSTALL_PREFIX
-   # we override the CMake default of /usr/local, instead using:
-   # * $HOME/Applications/ooRexxV on macOS
-   # * /usr on other Unix-like systems
-   if (APPLE)
-     set (CMAKE_MACOSX_RPATH TRUE) # remove warning Policy CMP0042 is not set
-     if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-       set (CMAKE_INSTALL_PREFIX $ENV{HOME}/Applications/ooRexx${ORX_MAJOR}
-         CACHE PATH "Default install path" FORCE)
-     endif()
+   # if the user didn't specify a CMAKE_INSTALL_PREFIX we override the CMake
+   # default on Apple Darwin to $HOME/Applications/ooRexx5
+   if (APPLE AND CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+     set (CMAKE_INSTALL_PREFIX $ENV{HOME}/Applications/ooRexx${ORX_MAJOR}
+       CACHE PATH "Default install path" FORCE)
      set (INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
-   else ()
-     if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-       set (CMAKE_INSTALL_PREFIX /usr CACHE PATH "Default install path" FORCE)
-     endif()
-     find_path(INSTALL_LIB_DIR libc.so PATHS ${CMAKE_INSTALL_PREFIX}/lib ${CMAKE_INSTALL_PREFIX}/lib64)
-     # at least on Ubuntu above doesn't seem to work; use fallback:
-     if (${INSTALL_LIB_DIR} STREQUAL "INSTALL_LIB_DIR-NOTFOUND")
-       set (INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
-     endif ()
-   endif ()
+   else()
+     set (INSTALL_LIB_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+   endif()
    message(STATUS "CMAKE_INSTALL_PREFIX is ${CMAKE_INSTALL_PREFIX}")
    message(STATUS "INSTALL_LIB_DIR is ${INSTALL_LIB_DIR}")
 
@@ -490,11 +467,11 @@ if (NOT WIN32)
   endif ()
 endif ()
 set (PACKAGE ${PROJECT_NAME})
-set (PACKAGE_BUGREPORT "http://sourceforge.net/projects/oorexx/")
+set (PACKAGE_BUGREPORT "https://sourceforge.net/projects/oorexx/")
 set (PACKAGE_NAME ${PROJECT_NAME})
 set (PACKAGE_STRING ${PROJECT_NAME})
 set (PACKAGE_TARNAME "ooRexx.tar")
-set (PACKAGE_URL "http://www.oorexx.org/")
+set (PACKAGE_URL "https://www.oorexx.org/")
 set (PACKAGE_VERSION ${ORX_VER_STR})
 set (VERSION ${ORX_VER_STR})
 set (STDC_HEADERS 1)
@@ -1046,6 +1023,15 @@ macro (copy_build_file name source)
        DEPENDS ${source}/${name}
        )
 endmacro (copy_build_file)
+
+# handy macro for copying files from the source into the build samples directory.
+macro (copy_samples_file name source)
+    ADD_CUSTOM_COMMAND(
+       OUTPUT ${CMAKE_SAMPLES_OUTPUT_DIRECTORY}/${name}
+       COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/${source}/${name} ${CMAKE_SAMPLES_OUTPUT_DIRECTORY}/${name}
+       DEPENDS ${source}/${name}
+       )
+endmacro (copy_samples_file)
 
 # handy macro for configuring files from the source into the build directory.
 macro (configure_build_file name source)
@@ -1688,17 +1674,23 @@ endif ()
 #################### misc files ##########################
 
 # These artifacts apply to all platforms
-# For the .cls class files, we copy these to the build directory so that the build has a full
-# working copy of the class files for testing/development purposes
-copy_build_file(rxregexp.cls ${build_extensions_rxregexp_dir})
-copy_build_file(rxftp.cls ${build_extensions_rxftp_dir})
-copy_build_file(csvStream.cls ${build_extensions_csvstream_dir})
-copy_build_file(json.cls ${build_extensions_json_dir})
-copy_build_file(dateparser.cls ${build_extensions_dateparser_dir})
-copy_build_file(socket.cls ${build_extensions_rxsock_dir})
+# We copy the .cls class files to the build directory so that the build has a
+# full working copy of the class files for testing/development purposes
+copy_build_file(rxregexp.cls     ${build_extensions_rxregexp_dir})
+copy_build_file(rxftp.cls        ${build_extensions_rxftp_dir})
+copy_build_file(csvStream.cls    ${build_extensions_csvstream_dir})
+copy_build_file(json.cls         ${build_extensions_json_dir})
+copy_build_file(dateparser.cls   ${build_extensions_dateparser_dir})
+copy_build_file(socket.cls       ${build_extensions_rxsock_dir})
 copy_build_file(streamsocket.cls ${build_extensions_rxsock_dir})
-copy_build_file(mime.cls ${build_extensions_rxsock_dir})
-copy_build_file(smtp.cls ${build_extensions_rxsock_dir})
+copy_build_file(mime.cls         ${build_extensions_rxsock_dir})
+copy_build_file(smtp.cls         ${build_extensions_rxsock_dir})
+copy_samples_file(complex.cls       ${build_samples_dir})
+copy_samples_file(pipe.cls          ${build_samples_dir})
+copy_samples_file(semcls.cls        ${build_samples_dir})
+copy_samples_file(singleton.cls     ${build_samples_dir})
+copy_samples_file(treeDirectory.cls ${build_samples_dir})
+copy_samples_file(jabberwocky.txt   ${build_samples_dir})
 
 # the shebang line needs adjusting in the .rex files, so we need to
 # do this based on the build target, sorted here alphabetically
@@ -1747,6 +1739,14 @@ add_custom_target(class_files ALL DEPENDS
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/mime.cls
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/smtp.cls
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dateparser.cls
+
+    ${CMAKE_SAMPLES_OUTPUT_DIRECTORY}/complex.cls
+    ${CMAKE_SAMPLES_OUTPUT_DIRECTORY}/pipe.cls
+    ${CMAKE_SAMPLES_OUTPUT_DIRECTORY}/semcls.cls
+    ${CMAKE_SAMPLES_OUTPUT_DIRECTORY}/singleton.cls
+    ${CMAKE_SAMPLES_OUTPUT_DIRECTORY}/treeDirectory.cls
+    ${CMAKE_SAMPLES_OUTPUT_DIRECTORY}/jabberwocky.txt
+
     ${CMAKE_SAMPLES_OUTPUT_DIRECTORY}/rexxtry.rex)
 
 install(FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rxregexp.cls COMPONENT Core DESTINATION ${INSTALL_CLS_DIR})
@@ -1866,7 +1866,7 @@ if (WIN32 AND DOC_SOURCE_DIR)
    set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "Open Object Rexx")
    # ask for a modify the pack dialg
    set(CPACK_NSIS_INSTALLED_ICON_NAME "rexx.exe,0")
-   set(CPACK_NSIS_URL_INFO_ABOUT "http://www.oorexx.org")
+   set(CPACK_NSIS_URL_INFO_ABOUT "https://www.oorexx.org")
    set(CPACK_NSIS_MUI_ICON ${CMAKE_CURRENT_SOURCE_DIR}/${build_platform_dir}/rexx.ico)
    set(CPACK_NSIS_MUI_UNIICON ${CMAKE_CURRENT_SOURCE_DIR}/${build_platform_dir}/install/uninstall.ico)
 
@@ -2160,7 +2160,7 @@ if (BUILD_RPM)
    set(CPACK_RPM_PACKAGE_VERSION ${ORX_VERSION})
    set(CPACK_RPM_PACKAGE_RELEASE ${CPACK_PACKAGE_RELEASE})
    set(CPACK_RPM_PACKAGE_LICENSE "CPL")
-   set(CPACK_RPM_PACKAGE_URL "http://www.oorexx.org/")
+   set(CPACK_RPM_PACKAGE_URL "https://www.oorexx.org/")
    set(CPACK_PACKAGE_CONTACT "sahananda@users.sf.net")
    set(CPACK_RPM_PACKAGE_GROUP "Development/Languages")
    set(CPACK_RPM_PACKAGE_VENDOR "Rexx Language Association")
@@ -2169,18 +2169,11 @@ if (BUILD_RPM)
 #  set(CPACK_RPM_PACKAGE_REQUIRES "csh")
    set(CPACK_RPM_PACKAGE_SUMMARY "Open Object Rexx is an object-oriented scripting language.")
 
-   if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "s390x")
-      set(orx_install_arch "s390x")
-   elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64") # fix by using same logic as for BUILD_DEB
-      set(orx_install_arch "x86_64")
-   else ()
-      set(orx_install_arch "i386")
-   endif ()
-   set(CPACK_RPM_PACKAGE_ARCHITECTURE ${orx_install_arch})
+   set(CPACK_RPM_PACKAGE_ARCHITECTURE ${CMAKE_HOST_SYSTEM_PROCESSOR})
    if (DEFINED OS_DIST)
-      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${OS_DIST}.${orx_install_arch}")
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${OS_DIST}.${CMAKE_HOST_SYSTEM_PROCESSOR}")
    else ()
-      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${orx_install_arch}")
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${CMAKE_HOST_SYSTEM_PROCESSOR}")
    endif ()
    set(CPACK_RPM_PACKAGE_DESCRIPTION
 "Open Object Rexx is an object-oriented scripting language. The language
@@ -2192,8 +2185,8 @@ It extends the procedural way of Rexx programming with object-oriented
 features that allow you to gradually change your programming style as
 you learn more about objects.
 
-For more information on ooRexx, visit http://www.oorexx.org/
-For more information on Rexx, visit http://www.rexxla.org/")
+For more information on ooRexx, visit https://www.oorexx.org/
+For more information on Rexx, visit https://www.rexxla.org/")
 endif ()
 
 # Build a DEB
@@ -2223,7 +2216,7 @@ if (BUILD_DEB)
       set(CPACK_PACKAGE_RELEASE ${ORX_BLD_LVL})
    endif ()
    set(CPACK_DEBIAN_PACKAGE_SECTION "devel")
-   set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "http://www.oorexx.org/")
+   set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "https://www.oorexx.org/")
    set(CPACK_PACKAGE_CONTACT "sahananda@users.sf.net")
    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "sahananda@users.sf.net")
    set(CPACK_PACKAGING_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
@@ -2241,17 +2234,10 @@ if (BUILD_DEB)
            GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
    set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
            "${CMAKE_BINARY_DIR}/postinst;${CMAKE_BINARY_DIR}/prerm;")
-   if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "s390x")
-      set(orx_install_arch "s390x")
-   elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-      set(orx_install_arch "x86_64")
-   else ()
-      set(orx_install_arch "i386")
-   endif ()
    if (DEFINED OS_DIST)
-      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${OS_DIST}.${orx_install_arch}")
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${OS_DIST}.${CMAKE_HOST_SYSTEM_PROCESSOR}")
    else ()
-      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${orx_install_arch}")
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${CMAKE_HOST_SYSTEM_PROCESSOR}")
    endif ()
    # Be sure to do this AFTER you set the CPACK_PACKAGE_FILE_NAME
    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/platform/unix/debian/cmake/fixup_deb.sh.in ${CMAKE_BINARY_DIR}/fixup_deb.sh)
@@ -2260,49 +2246,34 @@ if (BUILD_DEB)
 endif ()
 
 #Apple macOS
-if (MACOSX_BUNDLE)
-   set(CPACK_GENERATOR "DragNDrop")
+if (BUILD_DMG)
+# The installer is built in a post-process script build_macOS_dmg.sh.in
+# initialised from platform/unix/macos/install/build_macOS_dmg.sh.in
+# using settings from here
 
-   set (CPACK_OSX_PACKAGE_VERSION "10.14")
-   set (CPACK_BUNDLE_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/${build_platform_dir}/macosx/org.rexxla.oorexx.rxapid.plist)
-   #set (CPACK_BUNDLE_STARTUP_COMMAND xxx)
+# Always 64 bit for macOS
+   set(OS_DIST "macOS")
 
+# This is copied from DEB & RPM Installers
    if (DEFINED PROD)
       set(CPACK_PACKAGE_RELEASE 1)
    else ()
       set(CPACK_PACKAGE_RELEASE ${ORX_BLD_LVL})
    endif ()
-   set(orx_install_arch "x86_64")
+
    if (DEFINED OS_DIST)
-      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${OS_DIST}.${orx_install_arch}")
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${OS_DIST}.${CMAKE_HOST_SYSTEM_PROCESSOR}")
    else ()
-      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${orx_install_arch}")
+      set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${ORX_MAJOR}.${ORX_MINOR}.${ORX_MOD_LVL}-${CPACK_PACKAGE_RELEASE}.${CMAKE_HOST_SYSTEM_PROCESSOR}")
    endif ()
-   set (CPACK_BUNDLE_NAME ${CPACK_PACKAGE_FILE_NAME})
 
-   #set (CPACK_PACKAGE_ICON ${ORX_PLATFORM_DIR}/oorexx.png)
-   set(CPACK_PACKAGE_ICON ${CMAKE_CURRENT_SOURCE_DIR}/${build_platform_dir}/oorexx.png)
-   set (CPACK_BUNDLE_ICON ${CPACK_PACKAGE_ICON})
+   message(STATUS "CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_FILE_NAME}")
 
-   set(CPACK_PACKAGE_CONTACT "sahananda@users.sf.net")
-   set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
-"Open Object Rexx is an object-oriented scripting language. The language
-is designed for both beginners and experienced Rexx programmers. It is
-easy to learn and use, and provides an excellent vehicle to enter the
-world of object-oriented programming without much effort.
+   # Be sure to do this AFTER you set the CPACK_PACKAGE_FILE_NAME
 
-It extends the procedural way of Rexx programming with object-oriented
-features that allow you to gradually change your programming style as
-you learn more about objects.
+   configure_file( ${CMAKE_SOURCE_DIR}/platform/unix/macos/install/build_macOS_dmg.sh.in ${CMAKE_BINARY_DIR}/build_macOS_dmg.sh IMMEDIATE @ONLY )
 
-For more information on ooRexx, visit http://www.oorexx.org/
-For more information on Rexx, visit http://www.rexxla.org/")
 endif ()
-
-
-
-
-
 
 # Do not move the following statement!! It must be the last statement in this file.
 include(CPack)
