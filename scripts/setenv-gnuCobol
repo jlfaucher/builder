@@ -1,0 +1,85 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Those variables must be defined before calling this script
+#if test -z "$builder_branch" ; then echo "builder_branch is undefined" ; return 1 ; fi   # Can be empty, don't test it
+if test -z "$builder_build_dir" ; then echo "builder_build_dir is undefined" ; return 1 ; fi
+if test -z "$builder_config" ; then echo "builder_config is undefined" ; return 1 ; fi
+if test -z "$builder_config_dir" ; then echo "builder_config_dir is undefined" ; return 1 ; fi
+if test -z "$builder_delivery_dir" ; then echo "builder_delivery_dir is undefined" ; return 1 ; fi
+if test -z "$builder_local_dir" ; then echo "builder_local_dir is undefined" ; return 1 ; fi
+if test -z "$builder_scripts_dir" ; then echo "builder_scripts_dir is undefined" ; return 1 ; fi
+if test -z "$builder_shared_dir" ; then echo "builder_shared_dir is undefined" ; return 1 ; fi
+if test -z "$builder_src_dir" ; then echo "builder_src_dir is undefined" ; return 1 ; fi
+if test -z "$builder_src_relative_path" ; then echo "builder_src_relative_path is undefined" ; return 1 ; fi
+if test -z "$builder_target" ; then echo "builder_target is undefined" ; return 1 ; fi
+
+export gnucobol_doc_dir=$builder_shared_dir/doc
+
+alias cdgnucobol='cd $builder_shared_dir'
+alias cdshared='cd $builder_shared_dir'
+
+alias cdgnucobollocal='cd $builder_local_dir'
+alias cdlocal='cd $builder_local_dir'
+
+alias cdofficial='cd $builder_shared_dir/official'
+alias cdbranches='cd $builder_shared_dir/official/branches'
+alias cdtags='cd $builder_shared_dir/official/tags'
+alias cdtrunk='cd $builder_shared_dir/official/trunk'
+alias cdbuiltinscript='cd $builder_shared_dir/official/branches/gnu-cobol-builtin-script'
+alias cdcontrib='cd $builder_shared_dir/contrib'
+
+alias cdsrc='cd $builder_src_dir'
+
+alias cdconfig='cd $builder_config_dir'
+alias cdbuild='cd $builder_build_dir'
+alias cddelivery='cd $builder_delivery_dir'
+
+alias cddoc='cd $gnucobol_doc_dir'
+alias cddocs='cd $gnucobol_doc_dir'
+
+# Title of console
+echo -n -e "\033]0;GNU Cobol $builder_target $builder_branch $builder_src_relative_path $builder_config $builder_bitness\007"
+
+export PATH
+export LD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH
+export C_INCLUDE_PATH
+export CPLUS_INCLUDE_PATH
+export LIBRARY_PATH
+
+# add to front of path
+prepend_path()
+{
+  if eval test -z "\"\$$1\"" || ! eval test -z "\"\${$1##*:$2:*}\"" -o -z "\"\${$1%%*:$2}\"" -o -z "\"\${$1##$2:*}\"" -o -z "\"\${$1##$2}\"" ; then
+    eval "$1=$2:\$$1"
+  fi
+}
+
+prepend_path PATH "$builder_shared_dir/scripts"
+
+echo "Setting environment for building with GNU Cobol"
+prepend_path C_INCLUDE_PATH "$builder_delivery_dir/include"
+prepend_path CPLUS_INCLUDE_PATH "$builder_delivery_dir/include"
+prepend_path LIBRARY_PATH "$builder_delivery_dir/lib"
+
+echo "Setting environment for running GNU Cobol"
+prepend_path PATH "$builder_delivery_dir/bin"
+prepend_path LD_LIBRARY_PATH "$builder_delivery_dir/lib"
+prepend_path DYLD_LIBRARY_PATH "$builder_delivery_dir/lib"
+
+################################################################################
+# Other dependencies (private)
+################################################################################
+
+other_dependencies="${builder_scripts_dir}.private/other_dependencies"
+if test -x "$other_dependencies"
+then
+    echo Running "$other_dependencies"
+    . "$other_dependencies"
+    if test $? != 0
+    then
+        return 1
+    fi
+fi
