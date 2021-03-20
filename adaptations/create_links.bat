@@ -1,6 +1,12 @@
 @echo off
 if defined echo echo %echo%
 setlocal
+
+:: Replace by your path (no space !)
+set GCI=y:\local\rexx\GCI
+set BSF4OOREXX=y:\local\rexx\bsf4oorexx
+set OOREXX=y:\local\rexx\oorexx
+
 goto :main
 
 :: Helper script for Windows.
@@ -20,49 +26,79 @@ goto :main
 
 :mklink
     setlocal
-    set source=%1
-    set target=%2
-    set execute=%3
-    if exist %source% %execute% del /F /Q %source%
-    :: Symbolic links are not supported by SVN, better to create hard links
-    %execute% mklink /H %source% %target%
+    set source_dir=%1
+    set target_dir=%2
+    set file=%3
+    set execute=%4
+
+    set source=%source_dir%\%file%
+    set target=%target_dir%\%file%
+
+    if not exist %target_dir% goto :eof
+    call :check %source% mandatory
+    if "%stop%" == "1" endlocal & set stop=%stop%& goto :eof
+
+    fc %source% %target% >nul 2>&1
+    if errorlevel 1 (
+        if exist %target% %execute% del /F /Q %target%
+        :: Symbolic links are not supported by SVN, better to create hard links
+        %execute% mklink /H %target% %source%
+    )
     endlocal
     goto :eof
 
 
 :show_mklink
-    call :mklink %1 %2 echo
+    call :mklink %1 %2 %3 echo
     goto :eof
 
 
 :do_mklink
-    call :mklink %1 %2
+    call :mklink %1 %2 %3
     goto :eof
 
 
 :diff_mini
     setlocal
-    set source=%1
-    set target=%2
-    if not exist %source% goto :eof
-    fc %source% %target% >nul
-    :: -1 : Your syntax is incorrect.
-    ::  0 : Both files are identical.
-    ::  1 : The files are different.
-    ::  2 : At least one of the files can�t be found.
-    if errorlevel 1 echo %source%
+    set source_dir=%1
+    set target_dir=%2
+    set file=%3
+    set execute=%4
+
+    set source=%source_dir%\%file%
+    set target=%target_dir%\%file%
+
+    if not exist %target_dir% goto :eof
+    call :check %source% mandatory
+    if "%stop%" == "1" endlocal & set stop=%stop%& goto :eof
+
+    fc %source% %target% >nul 2>&1
+        :: -1 : Your syntax is incorrect.
+        ::  0 : Both files are identical.
+        ::  1 : The files are different.
+        ::  2 : At least one of the files can�t be found.
+    if errorlevel 1 echo %target%
     endlocal
     goto :eof
 
 
 :diff_view
     setlocal
-    set source=%1
-    set target=%2
-    if not exist %source% goto :eof
-    fc %source% %target% >nul
+    set source_dir=%1
+    set target_dir=%2
+    set file=%3
+    set execute=%4
+
+    set source=%source_dir%\%file%
+    set target=%target_dir%\%file%
+
+    if not exist %target_dir% goto :eof
+    call :check %source% mandatory
+    if "%stop%" == "1" endlocal & set stop=%stop%& goto :eof
+
+    fc %source% %target% >nul 2>&1
     if errorlevel 1 (
-        echo %source%
+        echo %target%
         fc %source% %target%
     )
     endlocal
@@ -73,138 +109,209 @@ goto :main
     setlocal
     set action=%1
 
-    :: Replace by your path (no space !)
-    set BUILDER=c:\jlf\local\builder
-    set GCI=c:\jlf\local\rexx\GCI
-    set BSF4OOREXX=c:\jlf\local\rexx\bsf4oorexx
-    set OOREXX=c:\jlf\local\rexx\oorexx
-
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     ::GCI\gci-sources.1.1
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    set target=%BUILDER%\adaptations\GCI\gci-source.1.1
-    set source=%GCI%\gci-source.1.1
-    call :%action% %source%\gci-try.rexx                  %target%\gci-try.rexx
-    call :%action% %source%\gci.h                         %target%\gci.h
-    call :%action% %source%\gci_convert.linux.86_64       %target%\gci_convert.linux.86_64
-    call :%action% %source%\gci_convert.macX.all          %target%\gci_convert.macX.all
-    call :%action% %source%\gci_convert.win32.vc          %target%\gci_convert.win32.vc
-    call :%action% %source%\gci_oslink.macX               %target%\gci_oslink.macX
-    call :%action% %source%\gci_rexxbridge.c              %target%\gci_rexxbridge.c
-    call :%action% %source%\gci_tree.c                    %target%\gci_tree.c
-    call :%action% %source%\gci_win32.def                 %target%\gci_win32.def
-    call :%action% %source%\GNUmakefile-builder           %target%\GNUmakefile-builder
-    call :%action% %source%\Makefile-builder.vc           %target%\Makefile-builder.vc
-
+    set source=%BUILDER_ADAPTATIONS%\GCI\gci-source.1.1
+    set target=%GCI%\gci-source.1.1
+    call :%action% %source% %target% gci-try.rexx
+    call :%action% %source% %target% gci.h
+    call :%action% %source% %target% gci_convert.linux.86_64
+    call :%action% %source% %target% gci_convert.macX.all
+    call :%action% %source% %target% gci_convert.win32.vc
+    call :%action% %source% %target% gci_oslink.macX
+    call :%action% %source% %target% gci_rexxbridge.c
+    call :%action% %source% %target% gci_tree.c
+    call :%action% %source% %target% gci_win32.def
+    call :%action% %source% %target% GNUmakefile-builder
+    call :%action% %source% %target% Makefile-builder.vc
+    if "%stop%" == "1" goto :eof
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     :: bsf4oorexx\trunk
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    set target=%BUILDER%\adaptations\bsf4oorexx\trunk\bsf4oorexx.dev\source_cc
-    set source=%BSF4OOREXX%\svn\trunk\bsf4oorexx.dev\source_cc
-    call :%action% %source%\Makefile-builder-windows      %target%\Makefile-builder-windows
-    call :%action% %source%\Makefile-builder-macosx       %target%\Makefile-builder-macosx
-    call :%action% %source%\Makefile-builder-linux        %target%\Makefile-builder-linux
+    set source=%BUILDER_ADAPTATIONS%\bsf4oorexx\trunk\bsf4oorexx.dev\source_cc
+    set target=%BSF4OOREXX%\svn\trunk\bsf4oorexx.dev\source_cc
+    call :%action% %source% %target% Makefile-builder-windows
+    call :%action% %source% %target% Makefile-builder-macosx
+    call :%action% %source% %target% Makefile-builder-linux
+    if "%stop%" == "1" goto :eof
 
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     :: oorexx\official\main\branches\4.2
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\branches\4.2\trunk\api\platform\windows
-    set source=%OOREXX%\official\main\branches\4.2\trunk\api\platform\windows
-    call :%action% %source%\rexxapitypes.h                %target%\rexxapitypes.h
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\branches\4.2\trunk\api\platform\windows
+    set target=%OOREXX%\official\main\branches\4.2\trunk\api\platform\windows
+    call :%action% %source% %target% rexxapitypes.h
+    if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\branches\4.2\trunk
-    set source=%OOREXX%\official\main\branches\4.2\trunk
-    call :%action% %source%\cl_infos.cpp                  %target%\cl_infos.cpp
-    call :%action% %source%\Makefile.am                   %target%\Makefile.am
-    call :%action% %source%\makeorx_verbose.bat           %target%\makeorx_verbose.bat
-    call :%action% %source%\makeorx.bat                   %target%\makeorx.bat
-    call :%action% %source%\orxdb.bat                     %target%\orxdb.bat
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\branches\4.2\trunk
+    set target=%OOREXX%\official\main\branches\4.2\trunk
+    call :%action% %source% %target% cl_infos.cpp
+    call :%action% %source% %target% Makefile.am
+    call :%action% %source% %target% makeorx_verbose.bat
+    call :%action% %source% %target% makeorx.bat
+    call :%action% %source% %target% orxdb.bat
+    if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\branches\4.2\trunk\interpreter\platform\windows
-    set source=%OOREXX%\official\main\branches\4.2\trunk\interpreter\platform\windows
-    call :%action% %source%\PlatformDefinitions.h         %target%\PlatformDefinitions.h
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\branches\4.2\trunk\interpreter\platform\windows
+    set target=%OOREXX%\official\main\branches\4.2\trunk\interpreter\platform\windows
+    call :%action% %source% %target% PlatformDefinitions.h
+    if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\branches\4.2\trunk\lib
-    set source=%OOREXX%\official\main\branches\4.2\trunk\lib
-    call :%action% %source%\orxwin32.mak                  %target%\orxwin32.mak
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\branches\4.2\trunk\lib
+    set target=%OOREXX%\official\main\branches\4.2\trunk\lib
+    call :%action% %source% %target% orxwin32.mak
+    if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\branches\4.2\trunk\platform\windows
-    set source=%OOREXX%\official\main\branches\4.2\trunk\platform\windows
-    call :%action% %source%\buildorx.bat                  %target%\buildorx.bat
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\branches\4.2\trunk\platform\windows
+    set target=%OOREXX%\official\main\branches\4.2\trunk\platform\windows
+    call :%action% %source% %target% buildorx.bat
+    if "%stop%" == "1" goto :eof
+
+
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :: oorexx\official\main\releases\3.1.2
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\3.1.2\trunk
+    set target=%OOREXX%\official\main\releases\3.1.2\trunk
+    call :%action% %source% %target% Makefile.am
+    if "%stop%" == "1" goto :eof
+
+
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :: oorexx\official\main\releases\3.2.0
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\3.2.0\trunk
+    set target=%OOREXX%\official\main\releases\3.2.0\trunk
+    call :%action% %source% %target% Makefile.am
+    if "%stop%" == "1" goto :eof
+
+
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :: oorexx\official\main\releases\4.0.0
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.0.0\trunk
+    set target=%OOREXX%\official\main\releases\4.0.0\trunk
+    call :%action% %source% %target% Makefile.am
+    if "%stop%" == "1" goto :eof
+
+
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :: oorexx\official\main\releases\4.0.1
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.0.1\trunk
+    set target=%OOREXX%\official\main\releases\4.0.1\trunk
+    call :%action% %source% %target% Makefile.am
+    if "%stop%" == "1" goto :eof
+
+
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :: oorexx\official\main\releases\4.1.0
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.1.0\trunk
+    set target=%OOREXX%\official\main\releases\4.1.0\trunk
+    call :%action% %source% %target% Makefile.am
+    if "%stop%" == "1" goto :eof
+
+
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :: oorexx\official\main\releases\4.1.1
+    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.1.1\trunk
+    set target=%OOREXX%\official\main\releases\4.1.1\trunk
+    call :%action% %source% %target% Makefile.am
+    if "%stop%" == "1" goto :eof
 
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     :: oorexx\official\main\releases\4.2.0
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\api\platform\windows
-    set source=%OOREXX%\official\main\releases\4.2.0\trunk\api\platform\windows
-    call :%action% %source%\rexxapitypes.h                %target%\rexxapitypes.h
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\api\platform\windows
+    set target=%OOREXX%\official\main\releases\4.2.0\trunk\api\platform\windows
+    call :%action% %source% %target% rexxapitypes.h
+    if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk
-    set source=%OOREXX%\official\main\releases\4.2.0\trunk
-    call :%action% %source%\cl_infos.cpp                  %target%\cl_infos.cpp
-    call :%action% %source%\Makefile.am                   %target%\Makefile.am
-    call :%action% %source%\makeorx_verbose.bat           %target%\makeorx_verbose.bat
-    call :%action% %source%\makeorx.bat                   %target%\makeorx.bat
-    call :%action% %source%\orxdb.bat                     %target%\orxdb.bat
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk
+    set target=%OOREXX%\official\main\releases\4.2.0\trunk
+    call :%action% %source% %target% cl_infos.cpp
+    call :%action% %source% %target% Makefile.am
+    call :%action% %source% %target% makeorx_verbose.bat
+    call :%action% %source% %target% makeorx.bat
+    call :%action% %source% %target% orxdb.bat
+    if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\api
-    set source=%OOREXX%\official\main\releases\4.2.0\trunk\api
-    call :%action% %source%\oorexxapi.h                   %target%\oorexxapi.h
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\api
+    set target=%OOREXX%\official\main\releases\4.2.0\trunk\api
+    call :%action% %source% %target% oorexxapi.h
+    if "%stop%" == "1" goto :eof
 
-    :: set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
-    :: set source%$OOREXX%\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
-    :: call :%action% $source\rexxutil.cpp                    %target%\rexxutil.cpp
+    :: set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
+    :: set target%$OOREXX%\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
+    :: call :%action% $source %target% rexxutil.cpp
+    :: if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\interpreter\api
-    set source=%OOREXX%\official\main\releases\4.2.0\trunk\interpreter\api
-    call :%action% %source%\ThreadContextStubs.cpp        %target%\ThreadContextStubs.cpp
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\interpreter\api
+    set target=%OOREXX%\official\main\releases\4.2.0\trunk\interpreter\api
+    call :%action% %source% %target% ThreadContextStubs.cpp
+    if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\interpreter\platform\windows
-    set source=%OOREXX%\official\main\releases\4.2.0\trunk\interpreter\platform\windows
-    call :%action% %source%\PlatformDefinitions.h         %target%\PlatformDefinitions.h
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\interpreter\platform\windows
+    set target=%OOREXX%\official\main\releases\4.2.0\trunk\interpreter\platform\windows
+    call :%action% %source% %target% PlatformDefinitions.h
+    if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\lib
-    set source=%OOREXX%\official\main\releases\4.2.0\trunk\lib
-    call :%action% %source%\orxwin32.mak                  %target%\orxwin32.mak
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\lib
+    set target=%OOREXX%\official\main\releases\4.2.0\trunk\lib
+    call :%action% %source% %target% orxwin32.mak
+    if "%stop%" == "1" goto :eof
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\releases\4.2.0\trunk\platform\windows
-    set source=%OOREXX%\official\main\releases\4.2.0\trunk\platform\windows
-    call :%action% %source%\buildorx.bat                  %target%\buildorx.bat
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\platform\windows
+    set target=%OOREXX%\official\main\releases\4.2.0\trunk\platform\windows
+    call :%action% %source% %target% buildorx.bat
+    if "%stop%" == "1" goto :eof
 
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     :: oorexx\official\main\trunk
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    set target=%BUILDER%\adaptations\oorexx\official\main\trunk
-    set source=%OOREXX%\official\main\trunk
-    call :%action% %source%\CMakeLists.txt                %target%\CMakeLists.txt
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\trunk
+    set target=%OOREXX%\official\main\trunk
+    call :%action% %source% %target% CMakeLists.txt
+    if "%stop%" == "1" goto :eof
 
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     :: oorexx\official\test\branches\4.2.0
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    set target=%BUILDER%\adaptations\oorexx\official\test\branches\4.2.0\trunk\external\API
-    set source=%OOREXX%\official\test\branches\4.2.0\trunk\external\API
-    call :%action% %source%\Makefile.windows              %target%\Makefile.windows
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\test\branches\4.2.0\trunk\external\API
+    set target=%OOREXX%\official\test\branches\4.2.0\trunk\external\API
+    call :%action% %source% %target% Makefile.windows
+    if "%stop%" == "1" goto :eof
 
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     :: oorexx\official\test\trunk
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    set target=%BUILDER%\adaptations\oorexx\official\test\trunk\external\API
-    set source=%OOREXX%\official\test\trunk\external\API
-    call :%action% %source%\Makefile.windows              %target%\Makefile.windows
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\test\trunk\external\API
+    set target=%OOREXX%\official\test\trunk\external\API
+    call :%action% %source% %target% Makefile.windows
+    if "%stop%" == "1" goto :eof
 
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -220,7 +327,34 @@ goto :main
     goto :eof
 
 
+:check
+    if not exist %1 (
+        echo ***FATAL*** NOT FOUND: %1
+        :: exit /b is not leaving the script, just leaving the current function :-(
+        if "%2" == "mandatory" set stop=1
+    )
+    goto :eof
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Main routine
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 :main
+
+:: Path to this script
+set BUILDER_ADAPTATIONS="%~dp0"
+set BUILDER_ADAPTATIONS=%BUILDER_ADAPTATIONS:&=^&%
+set BUILDER_ADAPTATIONS=%BUILDER_ADAPTATIONS:"=%
+:: Remove the last "\"
+set BUILDER_ADAPTATIONS="%BUILDER_ADAPTATIONS:~0,-1%"
+set BUILDER_ADAPTATIONS=%BUILDER_ADAPTATIONS:&=^&%
+set BUILDER_ADAPTATIONS=%BUILDER_ADAPTATIONS:"=%
+
+set stop=0
+call :check %BUILDER_ADAPTATIONS% mandatory
+if "%stop%" == "1" exit /B 1
+
 if "%1" == "" (
     call :help
 ) else if "%1" == "-show" (
