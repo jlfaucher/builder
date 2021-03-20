@@ -160,7 +160,7 @@ exit /B 0
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :declare_bsf4oorexx_distribution
-echo "Setting environment for bsf4oorexx"
+echo Setting environment for bsf4oorexx
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\%BSF4OOREXX_JAR%"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%"
 :: For the next line to work, you must copy manually the dynamic librairies from install/lib to install\32 and install\64, and rename them by removing the end of the filename
@@ -168,7 +168,7 @@ call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\install\%builder_bitne
 goto :eof
 
 :declare_bsf4oorexx_svn
-echo "Setting environment for bsf4oorexx svn"
+echo Setting environment for bsf4oorexx svn
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\jars\janino\commons-compiler.jar"
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\jars\janino\janino.jar"

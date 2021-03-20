@@ -12,6 +12,15 @@ set builder_scripts_dir=%builder_scripts_dir:"=%
 
 call "%builder_scripts_dir%\shellscriptlib" :prepend_path PATH "%builder_scripts_dir%"
 
+call shellscriptlib :dirname "%builder_scripts_dir%"
+set builder_dir="%dirname%"
+set builder_dir=%builder_dir:&=^&%
+set builder_dir=%builder_dir:"=%
+
+call shellscriptlib :drive "%builder_dir%"
+set builder_dir_drv=%drive%
+doskey cdbuilder=%builder_drv% ^& cd %builder_dir%
+
 set dir=%1
 if not defined dir (
     echo Mandatory argument: path to config directory "build/<target[.branch]>\d1\d2\...\system\compiler\config\bitness"

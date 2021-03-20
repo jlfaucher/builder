@@ -100,8 +100,8 @@ doskey cdoorexxshell=%oorexx_incubator_drv% ^& cd %oorexx_oorexxshell%
 
 echo Setting environment for the sandbox
 set oorexx_sandbox=%builder_shared_dir%\%builder_target%\sandbox
-doskey cdsandbox=%oorexx_sandbox_drv% ^& cd %oorexx_sandbox%
 set oorexx_sandbox_drv=%builder_shared_drv%
+doskey cdsandbox=%oorexx_sandbox_drv% ^& cd %oorexx_sandbox%
 set oorexx_sandboxjlf=%oorexx_sandbox%\jlf-executor
 if not exist "%oorexx_sandboxjlf%" set oorexx_sandboxjlf=%oorexx_sandbox%\jlf
 doskey cdsandboxjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandboxjlf%

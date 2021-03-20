@@ -6,6 +6,14 @@ if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; ex
 FILE="${BASH_SOURCE[0]}"
 export builder_scripts_dir="$( cd -P "$(dirname "$FILE")" && pwd )"
 
+# load the helpers
+. $builder_scripts_dir/shellscriptlib
+
+prepend_path PATH "$builder_scripts_dir"
+
+export builder_dir=`dirname "$builder_scripts_dir"`
+alias cdbuilder='cd $builder_dir'
+
 dir=$1
 if test -z "$dir"
 then
