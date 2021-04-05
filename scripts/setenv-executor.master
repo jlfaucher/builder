@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Activate strong types for m17n
+# Pfff... CPPFLAGS ignored by cmake ???
+export CPPFLAGS="-DSTRONG_TYPES $CPPFLAGS"
+export CXXFLAGS="-DSTRONG_TYPES $CXXFLAGS"
