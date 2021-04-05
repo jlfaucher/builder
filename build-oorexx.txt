@@ -155,6 +155,10 @@ svn checkout svn://svn.code.sf.net/p/oorexx/code-0/docs/trunk official/docs/trun
 cd /local/rexx/oorexx
 svn checkout svn://svn.code.sf.net/p/oorexx/code-0/test/trunk official/test/trunk
 
+# To get only the incubator folders that are loaded by ooRexxShell (if available)
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/ooSQLite official/incubator/ooSQLite
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
+
 
 --------------------------------------------------------------------------------
 Getting the git sources of executor

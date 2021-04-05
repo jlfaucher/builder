@@ -1,4 +1,20 @@
 --------------------------------------------------------------------------------
+Creating a distribution
+--------------------------------------------------------------------------------
+
+From P.O.:
+svn update
+pkill rxapi
+dnf -y -v remove ooRexx
+rm -dfr ~/workspace/oorexx-centos8-build/oorexxbuild/
+cmake -DBUILD_RPM=1 -DOS_DIST=centos8 -DCMAKE_BUILD_TYPE=RELEASE ../oorexxSVN
+make clean
+make
+cpack ./
+dnf -y -v install ~/workspace/oorexx-centos8-build/oorexxbuild/.rpm
+
+
+--------------------------------------------------------------------------------
 Technical infos
 --------------------------------------------------------------------------------
 
