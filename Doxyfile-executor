@@ -13,6 +13,11 @@
 ## EXTRACT_STATIC         = YES
 ## INPUT                  = $(builder_src_dir)
 ## RECURSIVE              = YES
+## EXCLUDE                = /local/rexx/oorexx/executor/sandbox/jlf/trunk/extensions/platform/windows/ole \
+##                          /local/rexx/oorexx/executor/sandbox/jlf/trunk/extensions/platform/windows/oodialog.wchar \
+##                          /local/rexx/oorexx/executor/sandbox/jlf/trunk/extensions/platform/windows/orxscrpt \
+##                          /local/rexx/oorexx/executor/sandbox/jlf/trunk/interpreter/classes/support/m17n
+## EXCLUDE_SYMLINKS       = YES
 ## SOURCE_BROWSER         = YES
 ## GENERATE_LATEX         = NO
 ## HAVE_DOT               = YES
@@ -979,14 +984,17 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                =
+EXCLUDE                = $(builder_src_dir)/extensions/platform/windows/ole \
+                         $(builder_src_dir)/extensions/platform/windows/oodialog.wchar \
+                         $(builder_src_dir)/extensions/platform/windows/orxscrpt \
+                         $(builder_src_dir)/interpreter/classes/support/m17n
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
 # from the input.
 # The default value is: NO.
 
-EXCLUDE_SYMLINKS       = NO
+EXCLUDE_SYMLINKS       = YES
 
 # If the value of the INPUT tag contains directories, you can use the
 # EXCLUDE_PATTERNS tag to specify one or more wildcard patterns to exclude
