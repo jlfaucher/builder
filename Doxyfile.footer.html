@@ -1,0 +1,29 @@
+<!-- HTML footer for doxygen 1.9.2-->
+<!-- start footer part -->
+<!--BEGIN GENERATE_TREEVIEW-->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    $navpath
+    <li class="footer">$generatedby <a href="https://www.doxygen.org/index.html"><img class="footer" src="$relpath^doxygen.svg" width="104" height="31" alt="doxygen"/></a> $doxygenversion </li>
+  </ul>
+</div>
+<!--END GENERATE_TREEVIEW-->
+<!--BEGIN !GENERATE_TREEVIEW-->
+<hr class="footer"/><address class="footer"><small>
+$generatedby&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="$relpath^doxygen.svg" width="104" height="31" alt="doxygen"/></a> $doxygenversion
+</small></address>
+<!--END !GENERATE_TREEVIEW-->
+
+<!-- javascript code to insert the title in the condensed index (tabs) -->
+<!-- See the function initMenu in menu.js:
+     The condensed index is a list <ul> of several items <li>: Main Page, Classes, Files.
+     I append a new item <li> which display the project name. -->
+<script type="text/javascript">
+$(function() {
+  $('#main-menu').append('<li class="title" style="margin-left:3mm">$projectname</li>')
+});
+</script>
+<!-- end of javascript code -->
+
+</body>
+</html>

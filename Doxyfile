@@ -1,11 +1,12 @@
-# Doxyfile 1.9.2
-
+## Doxyfile 1.9.2
+##
 ## Generic Doxyfile that can be used with any project managed with the builder.
 ## Can be used as-is for Executor, ooRexx, Regina.
 ##
 ## Only these variables have been set (doxygen -x <this file>):
-## PROJECT_NAME           = $(builder_shared_dir)/$(builder_target_branch)
+## PROJECT_NAME           = $(builder_target_branch)
 ## OUTPUT_DIRECTORY       = $(builder_shared_dir)/build/$(builder_target_branch)/$(builder_src_relative_path)/doxygen
+## FULL_PATH_NAMES        = NO
 ## EXTRACT_ALL            = YES
 ## EXTRACT_PRIVATE        = YES
 ## EXTRACT_PRIV_VIRTUAL   = YES
@@ -14,11 +15,24 @@
 ## INPUT                  = $(builder_src_dir)
 ## RECURSIVE              = YES
 ## SOURCE_BROWSER         = YES
-## GENERATE_LATEX         = NO
-## HAVE_DOT               = YES
-## INTERACTIVE_SVG        = YES
-## DISABLE_INDEX          = YES
+## STRIP_CODE_COMMENTS    = NO                  # jlf: I prefer to keep all the comments in the source
+## REFERENCED_BY_RELATION = YES
+## REFERENCES_RELATION    = YES
+## HTML_HEADER            = Doxyfile.header.html
+## HTML_FOOTER            = Doxyfile.footer.html
 ## GENERATE_TREEVIEW      = YES
+## GENERATE_LATEX         = NO
+## HIDE_UNDOC_RELATIONS   = NO
+## HAVE_DOT               = YES
+## COLLABORATION_GRAPH    = NO                  # jlf: too big to be useful
+## DOT_IMAGE_FORMAT       = svg                 # jlf: svg better than png because allows to search for a string
+## INTERACTIVE_SVG        = YES
+##
+## DISABLE_INDEX          = NO                  # jlf: this is the default value. I put the project name in this index area.
+## HTML_DYNAMIC_SECTIONS  = NO                  # jlf: this is the default value. Not so good to have to always unfold to see the diagrams.
+## GENERATE_HTMLHELP      = NO                  # jlf: this is the default value. Too big for xchm. No HTML treeview if activated.
+## DOT_GRAPH_MAX_NODES    = 50                  # jlf: this is the default value, bad idea to use 5000! the graphs become too big
+## MAX_DOT_GRAPH_DEPTH    = 0                   # jlf: this is the default value. I prefer to use the unlimited depth, while restricting the number of nodes with DOT_GRAPH_MAX_NODES
 ##
 ## Usage:
 ## doxygen <this file>
@@ -58,7 +72,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = $(builder_shared_dir)/$(builder_target_branch)
+PROJECT_NAME           = $(builder_target_branch)
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -176,7 +190,7 @@ INLINE_INHERITED_MEMB  = NO
 # shortest path that makes the file name unique will be used
 # The default value is: YES.
 
-FULL_PATH_NAMES        = YES
+FULL_PATH_NAMES        = NO
 
 # The STRIP_FROM_PATH tag can be used to strip a user-defined part of the path.
 # Stripping is only done if one of the specified strings matches the left-hand
@@ -1114,19 +1128,19 @@ INLINE_SOURCES         = NO
 # Fortran comments will always remain visible.
 # The default value is: YES.
 
-STRIP_CODE_COMMENTS    = YES
+STRIP_CODE_COMMENTS    = NO
 
 # If the REFERENCED_BY_RELATION tag is set to YES then for each documented
 # entity all documented functions referencing it will be listed.
 # The default value is: NO.
 
-REFERENCED_BY_RELATION = NO
+REFERENCED_BY_RELATION = YES
 
 # If the REFERENCES_RELATION tag is set to YES then for each documented function
 # all documented entities called/used by that function will be listed.
 # The default value is: NO.
 
-REFERENCES_RELATION    = NO
+REFERENCES_RELATION    = YES
 
 # If the REFERENCES_LINK_SOURCE tag is set to YES and SOURCE_BROWSER tag is set
 # to YES then the hyperlinks from functions in REFERENCES_RELATION and
@@ -1237,7 +1251,7 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            =
+HTML_HEADER            = Doxyfile.header.html
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank doxygen will generate a standard
@@ -1247,7 +1261,7 @@ HTML_HEADER            =
 # that doxygen normally uses.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_FOOTER            =
+HTML_FOOTER            = Doxyfile.footer.html
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading style
 # sheet that is used by each HTML page. It can be used to fine-tune the look of
@@ -1558,7 +1572,7 @@ ECLIPSE_DOC_ID         = org.doxygen.Project
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-DISABLE_INDEX          = YES
+DISABLE_INDEX          = NO
 
 # The GENERATE_TREEVIEW tag is used to specify whether a tree-like index
 # structure should be generated to display hierarchical information. If the tag
@@ -2340,7 +2354,7 @@ DIA_PATH               =
 # and usage relations if the target is undocumented or is not a class.
 # The default value is: YES.
 
-HIDE_UNDOC_RELATIONS   = YES
+HIDE_UNDOC_RELATIONS   = NO
 
 # If you set the HAVE_DOT tag to YES then doxygen will assume the dot tool is
 # available from the path. This tool is part of Graphviz (see:
@@ -2400,7 +2414,7 @@ CLASS_GRAPH            = YES
 # The default value is: YES.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-COLLABORATION_GRAPH    = YES
+COLLABORATION_GRAPH    = NO
 
 # If the GROUP_GRAPHS tag is set to YES then doxygen will generate a graph for
 # groups, showing the direct groups dependencies.
@@ -2531,7 +2545,7 @@ DIRECTORY_GRAPH        = YES
 # The default value is: png.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOT_IMAGE_FORMAT       = png
+DOT_IMAGE_FORMAT       = svg
 
 # If DOT_IMAGE_FORMAT is set to svg, then this option can be set to YES to
 # enable generation of interactive SVG images that allow zooming and panning.

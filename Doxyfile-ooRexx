@@ -1,6 +1,6 @@
 ## Doxyfile 1.9.2
 ##
-## Doxyfile for Executor.
+## Doxyfile for ooRexx.
 ##
 ## Usage:
 ## doxygen <this file>
@@ -10,6 +10,14 @@
 
 @INCLUDE = Doxyfile
 
+# The PROJECT_NAME tag is a single word (or a sequence of words surrounded by
+# double-quotes, unless you are using Doxywizard) that should identify the
+# project for which the documentation is generated. This name is used in the
+# title of most generated pages and in a few other places.
+# The default value is: My Project.
+
+PROJECT_NAME           = ooRexx
+
 # The EXCLUDE tag can be used to specify files and/or directories that should be
 # excluded from the INPUT source files. This way you can easily exclude a
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
@@ -18,9 +26,7 @@
 # run.
 
 EXCLUDE                = $(builder_src_dir)/extensions/platform/windows/ole \
-                         $(builder_src_dir)/extensions/platform/windows/oodialog.wchar \
-                         $(builder_src_dir)/extensions/platform/windows/orxscrpt \
-                         $(builder_src_dir)/interpreter/classes/support/m17n
+                         $(builder_src_dir)/extensions/platform/windows/oodialog
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
@@ -28,3 +34,4 @@ EXCLUDE                = $(builder_src_dir)/extensions/platform/windows/ole \
 # The default value is: NO.
 
 EXCLUDE_SYMLINKS       = YES
+
