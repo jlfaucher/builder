@@ -224,43 +224,15 @@ mklink /d sandbox ..\executor\sandbox
 
 
 --------------------------------------------------------------------------------
-CHANGE THAT MUST BE APPLIED BEFORE THE FIRST BUILD
+FOR OLD BUILD SYSTEMS ONLY (those not using cmake)
+Changes that must be applied before the first build
 --------------------------------------------------------------------------------
 
 See the directory builder/adaptations.
 The files in the subdirectories are either new files or existing files that have
 been adaptated for some reasons.
-You can copy manually these files or you can execute the script create_links which
-will create HARD links (recommended to benefit of the  future updates under
-builder/adaptations). This script can be re-executed as much as you want.
-
-Careful:
-SVN does not manage correctly the symbolic links.
-It does not see the file referenced by the link.
-Instead, SVN sees something like that (a text file of 1 line) whose status is "~"
-(Obstructed):
-link /local/builder/adaptations/oorexx/official/main/trunk/CMakeLists.txt
-When the corresponding file in the SVN repository is modified, then SVN compares
-this new version with the pseudo file of 1 line, and there is systematically a conflict.
-That's why the script creates HARD links.
-
-Careful:
-SVN does not manage correctly the hard links.
-https://stackoverflow.com/questions/12456501/svn-with-hard-links
-After svn update, some hard links may become independent files (the link count
-becomes 1) if the corresponding file was updated in the repository.
-Procedure to keep the adaptations in sync:
-    create_links -diff
-If some diffs are found, then you have some files that lost their hard link.
-    create_links -diffview
-Analyze the differences and merge into the adaptations.
-After the merge, you can create the links:
-    create_links -doit
-
-Remember:
-You can see the number of hard links with ls -l (second column):
--rw-r--r--@  2 jlfaucher  admin  109081 31 jul 08:39 CMakeLists.txt
--rw-r--r--   1 jlfaucher  admin     340 18 jui 09:39 CONTRIBUTORS
+You can copy manually these files or you can execute the script create_links
+which will create hard links
 
 
 --------------------------------------------------------------------------------
