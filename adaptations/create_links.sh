@@ -259,29 +259,11 @@ actions()
 
 
     ################################################################################
-    # oorexx/official/main/trunk
-    ################################################################################
-
-    local source=$BUILDER_ADAPTATIONS/oorexx/official/main/trunk
-    local target=$OOREXX/official/main/trunk
-    $action $source $target CMakeLists.txt
-
-
-    ################################################################################
     # oorexx/official/test/branches/4.2.0
     ################################################################################
 
     local source=$BUILDER_ADAPTATIONS/oorexx/official/test/branches/4.2.0/trunk/external/API
     local target=$OOREXX/official/test/branches/4.2.0/trunk/external/API
-    $action $source $target Makefile.windows
-
-
-    ################################################################################
-    # oorexx/official/test/trunk
-    ################################################################################
-
-    local source=$BUILDER_ADAPTATIONS/oorexx/official/test/trunk/external/API
-    local target=$OOREXX/official/test/trunk/external/API
     $action $source $target Makefile.windows
 
 

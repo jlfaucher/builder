@@ -17,11 +17,11 @@ Under MacOs, which is the main machine (host of the virtual machines):
         builder/                        Scripts to support builds for several branches, configurations, bitness
         oorexx/                         $builder_shared_dir
             ----------------------------
-            executor/                   git sources (clone of official/sandbox/jlf)
+            executor/                   git sources (fork of official/sandbox/jlf)
                 sandbox/
                     jlf/
                         trunk/
-            executor5/                  git sources (clone of official/main/trunk)
+            executor5/                  git sources (fork of official/main/trunk)
                 main/
                     trunk/
             official/                   svn sources of ooRexx
@@ -61,8 +61,8 @@ The build directory is put inside the VM because of bad performances when access
         oorexx/                         $builder_shared_dir
             build/                      not used for Ubuntu
             ----------------------------
-            executor/                   git sources (clone of official/sandbox/jlf)
-            executor5/                  git sources (clone of official/main/trunk)
+            executor/                   git sources (fork of official/sandbox/jlf)
+            executor5/                  git sources (fork of official/main/trunk)
             official/                   svn sources of ooRexx
     rexxlocal/                          Local directory
         oorexx/                         $builder_local_dir
@@ -97,8 +97,8 @@ Y:\local
         oorexx\                         $builder_shared_dir
             build\                      not used
             ----------------------------
-            executor\                   git sources (clone of official/sandbox/jlf)
-            executor5\                  git sources (clone of official/main/trunk)
+            executor\                   git sources (fork of official/sandbox/jlf)
+            executor5\                  git sources (fork of official/main/trunk)
             official\                   svn sources of ooRexx
 E:\local\
     rexxlocal/                          Local directory
@@ -250,11 +250,12 @@ https://stackoverflow.com/questions/12456501/svn-with-hard-links
 After svn update, some hard links may become independent files (the link count
 becomes 1) if the corresponding file was updated in the repository.
 Procedure to keep the adaptations in sync:
-run create_links -diff
+    create_links -diff
 If some diffs are found, then you have some files that lost their hard link.
-run create_links -diffview
+    create_links -diffview
 Analyze the differences and merge into the adaptations.
-run create_links -doit
+After the merge, you can create the links:
+    create_links -doit
 
 Remember:
 You can see the number of hard links with ls -l (second column):
