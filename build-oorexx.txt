@@ -255,20 +255,27 @@ cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
 
-# To build a rpm (Ubuntu only):
+# To build a rpm (Linux):
 # OS_DIST is optional on the following command. It is used to modify the install package name.
 # Note JLF : Under Linux, `uname` could be replaced by `lsb_release -i -s`-`lsb_release -r -s`
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir -DBUILD_RPM=1 -DOS_DIST=`uname`
-make
+make install
 cpack -G RPM
 
-# To build a deb (MacOs & Ubuntu):
+# To build a deb (Linux):
 # OS_DIST is optional on the following command. It is used to modify the install package name.
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir -DBUILD_DEB=1 -DOS_DIST=`uname`
-make
+make install
 cpack -G DEB
+
+# To build a dmg (Macos):
+# OS_DIST is optional on the following command. It is used to modify the install package name.
+cdbuild
+cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir -DBUILD_DMG=1 -DOS_DIST=`uname`
+make install
+. ./build_macOS_dmg.sh
 
 
 --------------------------------------------------------------------------------
