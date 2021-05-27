@@ -12,4 +12,9 @@ set dbg=1
 :: New build system (cmake)
 set CMAKE_BUILD_TYPE=Debug
 
+:: Activate code to trace the semaphores
+:: Pfff... CPPFLAGS ignored by cmake ???
+set CPPFLAGS=/DCONCURRENCY_DEBUG %CPPFLAGS%
+set CXXFLAGS=/DCONCURRENCY_DEBUG %CXXFLAGS%
+
 exit /b 0
