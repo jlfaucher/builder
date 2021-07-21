@@ -34,7 +34,7 @@ declare_java()
     local JVMDIR
     # MacOs
     JVMDIR="$JAVA_HOME/jre/lib/server"; if test -f "$JVMDIR/libjvm.dylib"; then prepend_path DYLD_LIBRARY_PATH "$JVMDIR"; fi    # legacy
-    JVMDIR="$JAVA_HOME/lib/server"; if test -f "JVMDIR/libjvm.dylib"; then prepend_path DYLD_LIBRARY_PATH "JVMDIR"; fi          # from openjdk 11
+    JVMDIR="$JAVA_HOME/lib/server"; if test -f "JVMDIR/libjvm.dylib"; then prepend_path DYLD_LIBRARY_PATH "$JVMDIR"; fi          # from openjdk 11
     # Ubuntu
     JVMDIR="$JAVA_HOME/jre/lib/amd64/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi   # legacy
     JVMDIR="$JAVA_HOME/lib/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi             # from openjdk 11
@@ -75,6 +75,12 @@ declare_bsf4oorexx_distribution()
     # Ubuntu
     export LD_LIBRARY_PATH
     prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"
+
+    # Needed from v641-20210715-beta
+    export JAVA_LIBRARY_PATH
+    prepend_path JAVA_LIBRARY_PATH "$builder_delivery_dir/lib:$BSF4OOREXX_LIBRARY_PATH"
+    export BSF4Rexx_JavaStartupOptions
+    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$JAVA_LIBRARY_PATH"
 }
 
 
@@ -108,8 +114,10 @@ declare_bsf4oorexx_svn()
     #     java.lang.UnsatisfiedLinkError: /local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib: dlopen(/local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib, 1): Library not loaded: @rpath/librexx.5.0.0.dylib
     #     Referenced from: /local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib
     #     Reason: image not found
+    export JAVA_LIBRARY_PATH
+    prepend JAVA_LIBRARY_PATH "$builder_delivery_dir/lib:$BSF4OOREXX_LIBRARY_PATH"
     export BSF4Rexx_JavaStartupOptions
-    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$builder_delivery_dir/lib:$BSF4OOREXX_LIBRARY_PATH"
+    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$JAVA_LIBRARY_PATH"
 }
 
 
@@ -127,10 +135,11 @@ declare_gci_rebuilt()
 }
 
 
+[ -f /local/java/setenv-jdk.sh ] && . /local/java/setenv-jdk.sh
 declare_java
 
-export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20210715-beta/bsf4oorexx
-export BSF4OOREXX_JAR=bsf4ooRexx-v641-20210715-bin.jar
+export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20210719-beta/bsf4oorexx
+export BSF4OOREXX_JAR=bsf4ooRexx-v641-20210719-bin.jar
 declare_bsf4oorexx_distribution
 
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
