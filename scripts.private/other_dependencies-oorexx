@@ -135,11 +135,11 @@ declare_gci_rebuilt()
 }
 
 
-[ -f /local/java/setenv-jdk.sh ] && . /local/java/setenv-jdk.sh
+[ -f /local/java/setenv.sh ] && . /local/java/setenv.sh
 declare_java
 
-export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20210719-beta/bsf4oorexx
-export BSF4OOREXX_JAR=bsf4ooRexx-v641-20210719-bin.jar
+export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20210724-beta/bsf4oorexx
+export BSF4OOREXX_JAR=bsf4ooRexx-v641-20210724-bin.jar
 declare_bsf4oorexx_distribution
 
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
