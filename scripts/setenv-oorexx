@@ -73,16 +73,17 @@ prepend_path PATH "$oorexx_test_trunk/framework"
 alias cdtest='cd $oorexx_test_trunk'
 alias cdtests='cd $oorexx_test_trunk'
 
-# From the directory official/incubator, reference some subdirectories in executor :
-# ln -s ../../executor/incubator/ooRexxShell ooRexxShell-executor
-# ln -s ../../executor/incubator/DocMusings DocMusings-executor
+# Optional, to do manually if you have installed official ooRexx:
+    # From the directory official/incubator, reference some subdirectories in executor :
+    # ln -s ../../executor/incubator/ooRexxShell ooRexxShell-executor
+    # ln -s ../../executor/incubator/DocMusings DocMusings-executor
 
-# From the directory official/sandbox, reference some subdirectories in executor :
-# ln -s ../../executor/sandbox/jlf jlf-executor
+    # From the directory official/sandbox, reference some subdirectories in executor :
+    # ln -s ../../executor/sandbox/jlf jlf-executor
 
-# From the directory executor/incubator, reference some subdirectories in official :
-# ln -s ../../official/incubator/ooSQLite ooSQLite
-# ln -s ../../official/incubator/regex regex
+    # From the directory executor/incubator, reference some subdirectories in official :
+    # ln -s ../../official/incubator/ooSQLite ooSQLite
+    # ln -s ../../official/incubator/regex regex
 
 echo "Setting environment for incubator"
 export oorexx_incubator=$builder_shared_dir/$builder_target/incubator
@@ -114,7 +115,9 @@ export oorexx_sandbox=$builder_shared_dir/$builder_target/sandbox
 alias cdsandbox='cd $oorexx_sandbox'
 export oorexx_sandboxjlf=$oorexx_sandbox/jlf-executor
 if [ ! -d  "$oorexx_sandboxjlf" ] ; then export oorexx_sandboxjlf=$oorexx_sandbox/jlf ; fi
+prepend_path PATH "$oorexx_sandboxjlf"
 alias cdsandboxjlf='cd $oorexx_sandboxjlf'
+alias cdjlf='cd $oorexx_sandboxjlf'
 
 echo "Setting environment for the sandbox samples"
 export oorexx_samples=$oorexx_sandboxjlf/samples

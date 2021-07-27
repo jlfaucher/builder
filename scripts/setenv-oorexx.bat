@@ -61,16 +61,17 @@ call shellscriptlib :prepend_path PATH "%oorexx_test_trunk%\framework"
 doskey cdtest=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
 doskey cdtests=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
 
-:: From the directory official\incubator, reference some subdirectories in executor :
-:: mklink /d ooRexxShell-executor ..\..\executor\incubator\ooRexxShell
-:: mklink /d DocMusings-executor ..\..\executor\incubator\DocMusings
+:: Optional, to do manually if you have installed official ooRexx:
+    :: From the directory official\incubator, reference some subdirectories in executor :
+    :: mklink /d ooRexxShell-executor ..\..\executor\incubator\ooRexxShell
+    :: mklink /d DocMusings-executor ..\..\executor\incubator\DocMusings
 
-:: From the directory official/sandbox, reference some subdirectories in executor :
-:: mklink /d jlf-executor ..\..\executor\sandbox\jlf
+    :: From the directory official/sandbox, reference some subdirectories in executor :
+    :: mklink /d jlf-executor ..\..\executor\sandbox\jlf
 
-:: From the directory executor\incubator, reference some subdirectories in official :
-:: mklink /d ooSQLite ..\..\official\incubator\ooSQLite
-:: mklink /d regex ..\..\official\incubator\regex
+    :: From the directory executor\incubator, reference some subdirectories in official :
+    :: mklink /d ooSQLite ..\..\official\incubator\ooSQLite
+    :: mklink /d regex ..\..\official\incubator\regex
 
 echo Setting environment for incubator
 set oorexx_incubator=%builder_shared_dir%\%builder_target%\incubator
@@ -95,8 +96,8 @@ call shellscriptlib :prepend_path PATH "%oorexx_oorexxshell%"
 doskey cdoorexxshell=%oorexx_incubator_drv% ^& cd %oorexx_oorexxshell%
 
 :: echo Setting environment for ooSQLite
-:: prepend_path PATH $oorexx_incubator/ooSQLite/bin/windows
-:: alias cdoosqlite='cd $oorexx_incubator/ooSQLite'
+:: call shellscriptlib :prepend_path PATH "%oorexx_incubator%\ooSQLite\bin\windows
+:: doskey cdoosqlite=%oorexx_incubator_drv% ^& cd %oorexx_incubator%\ooSQLite'
 
 echo Setting environment for the sandbox
 set oorexx_sandbox=%builder_shared_dir%\%builder_target%\sandbox
@@ -104,7 +105,9 @@ set oorexx_sandbox_drv=%builder_shared_drv%
 doskey cdsandbox=%oorexx_sandbox_drv% ^& cd %oorexx_sandbox%
 set oorexx_sandboxjlf=%oorexx_sandbox%\jlf-executor
 if not exist "%oorexx_sandboxjlf%" set oorexx_sandboxjlf=%oorexx_sandbox%\jlf
+call shellscriptlib :prepend_path PATH "%oorexx_sandboxjlf%"
 doskey cdsandboxjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandboxjlf%
+doskey cdjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandboxjlf%
 
 echo Setting environment for the sandbox samples
 set oorexx_samples=%oorexx_sandboxjlf%\samples
