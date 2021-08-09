@@ -1,4 +1,4 @@
-This file is a subset of build-oorexx.txt, limited to the build of executor.
+This file is a subset of build-oorexx.txt, limited to the build of executor5.
 
 
 --------------------------------------------------------------------------------
@@ -9,9 +9,9 @@ cd rexx
 git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
-git clone https://github.com/jlfaucher/executor.git
-mkdir -p build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/build
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
+mkdir -p build/executor5.master/main/trunk/macos/clang/release/64/build
+. ../builder/scripts/setenv build/executor5.master/main/trunk/macos/clang/release/64/
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
@@ -25,9 +25,9 @@ cd rexx
 git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
-git clone https://github.com/jlfaucher/executor.git
-mkdir -p build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/build
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
+git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
+mkdir -p build/executor5.master/main/trunk/macos/clang/release/64/build
+. ../builder/scripts/setenv build/executor5.master/main/trunk/macos/clang/release/64/
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
@@ -45,9 +45,9 @@ cd rexx
 git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
-git clone https://github.com/jlfaucher/executor.git
-mkdir build\executor.master\sandbox\jlf\trunk\win\cl\release\64
-call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\win\cl\release\64
+git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
+mkdir build\executor5.master\main\trunk\win\cl\release\64
+call ..\builder\scripts\setenv build\executor5.master\main\trunk\win\cl\release\64
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% %builder_src_dir%
 nmake install

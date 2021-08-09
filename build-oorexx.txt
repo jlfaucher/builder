@@ -202,7 +202,6 @@ mklink /d regex ..\..\official\incubator\regex
 
 --------------------------------------------------------------------------------
 Getting the git sources of executor5
-You can skip this section, I made NO change, and won't do any change soon...
 --------------------------------------------------------------------------------
 
 cd /local/rexx/oorexx
@@ -246,10 +245,14 @@ cd /local/rexx/oorexx
 . ../builder/scripts/setenv build/official/main/trunk/macos/clang/release/64/
 # MacOs executor
 . ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+# MacOs executor5
+. ../builder/scripts/setenv build/executor5.master/main/trunk/macos/clang/release/64/
 # Ubuntu ooRexx
 . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/
 # Ubuntu executor
 . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
+# Ubuntu executor5
+. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/macos/clang/release/64/
 # Now build...
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
@@ -308,7 +311,7 @@ Build the 64-bit release configuration of official ooRexx trunk, executor master
 # Prerequisite
 # - No space in the path to the current directory.
 # - Visual Studio 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
-# - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+# - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 # - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
 # - Install xalan-c: https://xalan.apache.org/xalan-c/
 
@@ -323,6 +326,8 @@ cd \local\rexx\oorexx
 call ..\builder\scripts\setenv e:build\official\main\trunk\win\cl\release\64\
 :: executor
 call ..\builder\scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64\
+:: executor5
+call ..\builder\scripts\setenv build\executor5.master\main\trunk\win\cl\release\64
 :: Now build...
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %builder_src_dir%
