@@ -1,18 +1,19 @@
 --------------------------------------------------------------------------------
-Build GCI
+Build rexx-gci
 --------------------------------------------------------------------------------
+
+Prerequisite:
+You have already installed Builder and built Executor or ooRexx with Builder.
+See build-executor.txt
+or  build-executor5.txt
+or  build-oorexx.txt
+
 
 mkdir rexx
 cd rexx
-mkdir GCI
-cd GCI
-copy ..\builder\adaptations\GCI\rexxsaa.h
-mkdir gci-source.1.1
-cd gci-source.1.1
-# Get the file gci-source.1.1.zip from https://sourceforge.net/projects/rexx-gci/files/rexx-gci/Version 1.1/
-# Unzip here
-# Nextline: Confirm all overwritings
-copy ..\..\builder\adaptations\GCI\gci-source.1.1\*.*
+git clone https://github.com/jlfaucher/rexx-gci.git
+cd rexx-gci
+cd src
 
 # MacOs & Ubuntu
 make -f GNUmakefile-builder configure

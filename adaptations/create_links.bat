@@ -3,7 +3,6 @@ if defined echo echo %echo%
 setlocal
 
 :: Replace by your path (no space !)
-set GCI=y:\local\rexx\GCI
 set BSF4OOREXX=y:\local\rexx\bsf4oorexx
 set OOREXX=y:\local\rexx\oorexx
 
@@ -109,25 +108,6 @@ goto :main
     setlocal
     set action=%1
 
-
-    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    ::GCI\gci-sources.1.1
-    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    set source=%BUILDER_ADAPTATIONS%\GCI\gci-source.1.1
-    set target=%GCI%\gci-source.1.1
-    call :%action% %source% %target% gci-try.rexx
-    call :%action% %source% %target% gci.h
-    call :%action% %source% %target% gci_convert.linux.86_64
-    call :%action% %source% %target% gci_convert.macX.all
-    call :%action% %source% %target% gci_convert.win32.vc
-    call :%action% %source% %target% gci_oslink.macX
-    call :%action% %source% %target% gci_rexxbridge.c
-    call :%action% %source% %target% gci_tree.c
-    call :%action% %source% %target% gci_win32.def
-    call :%action% %source% %target% GNUmakefile-builder
-    call :%action% %source% %target% Makefile-builder.vc
-    if "%stop%" == "1" goto :eof
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     :: bsf4oorexx\trunk

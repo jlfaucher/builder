@@ -1,9 +1,0 @@
-;
-; gci_win32.def
-;
-LIBRARY gci ; INITINSTANCE
-EXPORTS RxFuncDefine
-EXPORTS GciBitness
-EXPORTS GciFuncDrop
-EXPORTS GciPrefixChar
-EXPORTS _GciDispatcher

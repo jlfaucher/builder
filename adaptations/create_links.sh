@@ -7,7 +7,6 @@
 
 
 # Replace by your path (no space !)
-GCI=/local/rexx/GCI
 BSF4OOREXX=/local/rexx/bsf4oorexx
 OOREXX=/local/rexx/oorexx
 
@@ -102,25 +101,6 @@ diff_view()
 actions()
 {
     local action=$1
-
-
-    ################################################################################
-    # GCI/gci-source.1.1
-    ################################################################################
-
-    local source=$BUILDER_ADAPTATIONS/GCI/gci-source.1.1
-    local target=$GCI/gci-source.1.1
-    $action $source $target gci-try.rexx
-    $action $source $target gci.h
-    $action $source $target gci_convert.linux.86_64
-    $action $source $target gci_convert.macX.all
-    $action $source $target gci_convert.win32.vc
-    $action $source $target gci_oslink.macX
-    $action $source $target gci_rexxbridge.c
-    $action $source $target gci_tree.c
-    $action $source $target gci_win32.def
-    $action $source $target GNUmakefile-builder
-    $action $source $target Makefile-builder.vc
 
 
     ################################################################################
