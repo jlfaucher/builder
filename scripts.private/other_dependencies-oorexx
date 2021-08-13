@@ -3,13 +3,8 @@
 if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
 
 
-# add to front of path
-prepend_path()
-{
-    if eval test -z "\"\$$1\"" || ! eval test -z "\"\${$1##*:$2:*}\"" -o -z "\"\${$1%%*:$2}\"" -o -z "\"\${$1##$2:*}\"" -o -z "\"\${$1##$2}\"" ; then
-        eval "$1=$2:\$$1"
-    fi
-}
+# load the helpers
+. $builder_scripts_dir/shellscriptlib
 
 
 declare_java()
@@ -121,33 +116,27 @@ declare_bsf4oorexx_svn()
 }
 
 
-declare_gci_rebuilt()
-{
-    GCI_LIBRARY_PATH=$GCI_HOME/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness
-
-    # MacOs
-    export DYLD_LIBRARY_PATH
-    prepend_path DYLD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
-
-    # Ubuntu
-    export LD_LIBRARY_PATH
-    prepend_path LD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
-}
-
-
 [ -f /local/java/setenv.sh ] && . /local/java/setenv.sh
 declare_java
 
-export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20210724-beta/bsf4oorexx
-export BSF4OOREXX_JAR=bsf4ooRexx-v641-20210724-bin.jar
+export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20210728-beta/bsf4oorexx
+export BSF4OOREXX_JAR=bsf4ooRexx-v641-20210728-bin.jar
 declare_bsf4oorexx_distribution
 
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
 #declare_bsf4oorexx_svn
 
 echo "Setting environment for GCI"
-export GCI_HOME=/Local/rexx/GCI/gci-source.1.1
-declare_gci_rebuilt
+#export GCI_HOME=$builder_shared_dir/../rexx-gci
+export GCI_HOME="$( cd -P "$(dirname "$builder_shared_dir")" && pwd )"/rexx-gci
+GCI_LIBRARY_PATH=$GCI_HOME/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness
+# MacOs
+export DYLD_LIBRARY_PATH
+prepend_path DYLD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
+# Ubuntu
+export LD_LIBRARY_PATH
+prepend_path LD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
+alias cdgci='cd $GCI_HOME'
 
 echo "Setting environment for ICU"
 . /local/Unicode/ICU/setenv.sh
