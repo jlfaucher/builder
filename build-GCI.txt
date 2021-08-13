@@ -4,9 +4,10 @@ Build rexx-gci
 
 Prerequisite:
 You have already installed Builder and built Executor or ooRexx with Builder.
-See build-executor.txt
-or  build-executor5.txt
-or  build-oorexx.txt
+    See build-executor.txt
+    or  build-executor5.txt
+    or  build-oorexx.txt
+You have initialized a session with Executor or ooRexx (call builder\scripts\setenv ...)
 
 
 mkdir rexx

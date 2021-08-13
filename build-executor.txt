@@ -16,6 +16,11 @@ cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
 
+# Optional: if you installed official ooRexx
+# From the directory executor/incubator, reference some subdirectories in official :
+ln -s ../../official/incubator/ooSQLite ooSQLite
+ln -s ../../official/incubator/regex regex
+
 
 --------------------------------------------------------------------------------
 # Ubuntu
@@ -31,6 +36,11 @@ mkdir -p build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/build
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
+
+# Optional: if you installed official ooRexx
+# From the directory executor/incubator, reference some subdirectories in official :
+ln -s ../../official/incubator/ooSQLite ooSQLite
+ln -s ../../official/incubator/regex regex
 
 
 --------------------------------------------------------------------------------
@@ -52,5 +62,10 @@ cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% %builder_src_dir%
 nmake install
 
-# Optional: if you want colors in ooRexxShell, build GCI.
+# Optional: if you want colors in ooRexxShell, install rexx-gci.
 See build-GCI.txt
+
+# Optional: if you installed official ooRexx
+:: From the directory executor\incubator, reference some subdirectories in official :
+mklink /d ooSQLite ..\..\official\incubator\ooSQLite
+mklink /d regex ..\..\official\incubator\regex
