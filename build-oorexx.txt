@@ -327,7 +327,7 @@ call ..\builder\scripts\setenv e:build\official\main\trunk\win\cl\release\64\
 :: executor
 call ..\builder\scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64\
 :: executor5
-call ..\builder\scripts\setenv build\executor5.master\main\trunk\win\cl\release\64
+call ..\builder\scripts\setenv e:build\executor5.master\main\trunk\win\cl\release\64
 :: Now build...
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %builder_src_dir%

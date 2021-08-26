@@ -145,7 +145,6 @@ if exist "%other_dependencies%" (
 
 :: Old build system : rexximage must be in the path during the build.
 :: Old build system : there is no delivery (except NSIS), so PATH must include the build directory.
-echo Setting environment for building ooRexx (old build system)
 call shellscriptlib :prepend_path PATH "%builder_build_dir%"
 call shellscriptlib :prepend_path INCLUDE "%builder_build_dir%\api"
 call shellscriptlib :prepend_path LIB "%builder_build_dir%\api"
