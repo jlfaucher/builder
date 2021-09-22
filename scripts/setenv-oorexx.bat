@@ -109,18 +109,31 @@ call shellscriptlib :prepend_path PATH "%oorexx_sandboxjlf%"
 doskey cdsandboxjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandboxjlf%
 doskey cdjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandboxjlf%
 
+echo Setting environment for the sandbox packages
+set oorexx_packages=%oorexx_sandboxjlf%\packages
+set oorexx_packages_drv=%oorexx_sandbox_drv%
+call shellscriptlib :prepend_path PATH "%oorexx_packages%"
+doskey cdpackages=%oorexx_packages_drv% ^& cd %oorexx_packages%
+doskey cdextension=%oorexx_packages_drv% ^& cd %oorexx_packages%\extension
+doskey cdextensionstd=%oorexx_packages_drv% ^& cd %oorexx_packages%\extension\std
+doskey cdfunctional=%oorexx_packages_drv% ^& cd %oorexx_packages%\functional
+doskey cdconcurrency=%oorexx_packages_drv% ^& cd %oorexx_packages%\concurrency
+doskey cdmutablebuffer=%oorexx_packages_drv% ^& cd %oorexx_packages%\mutablebuffer
+doskey cdrgfutil2=%oorexx_packages_drv% ^& cd %oorexx_packages%\rgf_util2
+doskey cdtrace=%oorexx_packages_drv% ^& cd %oorexx_packages%\trace
+
 echo Setting environment for the sandbox samples
 set oorexx_samples=%oorexx_sandboxjlf%\samples
 set oorexx_samples_drv=%oorexx_sandbox_drv%
 call shellscriptlib :prepend_path PATH "%oorexx_samples%"
 doskey cdsamples=%oorexx_samples_drv% ^& cd %oorexx_samples%
-doskey cdextension=%oorexx_samples_drv% ^& cd %oorexx_samples%\extension
-doskey cdextensionstd=%oorexx_samples_drv% ^& cd %oorexx_samples%\extension\std
-doskey cdfunctional=%oorexx_samples_drv% ^& cd %oorexx_samples%\functional
-doskey cdconcurrency=%oorexx_samples_drv% ^& cd %oorexx_samples%\concurrency
-doskey cdmutablebuffer=%oorexx_samples_drv% ^& cd %oorexx_samples%\mutablebuffer
-doskey cdrgfutil2=%oorexx_samples_drv% ^& cd %oorexx_samples%\rgf_util2
-doskey cdtrace=%oorexx_samples_drv% ^& cd %oorexx_samples%\trace
+doskey cdextensionsamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\extension
+doskey cdextensionstdsamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\extension\std
+doskey cdfunctionalsamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\functional
+doskey cdconcurrencysamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\concurrency
+doskey cdmutablebuffersamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\mutablebuffer
+doskey cdrgfutil2samples=%oorexx_samples_drv% ^& cd %oorexx_samples%\rgf_util2
+doskey cdtracesamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\trace
 
 set oorexx_demos=%oorexx_sandboxjlf%\demos
 set oorexx_demos_drv=%oorexx_sandbox_drv%

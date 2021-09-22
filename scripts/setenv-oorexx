@@ -119,17 +119,30 @@ prepend_path PATH "$oorexx_sandboxjlf"
 alias cdsandboxjlf='cd $oorexx_sandboxjlf'
 alias cdjlf='cd $oorexx_sandboxjlf'
 
+echo "Setting environment for the sandbox packages"
+export oorexx_packages=$oorexx_sandboxjlf/packages
+prepend_path PATH "$oorexx_packages"
+alias cdpackages='cd $oorexx_packages'
+alias cdextension='cd $oorexx_packages/extension'
+alias cdextensionstd='cd $oorexx_packages/extension/std'
+alias cdfunctional='cd $oorexx_packages/functional'
+alias cdconcurrency='cd $oorexx_packages/concurrency'
+alias cdmutablebuffer='cd $oorexx_packages/mutablebuffer'
+alias cdrgfutil2='cd $oorexx_packages/rgf_util2'
+alias cdtrace='cd $oorexx_packages/trace'
+alias cdprofiling='cd $oorexx_packages/profiling'
+
 echo "Setting environment for the sandbox samples"
 export oorexx_samples=$oorexx_sandboxjlf/samples
 prepend_path PATH "$oorexx_samples"
 alias cdsamples='cd $oorexx_samples'
-alias cdextension='cd $oorexx_samples/extension'
-alias cdextensionstd='cd $oorexx_samples/extension/std'
-alias cdfunctional='cd $oorexx_samples/functional'
-alias cdconcurrency='cd $oorexx_samples/concurrency'
-alias cdmutablebuffer='cd $oorexx_samples/mutablebuffer'
-alias cdrgfutil2='cd $oorexx_samples/rgf_util2'
-alias cdtrace='cd $oorexx_samples/trace'
+alias cdextensionsamples='cd $oorexx_samples/extension'
+alias cdextensionstdsamples='cd $oorexx_samples/extension/std'
+alias cdfunctionalsamples='cd $oorexx_samples/functional'
+alias cdconcurrencysamples='cd $oorexx_samples/concurrency'
+alias cdmutablebuffersamples='cd $oorexx_samples/mutablebuffer'
+alias cdrgfutil2samples='cd $oorexx_samples/rgf_util2'
+alias cdtracesamples='cd $oorexx_samples/trace'
 
 export oorexx_demos=$oorexx_sandboxjlf/demos
 alias cddemos='cd $oorexx_demos'
