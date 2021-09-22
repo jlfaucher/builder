@@ -29,10 +29,22 @@ if not defined dir (
 set dir=%dir:&=^&%
 set dir=%dir:"=%
 
+if exist "%dir%" goto :directory_exists
+:ask_create_directory
+    set input=Y
+    set /p input=Create directory (Y/n)?
+    if %input% == "Y" goto :create_directory
+    if %input% == "y" goto :create_directory
+    if %input% == "N" echo Abort & exit /b 1
+    if %input% == "n" echo Abort & exit /b 1
+goto :ask_create_directory
+:create_directory
+mkdir "%dir%"
 if not exist "%dir%" (
-    echo Directory not found
+    echo Directory "%dir%" not found
     exit /b 1
 )
+:directory_exists
 call shellscriptlib :absolute_path "%dir%"
 set dir="%absolute_path%"
 set dir=%dir:&=^&%

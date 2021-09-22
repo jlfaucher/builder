@@ -23,7 +23,17 @@ fi
 
 if test ! -d "$dir"
 then
-    echo Directory not found
+    while true; do
+        read -p "Create directory '$dir' (Y/n)?" input
+        case $input in
+            [Yy]|"" ) mkdir -p "$dir"; break;;
+            [Nn]* ) echo "Abort"; return 1;;
+        esac
+    done
+fi
+if test ! -d "$dir"
+then
+    echo Directory "$dir" not found
     return 1
 fi
 dir="$( cd -P "$dir" && pwd )"
