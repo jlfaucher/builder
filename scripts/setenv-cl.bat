@@ -17,6 +17,18 @@ call set compiler_option=%%%compiler%%%
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Visual Studio 2022 (internal version: 17.0, cl version 19.30)
+
+:cl_22
+if 22 GTR %CL_MAX% goto cl_19
+set cl_dir=C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build
+if exist "%cl_dir%" (
+    call "%cl_dir%\vcvarsall.bat" %compiler_option%
+    if errorlevel 1 goto error
+    exit /b 0
+)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Visual Studio 2019 (internal version: 16.0, cl version 19.20)
 
 :cl_19
@@ -106,6 +118,7 @@ Visual Studio 2013          Dev12           12.0                18.00           
 Visual Studio 2015          Dev14           14.0                19.00               July 20, 2015
 Visual Studio 2017          Dev15           15.0                19.10               March 07, 2017
 Visual Studio 2019          Dev16           16.0                19.20               April 02, 2019
+Visual Studio 2022          Dev17           17.0                19.30               November 08, 2021
 
 
 Visual Studio includes
@@ -117,34 +130,6 @@ are installed for each target (x86, x64, and ARM).
 The 32-bit and 64-bit compilers for each target generate identical code,
 but the 64-bit compilers support more memory for precompiled header symbols
 and the Whole Program Optimization (/GL, /LTCG) options.
-
-C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
-if /i %1 == x86       goto x86
-if /i %1 == amd64     goto amd64
-if /i %1 == x64       goto amd64
-if /i %1 == arm       goto arm
-if /i %1 == x86_arm   goto x86_arm
-if /i %1 == x86_amd64 goto x86_amd64
-if /i %1 == amd64_x86 goto amd64_x86
-if /i %1 == amd64_arm goto amd64_arm
-
-C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat
-if /i %1 == x86       goto x86          32-bit command-line builds that target x86 platforms
-if /i %1 == amd64     goto amd64        64-bit command-line builds that target x64 platforms
-if /i %1 == x64       goto amd64        idem
-if /i %1 == arm       goto arm          ?
-if /i %1 == x86_arm   goto x86_arm      32-bit command line builds that target ARM platforms
-if /i %1 == x86_amd64 goto x86_amd64    32-bit command line builds that target x64 platforms
-if /i %1 == amd64_x86 goto amd64_x86    64-bit command-line builds that target x86 platforms
-if /i %1 == amd64_arm goto amd64_arm    64-bit command-line builds that target ARM platforms
-
-C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat
-if /i %1 == x86       goto x86          32-bit command-line builds that target x86 platforms
-if /i %1 == amd64     goto amd64        64-bit command-line builds that target x64 platforms
-if /i %1 == x64       goto amd64        idem
-if /i %1 == arm       goto arm          ?
-if /i %1 == x86_arm   goto x86_arm      32-bit command line builds that target ARM platforms
-if /i %1 == x86_amd64 goto x86_amd64    32-bit command line builds that target x64 platforms
 
 
 Under win32 :
@@ -173,6 +158,8 @@ PROCESSOR_ARCHITECTURE=AMD64
 
 
 https://msdn.microsoft.com/en-us/library/f2ccy3wt.aspx
+https://docs.microsoft.com/en-us/cpp/build/building-on-the-command-line?redirectedfrom=MSDN&view=msvc-170
+
 
 32 bits command-line
 --------------------
@@ -190,6 +177,11 @@ It runs as a 32-bit process, native on an x86 machine and under WOW64 on a 64-bi
 ARM on x86 (ARM cross compiler)
 Use this toolset to create output files for ARM machines.
 It runs as a 32-bit process, native on an x86 machine and under WOW64 on a 64-bit Windows operating system.
+
+"x86_arm64" (new in Visual Studio 2022)
+compiler: ARM64 on x86 cross
+host computer architecture: x86, x64
+build output (target) architecture: ARM64
 
 
 64 bits command-line
@@ -209,3 +201,8 @@ It runs as a native process on a 64-bit Windows operating system.
 ARM on x64 (ARM cross compiler)
 Use this toolset to create output files for ARM machines.
 It runs as a native 64-bit process on a 64-bit Windows operating system.
+
+"amd64_arm64" (new in Visual Studio 2022)
+compiler: ARM64 on x64 cross
+host computer architecture: x64
+build output (target) architecture: ARM64
