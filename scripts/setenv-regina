@@ -71,7 +71,7 @@ prepend_path DYLD_LIBRARY_PATH "$builder_delivery_dir/lib"
 # Other dependencies (like bsf4rexx)
 ################################################################################
 
-other_dependencies="${builder_scripts_dir}.private/other_dependencies"
+other_dependencies="${builder_scripts_dir}.private/other_dependencies-regina"
 if test -x "$other_dependencies"
 then
     echo Running "$other_dependencies"
@@ -86,8 +86,13 @@ fi
 # Export some settings, to be used from child process
 ################################################################################
 
-# See ~/.bashrc which calls : . ~/.bash_env
-# See ~/.bash_env which calls : . $rexx_environment
+# See ~/.profile which defines $ENV = . ~/.bash_env ($BASH_ENV no longer defined)
+# See ~/.bashrc which calls ~/.bash_env
+# See ~/.bash_env which calls : . "$REXX_ENVIRONMENT"
 
-export rexx_environment=$builder_config_dir/rexx_environment
-alias > "$rexx_environment"
+export REXX_ENVIRONMENT=$builder_config_dir/rexx_environment
+alias > "$REXX_ENVIRONMENT"
+
+# Because of MacOs SIP, I have to redeclare these variables.
+echo "export LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
+echo "export DYLD_LIBRARY_PATH=`echo $DYLD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
