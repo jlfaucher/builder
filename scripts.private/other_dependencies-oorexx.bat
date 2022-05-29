@@ -74,8 +74,8 @@ call shellscriptlib :prepend_path PATH "E:\windiff"
 :: cmake
 call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
 
-set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20201022-beta\bsf4oorexx
-set BSF4OOREXX_JAR=bsf4ooRexx-v641-20201022-bin.jar
+set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20220131-ga\bsf4oorexx
+set BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
 call :declare_bsf4oorexx_distribution
 
 ::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\svn\trunk

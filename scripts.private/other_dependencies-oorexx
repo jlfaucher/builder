@@ -119,8 +119,8 @@ declare_bsf4oorexx_svn()
 [ -f /local/java/setenv.sh ] && . /local/java/setenv.sh
 declare_java
 
-export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20210728-beta/bsf4oorexx
-export BSF4OOREXX_JAR=bsf4ooRexx-v641-20210728-bin.jar
+export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20220131-ga/bsf4oorexx
+export BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
 declare_bsf4oorexx_distribution
 
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
