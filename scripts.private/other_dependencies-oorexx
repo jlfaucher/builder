@@ -121,6 +121,12 @@ declare_java
 
 export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20220131-ga/bsf4oorexx
 export BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
+
+# don't use latest version of bsf4oorexx because crash under MacOs with executor4
+# doesn't crash with executor5 or official 4|5
+#export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20220810-refresh-beta/bsf4oorexx
+#export BSF4OOREXX_JAR=bsf4ooRexx-v641-20220810-bin.jar
+
 declare_bsf4oorexx_distribution
 
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
@@ -150,3 +156,7 @@ prepend_path PATH "~/Dropbox/software/oorexx"
 echo "Setting environment for BATIK"
 export BATIK_ROOT=/local/XmlToolSet/batik-1.13
 export BATIK_RASTERIZER_JAR=$BATIK_ROOT/batik-rasterizer-1.13.jar
+
+echo "Setting environment for Zig"
+. /local/zig/setenv.sh
+
