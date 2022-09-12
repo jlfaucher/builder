@@ -1,3 +1,10 @@
+Prerequisite for Executor: install zig and set PATH.
+https://ziglang.org/
+
+zig is needed to compile Ziglyph which is now included in the sources of Executor.
+Ziglyph is an alternative to utf8proc, with more functionalities.
+
+
 --------------------------------------------------------------------------------
 ooRexx directory hierarchy
 --------------------------------------------------------------------------------

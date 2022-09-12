@@ -1,6 +1,13 @@
 This file is a subset of build-oorexx.txt, limited to the build of executor.
 
 
+Prerequisite: install zig and set PATH.
+https://ziglang.org/
+
+zig is needed to compile Ziglyph which is now included in the sources of Executor.
+Ziglyph is an alternative to utf8proc, with more functionalities.
+
+
 --------------------------------------------------------------------------------
 # MacOs
 --------------------------------------------------------------------------------
