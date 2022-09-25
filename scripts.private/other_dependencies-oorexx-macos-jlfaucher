@@ -49,6 +49,9 @@ declare_bsf4oorexx_distribution()
     prepend_path JAVA_LIBRARY_PATH "$builder_delivery_dir/lib:$BSF4OOREXX_LIBRARY_PATH"
     export BSF4Rexx_JavaStartupOptions
     BSF4Rexx_JavaStartupOptions="-Djava.library.path=$JAVA_LIBRARY_PATH"
+
+    alias cdbsf='cd $BSF4OOREXX_HOME'
+    alias cdbsf4oorexx='cd $BSF4OOREXX_HOME'
 }
 
 
@@ -80,6 +83,9 @@ declare_bsf4oorexx_svn()
     prepend JAVA_LIBRARY_PATH "$builder_delivery_dir/lib:$BSF4OOREXX_LIBRARY_PATH"
     export BSF4Rexx_JavaStartupOptions
     BSF4Rexx_JavaStartupOptions="-Djava.library.path=$JAVA_LIBRARY_PATH"
+
+    alias cdbsf='cd $BSF4OOREXX_HOME'
+    alias cdbsf4oorexx='cd $BSF4OOREXX_HOME'
 }
 
 

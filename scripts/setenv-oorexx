@@ -178,3 +178,6 @@ alias > "$REXX_ENVIRONMENT"
 # Because of MacOs SIP, I have to redeclare these variables if I want bsf4ooRexx working.
 echo "export LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
 echo "export DYLD_LIBRARY_PATH=`echo $DYLD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
+
+export EXECUTOR_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+export EXECUTOR_DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH

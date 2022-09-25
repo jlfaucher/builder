@@ -69,10 +69,12 @@ call shellscriptlib :prepend_path PATH "E:\windiff"
 :: cmake
 call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
 
+set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
 set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20220131-ga\bsf4oorexx
 set BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
 call :declare_bsf4oorexx_distribution
 
+::set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
 ::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\svn\trunk
 ::call :declare_bsf4oorexx_svn
 
@@ -92,6 +94,8 @@ call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\%BSF4OOREXX_JAR%"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%"
 :: For the next line to work, you must copy manually the dynamic librairies from install/lib to install\32 and install\64, and rename them by removing the end of the filename
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\install\%builder_bitness%"
+doskey cdbsf=%BSF4OOREXX_HOME_DRIVE% ^& cd %BSF4OOREXX_HOME%
+doskey cdbsf4oorexx=%BSF4OOREXX_HOME_DRIVE% ^& cd %BSF4OOREXX_HOME%
 goto :eof
 
 :declare_bsf4oorexx_svn
@@ -101,4 +105,6 @@ call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\jars\janino\commo
 call shellscriptlib :prepend_path CLASSPATH "%BSF4OOREXX_HOME%\jars\janino\janino.jar"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\bin"
 call shellscriptlib :prepend_path PATH "%BSF4OOREXX_HOME%\bsf4oorexx.dev\source_cc\build\%builder_system%\%builder_compiler%\%builder_config%\%builder_bitness%"
+doskey cdbsf=%BSF4OOREXX_HOME_DRIVE% ^& cd %BSF4OOREXX_HOME%
+doskey cdbsf4oorexx=%BSF4OOREXX_HOME_DRIVE% ^& cd %BSF4OOREXX_HOME%
 goto :eof
