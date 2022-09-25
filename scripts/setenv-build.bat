@@ -36,6 +36,10 @@ set builder_shared_drv=%drive%
 :: <target[.branch]>/d1/d2/.../system/compiler/config/bitness
 call set current=%%builder_config_dir:%build_dir%\=%%
 
+:: ok, seems redundant with setenv-32.bat and setenv-64.bat, but it's not.
+:: we assign the value to builder_bitness, because it may be unassigned if you did not define setenv-32.bat or setenv-64.bat.
+:: Here we check that the folder corresponding to the bitness is a valid bitness.
+
 :: 32, 64
 call shellscriptlib :basename "%current%"
 set builder_bitness="%basename%"

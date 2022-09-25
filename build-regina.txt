@@ -122,11 +122,15 @@ cd /local/rexx/regina
 . ../builder/scripts/setenv build/official/interpreter/trunk/macos/clang/release/64/
 # Ubuntu
 cd /local/rexx/regina
-. ../builder/scripts/setenv /local/rexxlocal/regina/build/official/interpreter/trunk/ubuntu/gcc/release/64/
+. ../builder/scripts/setenv /local/rexxlocal/Regina/build/official/interpreter/trunk/ubuntu/gcc/release/64/
 # MacOs & Ubuntu
 cdbuild
 $builder_src_dir/configure $regina_bitness --prefix=$builder_delivery_dir
 make install
+
+Under MacOs:
+Missing file rxstack.conf.etc
+install:  <cut>/interpreter/trunk/rxstack.conf.etc does not exist
 
 
 # Maybe fixed, did not check...
@@ -153,9 +157,13 @@ Windows build
 # Build the 64-bit release configuration of Regina official/interpreter/trunk:
 :: Local directory in the virtual machine for Windows
 e:
-cd \local\rexxlocal\regina
+cd \local\rexxlocal\Regina
 :: Shared directory
 y:
-cd \local\rexx\regina
+cd \local\rexx\Regina
 call ..\builder\scripts\setenv e:build\official\interpreter\trunk\win\cl\release\64
-<todo>
+cdbuild
+nmake /f %builder_src_dir%\makefile.win%builder_bitness%.vc
+
+
+There is no procedure for delivery... run from build.

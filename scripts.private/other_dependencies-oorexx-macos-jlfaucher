@@ -1,0 +1,120 @@
+#!/bin/bash
+
+# File naming convention
+# other_dependencies-oorexx-${builder_system}-${hostname}
+#                           macos             jlfaucher
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+
+# load the helpers
+. $builder_scripts_dir/shellscriptlib
+
+
+declare_java()
+{
+    if test -z "$JAVA_HOME"
+    then
+        JAVA_HOME=`/usr/libexec/java_home 2>/dev/null`
+        export JAVA_HOME
+    fi
+    export INCLUDE
+    # you need to have a JDK installed, let INCLUDE point to its include directories to be able to resolve "jni.h"
+    prepend_path INCLUDE "$JAVA_HOME/include"
+    # libjvm.dylib
+    local JVMDIR
+    JVMDIR="$JAVA_HOME/jre/lib/server"; if test -f "$JVMDIR/libjvm.dylib"; then prepend_path DYLD_LIBRARY_PATH "$JVMDIR"; fi    # legacy
+    JVMDIR="$JAVA_HOME/lib/server"; if test -f "JVMDIR/libjvm.dylib"; then prepend_path DYLD_LIBRARY_PATH "$JVMDIR"; fi          # from openjdk 11
+}
+# MacOs 10.13
+# JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
+
+
+declare_bsf4oorexx_distribution()
+{
+    echo "Setting environment for bsf4oorexx"
+    export CLASSPATH
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME/$BSF4OOREXX_JAR"
+
+    export PATH
+    prepend_path PATH "$BSF4OOREXX_HOME"
+
+    BSF4OOREXX_LIBRARY_PATH=$BSF4OOREXX_HOME/install/$builder_bitness
+
+    export DYLD_LIBRARY_PATH
+    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"
+
+    # Needed from v641-20210715-beta
+    export JAVA_LIBRARY_PATH
+    prepend_path JAVA_LIBRARY_PATH "$builder_delivery_dir/lib:$BSF4OOREXX_LIBRARY_PATH"
+    export BSF4Rexx_JavaStartupOptions
+    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$JAVA_LIBRARY_PATH"
+}
+
+
+declare_bsf4oorexx_svn()
+{
+    echo "Setting environment for bsf4oorexx svn"
+    export CLASSPATH
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME"
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME/jars/janino/commons-compiler.jar"
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME/jars/janino/janino.jar"
+
+    export PATH
+    prepend_path PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/bin"
+
+    BSF4OOREXX_LIBRARY_PATH=$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness
+
+    export DYLD_LIBRARY_PATH
+    prepend_path DYLD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"
+
+    # To avoid these errors when using rexxj2.sh under MacOS:
+    # error1
+    #     [BSFManager.loadScriptingEngine()] unable to load language: rexx: java.lang.UnsatisfiedLinkError: no BSF4ooRexx in java.library.path
+    # error2
+    #     SEVERE: [BSFManager] Exception :
+    #     java.lang.UnsatisfiedLinkError: /local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib: dlopen(/local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib, 1): Library not loaded: @rpath/librexx.5.0.0.dylib
+    #     Referenced from: /local/rexx/bsf4oorexx/svn/trunk/bsf4oorexx.dev/source_cc/build/macos/clang/debug/64/libBSF4ooRexx.dylib
+    #     Reason: image not found
+    export JAVA_LIBRARY_PATH
+    prepend JAVA_LIBRARY_PATH "$builder_delivery_dir/lib:$BSF4OOREXX_LIBRARY_PATH"
+    export BSF4Rexx_JavaStartupOptions
+    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$JAVA_LIBRARY_PATH"
+}
+
+
+[ -f /local/java/setenv.sh ] && . /local/java/setenv.sh
+declare_java
+
+export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20220131-ga/bsf4oorexx
+export BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
+
+declare_bsf4oorexx_distribution
+
+#export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
+#declare_bsf4oorexx_svn
+
+echo "Setting environment for GCI"
+#export GCI_HOME=$builder_shared_dir/../rexx-gci
+export GCI_HOME="$( cd -P "$(dirname "$builder_shared_dir")" && pwd )"/rexx-gci
+GCI_LIBRARY_PATH=$GCI_HOME/build/$builder_system/$builder_compiler/$builder_config/$builder_bitness
+export DYLD_LIBRARY_PATH
+prepend_path DYLD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
+alias cdgci='cd $GCI_HOME'
+
+echo "Setting environment for ICU"
+. /local/Unicode/ICU/setenv.sh
+
+echo "Setting environment for BOOST"
+. /local/cpp/boost/setenv.sh
+
+echo "Setting environment for Dropbox scripts"
+prepend_path PATH "~/Dropbox/software/oorexx"
+
+echo "Setting environment for BATIK"
+export BATIK_ROOT=/local/XmlToolSet/batik-1.13
+export BATIK_RASTERIZER_JAR=$BATIK_ROOT/batik-rasterizer-1.13.jar
+
+echo "Setting environment for Zig"
+. /local/zig/setenv-0.9.1.sh
+

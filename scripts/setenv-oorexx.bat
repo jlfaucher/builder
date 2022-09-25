@@ -11,6 +11,8 @@ if not defined builder_local_dir echo builder_local_dir is undefined & exit /b 1
 if not defined builder_scripts_dir echo builder_scripts_dir is undefined & exit /b 1
 if not defined builder_shared_dir echo builder_shared_dir is undefined & exit /b 1
 if not defined builder_shared_drv echo builder_shared_drv is undefined & exit /b 1
+if not defined builder_src_dir echo builder_src_dir is undefined & exit /b 1
+if not defined builder_src_drv echo builder_src_drv is undefined & exit /b 1
 if not defined builder_src_relative_path echo builder_src_relative_path is undefined & exit /b 1
 if not defined builder_target echo builder_target is undefined & exit /b 1
 
@@ -143,7 +145,7 @@ doskey cddemos=%oorexx_demos_drv% ^& cd %oorexx_demos%
 :: Other dependencies (like NSIS, BSF4ooRexx)
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-set other_dependencies="%builder_scripts_dir%.private\other_dependencies-oorexx.bat"
+set other_dependencies="%builder_scripts_dir%.private\other_dependencies-oorexx-%builder_system%-%COMPUTERNAME%.bat"
 set other_dependencies=%other_dependencies:&=^&%
 set other_dependencies=%other_dependencies:"=%
 if exist "%other_dependencies%" (

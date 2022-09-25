@@ -33,10 +33,10 @@ if exist "%dir%" goto :directory_exists
 :ask_create_directory
     set input=Y
     set /p input=Create directory (Y/n)?
-    if %input% == "Y" goto :create_directory
-    if %input% == "y" goto :create_directory
-    if %input% == "N" echo Abort & exit /b 1
-    if %input% == "n" echo Abort & exit /b 1
+    if "%input%" == "Y" goto :create_directory
+    if "%input%" == "y" goto :create_directory
+    if "%input%" == "N" echo Abort & exit /b 1
+    if "%input%" == "n" echo Abort & exit /b 1
 goto :ask_create_directory
 :create_directory
 mkdir "%dir%"
@@ -56,6 +56,33 @@ set builder_config_dir=%dir%
 call shellscriptlib :drive "%dir%"
 set drv=%drive%
 
+:: Retrieve system from builder_config_dir
+    :: <target[.branch]>/d1/d2/.../system/compiler/config/bitness
+    set current=%builder_config_dir%
+
+    :: <target[.branch]>/d1/d2/.../system/compiler/config
+    call shellscriptlib :dirname "%current%"
+    set current="%dirname%"
+    set current=%current:&=^&%
+    set current=%current:"=%
+
+    :: <target[.branch]>/d1/d2/.../system/compiler
+    call shellscriptlib :dirname "%current%"
+    set current="%dirname%"
+    set current=%current:&=^&%
+    set current=%current:"=%
+
+    :: <target[.branch]>/d1/d2/.../system
+    call shellscriptlib :dirname "%current%"
+    set current="%dirname%"
+    set current=%current:&=^&%
+    set current=%current:"=%
+    call shellscriptlib :basename "%current%"
+    set builder_system="%basename%"
+    set builder_system=%builder_system:&=^&%
+    set builder_system=%builder_system:"=%
+::
+
 :: Iterate over each directory, from deeper to root.
 :: If a script named setenv-<dir>.bat exists in the directory of scripts then execute it.
 :: If a script named setenv-<dir>.bat exists in the directory of private scripts then execute it.
@@ -74,7 +101,7 @@ if exist "%script%" (
     if errorlevel 1 exit /b 1
 )
 :: Private script
-set script="%builder_scripts_dir%.private\setenv-%current%.bat"
+set script="%builder_scripts_dir%.private\setenv-%current%-%builder_system%-%COMPUTERNAME%.bat"
 set script=%script:&=^&%
 set script=%script:"=%
 if exist "%script%" (

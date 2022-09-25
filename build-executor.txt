@@ -55,7 +55,7 @@ ln -s ../../official/incubator/regex regex
 --------------------------------------------------------------------------------
 # Prerequisite
 # - No space in the path to the current directory.
-# - Visual Studio 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+# - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
 # - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 mkdir rexx
 cd rexx

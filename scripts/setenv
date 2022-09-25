@@ -41,6 +41,15 @@ echo $dir
 
 export builder_config_dir=$dir
 
+# Retrieve system from builder_config_dir
+current=$builder_config_dir                     # <target[.branch]>/d1/d2/.../system/compiler/config/bitness
+current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system/compiler/config
+current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system/compiler
+current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system
+builder_system=`basename "$current"`
+
+hostname=`hostname -s`
+
 # Iterate over each directory, from deeper to root.
 # If a script named setenv-<dir> exists in the directory of scripts then execute it.
 # If a script named setenv-<dir> exists in the directory of private scripts then execute it.
@@ -57,7 +66,7 @@ while [ "$dir" != "/" ]; do
         fi
     fi
     # Private script
-    script=${builder_scripts_dir}.private/setenv-${current}
+    script=${builder_scripts_dir}.private/setenv-${current}-${builder_system}-${hostname}
     if [ -x "$script" ]; then
         echo Running "$script"
         . "$script" "$dir"

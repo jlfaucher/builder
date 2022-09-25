@@ -23,9 +23,13 @@ alias cdshared='cd $builder_shared_dir'
 alias cdreginalocal='cd $builder_local_dir'
 alias cdlocal='cd $builder_local_dir'
 
-alias cdsvn='cd $builder_shared_dir/svn'
-alias cdversions='cd $builder_shared_dir/versions'
-alias cd391='cd $builder_shared_dir/versions/regina391'
+alias cdofficial='cd $builder_shared_dir/official'
+alias cdofficial_delivery='cd $builder_shared_dir/official_delivery'
+alias cd391='cd $builder_shared_dir/official_delivery/3.9.1'
+alias cd392='cd $builder_shared_dir/official_delivery/3.9.2'
+alias cd393='cd $builder_shared_dir/official_delivery/3.9.3'
+alias cd394='cd $builder_shared_dir/official_delivery/3.9.4'
+alias cd395='cd $builder_shared_dir/official_delivery/3.9.5'
 
 alias cdtrunk='cd $builder_src_dir'
 alias cdsrc='cd $builder_src_dir'
@@ -71,7 +75,8 @@ prepend_path DYLD_LIBRARY_PATH "$builder_delivery_dir/lib"
 # Other dependencies (like bsf4rexx)
 ################################################################################
 
-other_dependencies="${builder_scripts_dir}.private/other_dependencies-regina"
+hostname=`hostname -s`
+other_dependencies="${builder_scripts_dir}.private/other_dependencies-regina-${builder_system}-${hostname}"
 if test -x "$other_dependencies"
 then
     echo Running "$other_dependencies"

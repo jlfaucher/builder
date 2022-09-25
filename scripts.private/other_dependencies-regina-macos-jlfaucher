@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# File naming convention
+# other_dependencies-regina-${builder_system}-${hostname}
+#                           macos             jlfaucher
+
 if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
 
 

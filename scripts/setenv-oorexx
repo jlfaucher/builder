@@ -151,7 +151,8 @@ alias cddemos='cd $oorexx_demos'
 # Other dependencies (like bsf4oorexx)
 ################################################################################
 
-other_dependencies="${builder_scripts_dir}.private/other_dependencies-oorexx"
+hostname=`hostname -s`
+other_dependencies="${builder_scripts_dir}.private/other_dependencies-oorexx-${builder_system}-${hostname}"
 if test -x "$other_dependencies"
 then
     echo Running "$other_dependencies"

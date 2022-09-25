@@ -20,6 +20,10 @@ export builder_local_dir=`dirname "$build_dir"`
 export builder_shared_dir=$PWD
 
 current=${builder_config_dir#$build_dir/}       # <target[.branch]>/d1/d2/.../system/compiler/config/bitness
+
+# ok, seems redundant with setenv-32 and setenv-64, but it's not.
+# we assign the value to builder_bitness, because it may be unassigned if you did not define setenv-32 or setenv-64.
+# Here we check that the folder corresponding to the bitness is a valid bitness.
 export builder_bitness=`basename "$current"`    # 32, 64
 if test "$builder_bitness" != "32" -a "$builder_bitness" != "64"
 then
