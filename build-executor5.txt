@@ -4,6 +4,8 @@ This file is a subset of build-oorexx.txt, limited to the build of executor5.
 --------------------------------------------------------------------------------
 # MacOs
 --------------------------------------------------------------------------------
+
+cd <my directory>
 mkdir rexx
 cd rexx
 git clone https://github.com/jlfaucher/builder.git
@@ -25,6 +27,8 @@ ln -s ../executor/sandbox sandbox
 --------------------------------------------------------------------------------
 # Ubuntu
 --------------------------------------------------------------------------------
+
+cd <my directory>
 mkdir rexx
 cd rexx
 git clone https://github.com/jlfaucher/builder.git
@@ -50,6 +54,8 @@ ln -s ../executor/sandbox sandbox
 # - No space in the path to the current directory.
 # - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
 # - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+
+cd <my directory>
 mkdir rexx
 cd rexx
 git clone https://github.com/jlfaucher/builder.git

@@ -12,7 +12,6 @@ mkdir rexx
 cd rexx
 mkdir bsf4oorexx
 cd bsf4oorexx
-mkdir
 # Adjust the following lines by using the most recent version. Currently, only beta versions are available.
 # Get the file BSF4ooRexx_install_v641-20201217-beta.zip from https://sourceforge.net/projects/bsf4oorexx/files/beta/20200928/
 # Unzip in BSF4ooRexx_install_v641-20201217-beta

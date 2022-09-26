@@ -162,8 +162,8 @@ svn checkout svn://svn.code.sf.net/p/oorexx/code-0/docs/trunk official/docs/trun
 cd /local/rexx/oorexx
 svn checkout svn://svn.code.sf.net/p/oorexx/code-0/test/trunk official/test/trunk
 
-# To get only the incubator folders that are loaded by ooRexxShell (if available)
-svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/ooSQLite official/incubator/ooSQLite
+# To get only the regex package (loaded by ooRexxShell if available)
+cd /local/rexx/oorexx
 svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
 
 
@@ -189,7 +189,6 @@ ln -s ../../executor/incubator/DocMusings DocMusings-executor
 ln -s ../../executor/sandbox/jlf jlf-executor
 
 # From the directory executor/incubator, reference some subdirectories in official :
-ln -s ../../official/incubator/ooSQLite ooSQLite
 ln -s ../../official/incubator/regex regex
 
 
@@ -203,7 +202,6 @@ mklink /d DocMusings-executor ..\..\executor\incubator\DocMusings
 mklink /d jlf-executor ..\..\executor\sandbox\jlf
 
 :: From the directory executor\incubator, reference some subdirectories in official :
-mklink /d ooSQLite ..\..\official\incubator\ooSQLite
 mklink /d regex ..\..\official\incubator\regex
 
 
@@ -248,6 +246,8 @@ Build the 64-bit release configuration of official ooRexx trunk, executor master
 --------------------------------------------------------------------------------
 
 cd /local/rexx/oorexx
+
+# Initialize the build environment (only one of them):
 # MacOs ooRexx
 . ../builder/scripts/setenv build/official/main/trunk/macos/clang/release/64/
 # MacOs executor
@@ -260,6 +260,7 @@ cd /local/rexx/oorexx
 . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
 # Ubuntu executor5
 . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/macos/clang/release/64/
+
 # Now build...
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
