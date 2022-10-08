@@ -141,6 +141,10 @@ set oorexx_demos=%oorexx_sandboxjlf%\demos
 set oorexx_demos_drv=%oorexx_sandbox_drv%
 doskey cddemos=%oorexx_demos_drv% ^& cd %oorexx_demos%
 
+set oorexx_unicode=%oorexx_sandboxjlf%\unicode
+set oorexx_unicode_drv=%oorexx_sandbox_drv%
+doskey cdunicode=%oorexx_unicode_drv% ^& cd %oorexx_unicode%
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Other dependencies (like NSIS, BSF4ooRexx)
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

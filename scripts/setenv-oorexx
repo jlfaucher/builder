@@ -147,6 +147,9 @@ alias cdtracesamples='cd $oorexx_samples/trace'
 export oorexx_demos=$oorexx_sandboxjlf/demos
 alias cddemos='cd $oorexx_demos'
 
+export oorexx_unicode=$oorexx_sandboxjlf/unicode
+alias cdunicode='cd $oorexx_unicode'
+
 ################################################################################
 # Other dependencies (like bsf4oorexx)
 ################################################################################
