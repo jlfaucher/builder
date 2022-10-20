@@ -102,7 +102,10 @@ cd <my directory>/rexx/oorexx
 # Prerequisite
 # - No space in the path to the current directory.
 # - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
-# - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+# - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+#   Without an SDK installed, you will have this error when building cziglyph:
+#   unable to create compilation: LibCRuntimeNotFound
+
 
 cd <my directory>
 mkdir rexx
