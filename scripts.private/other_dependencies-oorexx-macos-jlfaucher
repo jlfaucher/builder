@@ -118,8 +118,12 @@ echo "Setting environment for Dropbox scripts"
 prepend_path PATH "~/Dropbox/software/oorexx"
 
 echo "Setting environment for BATIK"
-export BATIK_ROOT=/local/XmlToolSet/batik-1.13
-export BATIK_RASTERIZER_JAR=$BATIK_ROOT/batik-rasterizer-1.13.jar
+# version 1.13 is not working, version 1.15 is not working... The old version 1.7 is working
+# Exception in thread "main" java.lang.NoClassDefFoundError: org/mozilla/javascript/WrapFactory
+#export BATIK_ROOT=/local/XmlToolSet/batik-1.15
+#export BATIK_RASTERIZER_JAR=$BATIK_ROOT/batik-rasterizer-1.15.jar
+export BATIK_ROOT=/local/XmlToolSet/batik-1.7
+export BATIK_RASTERIZER_JAR=$BATIK_ROOT/batik-rasterizer.jar
 
 echo "Setting environment for Zig"
 . /local/zig/setenv-0.9.1.sh
