@@ -33,6 +33,7 @@ doskey cdexecutor5=%builder_shared_drv% ^& cd %builder_shared_dir%\executor5
 
 doskey cdtrunk=%builder_src_drv% ^& cd %builder_src_dir%
 doskey cdsrc=%builder_src_drv% ^& cd %builder_src_dir%
+doskey cdm17n=%builder_src_drv% ^& cd %builder_src_dir%\interpreter\classes\support\m17n
 
 doskey cdconfig=%builder_config_drv% ^& cd %builder_config_dir%
 doskey cdbuild=%builder_build_drv% ^& cd %builder_build_dir%

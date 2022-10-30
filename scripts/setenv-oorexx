@@ -30,6 +30,7 @@ alias cdexecutor5='cd $builder_shared_dir/executor5'
 
 alias cdtrunk='cd $builder_src_dir'
 alias cdsrc='cd $builder_src_dir'
+alias cdm17n='cd $builder_src_dir/interpreter/classes/support/m17n'
 
 alias cdconfig='cd $builder_config_dir'
 alias cdbuild='cd $builder_build_dir'
