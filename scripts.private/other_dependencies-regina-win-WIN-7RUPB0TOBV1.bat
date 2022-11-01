@@ -38,7 +38,7 @@ call shellscriptlib :prepend_path PATH "E:\windiff"
 :: cmake
 call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
 
-:: On this system, the default console code page is the OEMCP (437)
-:: That brings troubles when you execute a command which contains letters with accent.
-:: Change the default code page of the console to ACP (for european users like me : 1252).
+:: On this system, the default console code page is 850 OEM Multilingual Latin 1; Western European (DOS).
+:: That brings troubles when you execute a script created with a Window application (like Notepad) which contains letters with accent.
+:: Change the default code page of the console to 1252 ANSI Latin 1; Western European (Windows).
 chcp 1252
