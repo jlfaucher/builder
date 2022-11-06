@@ -1,5 +1,5 @@
 Prerequisite for Executor:
-    install zig and set PATH.
+    install zig 0.9.1 (NOT a more recent version) and set PATH.
     https://ziglang.org/
 
     zig is needed to compile Ziglyph which is now included in the sources of Executor.
