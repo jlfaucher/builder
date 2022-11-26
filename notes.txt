@@ -4,6 +4,26 @@ Details of the commands executed by make
 
 make VERBOSE=1 install
 
+Remember: did not find how to select the right directory for build.
+So I hardcoded this command in the solution of type nmake:
+    e:
+    cd E:\Local\rexxlocal\oorexx\build\executor.master\sandbox\jlf\trunk\win\cl\debug\64\build
+    nmake VERBOSE=1 install
+
+
+How to display the response files
+https://stackoverflow.com/questions/57358039/how-to-see-the-underlying-compiler-linker-command-line-with-cmake-nmake
+nmake has an option to display inline files / response files:
+    /U Dump inline files
+For recursive make you might want to set this in an environment variable like this:
+    set MAKEFLAGS=U
+This way, the content of all response files will appear on the console.
+---
+From cmd:
+set MAKEFLAGS=U
+devenv /useenv
+nmake VERBOSE=1 install
+
 
 --------------------------------------------------------------------------------
 Creating a distribution
