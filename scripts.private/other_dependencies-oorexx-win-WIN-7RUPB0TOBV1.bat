@@ -27,9 +27,6 @@ call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\local\XmlToolSet\xsltproc\b
 set BATIK_ROOT=%HOST_DRIVE%\local\XmlToolSet\batik-1.13
 set BATIK_RASTERIZER_JAR=%BATIK_ROOT%\batik-rasterizer-1.13.jar
 
-:: Zig
-call e:\local\zig\setenv-0.9.1.bat
-
 :: Git
 call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
 

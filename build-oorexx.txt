@@ -1,12 +1,4 @@
 Prerequisite for Executor:
-    install zig 0.9.1 (NOT a more recent version) and set PATH.
-    https://ziglang.org/
-
-    zig is needed to compile Ziglyph which is now included in the sources of Executor.
-    Ziglyph is an alternative to utf8proc, with more functionalities.
-
-
-Prerequisite for Executor:
     Your compiler supports C++17 under MacOs and C++20 under Windows.
     Needed for ICU4X which is now included in the sources of Executor.
 
