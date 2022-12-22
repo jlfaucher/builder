@@ -138,6 +138,10 @@ doskey cdmutablebuffersamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\mutabl
 doskey cdrgfutil2samples=%oorexx_samples_drv% ^& cd %oorexx_samples%\rgf_util2
 doskey cdtracesamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\trace
 
+set oorexx_tests=%oorexx_sandboxjlf%\tests
+set oorexx_tests_drv=%oorexx_sandbox_drv%
+doskey cdtests=%oorexx_tests_drv% ^& cd %oorexx_tests%
+
 set oorexx_demos=%oorexx_sandboxjlf%\demos
 set oorexx_demos_drv=%oorexx_sandbox_drv%
 doskey cddemos=%oorexx_demos_drv% ^& cd %oorexx_demos%

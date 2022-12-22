@@ -145,6 +145,9 @@ alias cdmutablebuffersamples='cd $oorexx_samples/mutablebuffer'
 alias cdrgfutil2samples='cd $oorexx_samples/rgf_util2'
 alias cdtracesamples='cd $oorexx_samples/trace'
 
+export oorexx_tests=$oorexx_sandboxjlf/tests
+alias cdtests='cd $oorexx_tests'
+
 export oorexx_demos=$oorexx_sandboxjlf/demos
 alias cddemos='cd $oorexx_demos'
 
