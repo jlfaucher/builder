@@ -11,6 +11,7 @@ set x86_32=x86
 set x86_64=x86_amd64
 set amd64_32=amd64_x86
 set amd64_64=amd64
+set arm64_64=arm64
 set compiler=%PROCESSOR_ARCHITECTURE%_%builder_bitness%
 if not defined %compiler%  goto error
 call set compiler_option=%%%compiler%%%

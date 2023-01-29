@@ -7,17 +7,37 @@ export builder_bitness=32
 # Regina : I have a mess -m32 -m64 if I don't use this configure option
 export regina_bitness=--enable-32bit
 
+# Under MacOs Apple Silicon, config --help
+#   --with-arch=option      build universal binaries on MacOS, option: one of "all 32bit 64bit intel apple-silicon ppc ppc64 x86_64 i386 arm64"
+
+# arch under MacOs Dual Core 2 Intel : i386
+# arch under MacOs Apple Silicon : not applicable, there is no 32bit
+CPU_ARCH=`arch`
+case "$CPU_ARCH" in
+i386)
+    ARCH="i386"
+    ;;
+*)
+    echo "CPU_ARCH $CPU_ARCH is not supported"
+    return 1
+    ;;
+esac
+
 platform=`uname`
 case "$platform" in
 Darwin)
-    export CFLAGS="-arch i386 $CFLAGS"
-    export CXXFLAGS="-arch i386 $CXXFLAGS"
-    export LDFLAGS="-arch i386 $LDFLAGS"
+    export CFLAGS="-arch $ARCH $CFLAGS"
+    export CXXFLAGS="-arch ARCH $CXXFLAGS"
+    export LDFLAGS="-arch ARCH $LDFLAGS"
     export ABI="32 $ABI"
     ;;
 Linux)
     export CFLAGS="-m32 $CFLAGS"
     export CXXFLAGS="-m32 $CXXFLAGS"
     export LDFLAGS="-m32 $LDFLAGS"
+    ;;
+*)
+    echo "platform $platform is not supported"
+    return 1
     ;;
 esac
