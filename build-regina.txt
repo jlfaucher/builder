@@ -15,20 +15,20 @@ Under MacOs, which is the main machine (host of the virtual machines):
 /local                                  NFS share (exported, will be mounted as /host/local under Ubuntu VM)
     rexx/
         builder/                        Scripts to support builds for several branches, configurations, bitness
-        Regina/                         $builder_shared_dir
+        regina/                         $builder_shared_dir
             ----------------------------
             official_delivery/          packaged source of specific versions
                 3.9.5/                  last delivered version (older : 3.9.4, 3.9.3, 3.9.1, 3.9.0, 3.8.2, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.0)
-            official/                   svn sources of Regina (not maintained ?)
+            official/                   svn sources of Regina
                 interpreter/
                     trunk/              next version to deliver
             ----------------------------
             build/                      where all the builds and deliveries for MacOs are done.
                 official_delivery/
-                    3.9.5/              macos/clang/[debug|reldbg|release]/[32|64]/
+                    3.9.5/              macos-[x86_64|arm64]/clang/[debug|reldbg|release]
                 official/
                     interpreter/
-                        trunk/          macos/clang/[debug|reldbg|release]/[32|64]/
+                        trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
 
 
 Ubuntu virtual machine:
@@ -37,20 +37,20 @@ The build directory is put inside the VM because of bad performances when access
 /local
     rexx@                               symbolic link to /host/local/rexx
         builder/
-        Regina/                         $builder_shared_dir
+        regina/                         $builder_shared_dir
             build/                      not used for Ubuntu
             ----------------------------
             official_delivery/          packaged source of specific versions
             official/                   svn sources of Regina
     rexxlocal/                          Local directory
-        Regina/                         $builder_local_dir
+        regina/                         $builder_local_dir
             ----------------------------
             build/                      where all the builds and deliveries for Ubuntu are done.
                 official_delivery/
-                    3.9.5/              ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+                    3.9.5/              ubuntu-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
                 official/
                     interpreter/
-                        trunk/          ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+                        trunk/          ubuntu-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
 
 
 Windows virtual machine:
@@ -61,21 +61,21 @@ Y:                                      SMB mount MacOs /local1 which contains l
 Y:\local
     rexx\
         builder\
-        Regina\                         $builder_shared_dir
+        regina\                         $builder_shared_dir
             build\                      not used
             ----------------------------
             official_delivery/          packaged source of specific versions
             official\                   svn sources of Regina
 E:\local\
     rexxlocal/                          Local directory
-        Regina/                         $builder_local_dir
+        regina/                         $builder_local_dir
             ----------------------------
             build/                      where all the builds and deliveries for Windows are done.
                 official_delivery/
-                    3.9.5/              win/cl/[debug|reldbg|release]/[32|64]/
+                    3.9.5/              windows-[x86_64|arm64]/cl/[debug|reldbg|release]
                 official/
                     interpreter/
-                        trunk/          win/cl/[debug|reldbg|release]/[32|64]/
+                        trunk/          windows-[x86_64|arm64]/cl/[debug|reldbg|release]
 
 
 --------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ Getting the svn sources of Regina
 --------------------------------------------------------------------------------
 
 # To get everything (71 MB: trunk, all releases):
-cd /local/rexx/Regina
+cd /local/rexx/regina
 svn checkout svn://svn.code.sf.net/p/regina-rexx/code/ official
 
 # You can checkout only subsets.
@@ -108,29 +108,25 @@ Download from
 https://sourceforge.net/projects/regina-rexx/files/
 
 Example :
-cd /local/rexx/Regina/official_delivery/3.9.5
+cd /local/rexx/regina/official_delivery/3.9.5
 unzip regina395.zip
 
 
 --------------------------------------------------------------------------------
-MacOs & Ubuntu build
+MacOs & Ubuntu build for x86-64 or arm64
 --------------------------------------------------------------------------------
 
 # Build the 64-bit release configuration of Regina official/interpreter/trunk:
 # MacOs
 cd /local/rexx/regina
-. ../builder/scripts/setenv build/official/interpreter/trunk/macos/clang/release/64/
+. ../builder/scripts/setenv build/official/interpreter/trunk/macos-x86_64/clang/release
 # Ubuntu
 cd /local/rexx/regina
-. ../builder/scripts/setenv /local/rexxlocal/Regina/build/official/interpreter/trunk/ubuntu/gcc/release/64/
+. ../builder/scripts/setenv /local/rexxlocal/regina/build/official/interpreter/trunk/ubuntu-x86_64/gcc/release
 # MacOs & Ubuntu
 cdbuild
 $builder_src_dir/configure $regina_bitness --prefix=$builder_delivery_dir
 make install
-
-Under MacOs:
-Missing file rxstack.conf.etc
-install:  <cut>/interpreter/trunk/rxstack.conf.etc does not exist
 
 
 # Maybe fixed, did not check...
@@ -151,17 +147,17 @@ make install
 
 
 --------------------------------------------------------------------------------
-Windows build
+Windows build for x86-64 or arm64
 --------------------------------------------------------------------------------
 
 # Build the 64-bit release configuration of Regina official/interpreter/trunk:
 :: Local directory in the virtual machine for Windows
 e:
-cd \local\rexxlocal\Regina
+cd \local\rexxlocal\regina
 :: Shared directory
 y:
-cd \local\rexx\Regina
-call ..\builder\scripts\setenv e:build\official\interpreter\trunk\win\cl\release\64
+cd \local\rexx\regina
+call ..\builder\scripts\setenv e:build\official\interpreter\trunk\windows-x86_64\cl\release
 cdbuild
 nmake /f %builder_src_dir%\makefile.win%builder_bitness%.vc
 

@@ -37,7 +37,7 @@ Under MacOs, which is the main machine (host of the virtual machines):
                     branches/
                         4.2             next minor release to deliver
                     releases/
-                        4.2.0/          last delivered version (older : 4.1.1, 4.1.0, 4.0.1, 4.0.0, 3.2.0, 3.1.2)
+                        5.0.0/          last delivered version (older : 4.2.0, 4.1.1, 4.1.0, 4.0.1, 4.0.0, 3.2.0, 3.1.2)
                             trunk/
                     trunk/              next version to deliver
             ----------------------------
@@ -45,19 +45,21 @@ Under MacOs, which is the main machine (host of the virtual machines):
                 executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
                     sandbox/
                         jlf/
-                            trunk/      macos/clang/[debug|reldbg|release]/[32|64]/
+                            trunk/      macos-[x86_64|arm64]/clang/[debug|reldbg|release]
                 executor5.master/       other branches : none for the moment
                     main/
-                        trunk/          macos/clang/[debug|reldbg|release]/[32|64]/
+                        trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
                 official/
                     main/
                         branches
                             4.2/
-                                trunk/  macos/clang/[debug|reldbg|release]/[32|64]/
+                                trunk/  macos-x86_64/clang/[debug|reldbg|release]
                         releases/
                             4.2.0/
-                                trunk/  macos/clang/[debug|reldbg|release]/[32|64]/
-                        trunk/          macos/clang/[debug|reldbg|release]/[32|64]/
+                                trunk/  macos-x86_64/clang/[debug|reldbg|release]
+                            5.0.0/
+                                trunk/  macos-[x86_64|arm64]/clang/[debug|reldbg|release]
+                        trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
 
 
 Ubuntu virtual machine:
@@ -79,19 +81,21 @@ The build directory is put inside the VM because of bad performances when access
                 executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
                     sandbox/
                         jlf/
-                            trunk/      ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+                            trunk/      ubuntu-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
                 executor5.master/       other branches : none for the moment
                     main/
-                        trunk/          ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+                        trunk/          ubuntu-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
                 official/
                     main/
                         branches
                             4.2/
-                                trunk/  ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+                                trunk/  ubuntu-x86_64/gcc/[debug|profiling|reldbg|release]
                         releases/
                             4.2.0/
-                                trunk/  ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
-                        trunk/          ubuntu/gcc/[debug|profiling|reldbg|release]/[32|64]/
+                                trunk/  ubuntu-x86_64/gcc/[debug|profiling|reldbg|release]
+                            5.0.0/
+                                trunk/  ubuntu-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
+                        trunk/          ubuntu-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
 
 
 Windows virtual machine:
@@ -116,19 +120,21 @@ E:\local\
                 executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
                     sandbox/
                         jlf/
-                            trunk/      win/cl/[debug|reldbg|release]/[32|64]/
+                            trunk/      windows-[x86_64|arm64]/cl/[debug|reldbg|release]
                 executor5.master/       other branches : none for the moment
                     main/
-                        trunk/          win/cl/[debug|reldbg|release]/[32|64]/
+                        trunk/          windows-[x86_64|arm64]/cl/[debug|reldbg|release]
                 official/
                     main/
                         branches
                             4.2/
-                                trunk/  win/cl/[debug|reldbg|release]/[32|64]/
+                                trunk/  windows-x86_64/cl/[debug|reldbg|release]
                         releases/
                             4.2.0/
-                                trunk/  win/cl/[debug|reldbg|release]/[32|64]/
-                        trunk/          win/cl/[debug|reldbg|release]/[32|64]/
+                                trunk/  windows-x86_64/cl/[debug|reldbg|release]
+                            5.0.0/
+                                trunk/  windows-[x86_64|arm64]/cl/[debug|reldbg|release]
+                        trunk/          windows-[x86_64|arm64]/cl/[debug|reldbg|release]
 
 
 --------------------------------------------------------------------------------
@@ -250,17 +256,17 @@ cd /local/rexx/oorexx
 
 # Initialize the build environment (only one of them):
 # MacOs ooRexx
-. ../builder/scripts/setenv build/official/main/trunk/macos/clang/release/64/
+. ../builder/scripts/setenv build/official/main/trunk/macos-x86_64/clang/release
 # MacOs executor
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/release
 # MacOs executor5
-. ../builder/scripts/setenv build/executor5.master/main/trunk/macos/clang/release/64/
+. ../builder/scripts/setenv build/executor5.master/main/trunk/macos-x86_64/clang/release
 # Ubuntu ooRexx
-. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/
+. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release
 # Ubuntu executor
-. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
+. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/gcc/release
 # Ubuntu executor5
-. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/macos/clang/release/64/
+. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-x86_64/clang/release
 
 # Now build...
 cdbuild
@@ -298,10 +304,10 @@ Build the 64-bit release configuration of official ooRexx release 4.2.0
 
 # MacOs
 cd /local/rexx/oorexx
-. ../builder/scripts/setenv build/official/main/releases/4.2.0/trunk/macos/clang/release/64
+. ../builder/scripts/setenv build/official/main/releases/4.2.0/trunk/macos-x86_64/clang/release
 # Ubuntu
 cd /local/rexx/oorexx
-. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/releases/4.2.0/trunk/ubuntu/gcc/release/64
+. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/releases/4.2.0/trunk/ubuntu-x86_64/gcc/release
 # MacOs & Ubuntu
 cdtrunk
 ./bootstrap
@@ -332,11 +338,11 @@ cd \local\rexxlocal\oorexx
 y:
 cd \local\rexx\oorexx
 :: ooRexx
-call ..\builder\scripts\setenv e:build\official\main\trunk\win\cl\release\64\
+call ..\builder\scripts\setenv e:build\official\main\trunk\windows-x86_64\cl\release\
 :: executor
-call ..\builder\scripts\setenv e:build\executor.master\sandbox\jlf\trunk\win\cl\release\64\
+call ..\builder\scripts\setenv e:build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
 :: executor5
-call ..\builder\scripts\setenv e:build\executor5.master\main\trunk\win\cl\release\64
+call ..\builder\scripts\setenv e:build\executor5.master\main\trunk\windows-x86_64\cl\release
 :: Now build...
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %builder_src_dir%
@@ -373,7 +379,7 @@ cd \local\rexxlocal\oorexx
 :: Shared directory
 y:
 cd \local\rexx\oorexx
-call ..\builder\scripts\setenv e:build\official\main\releases\4.2.0\trunk\win\cl\release\64
+call ..\builder\scripts\setenv e:build\official\main\releases\4.2.0\trunk\windows-x86_64\cl\release
 cdtrunk
 makeorx_verbose %BUILD_TYPE%
 :: oodialog is not built by default.

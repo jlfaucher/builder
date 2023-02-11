@@ -12,8 +12,7 @@ git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
-mkdir -p build/executor5.master/main/trunk/macos/clang/release/64/build
-. ../builder/scripts/setenv build/executor5.master/main/trunk/macos/clang/release/64/
+. ../builder/scripts/setenv build/executor5.master/main/trunk/macos-x86_64/clang/release
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
@@ -35,8 +34,7 @@ git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
-mkdir -p build/executor5.master/main/trunk/macos/clang/release/64/build
-. ../builder/scripts/setenv build/executor5.master/main/trunk/macos/clang/release/64/
+. ../builder/scripts/setenv build/executor5.master/main/trunk/macos-x86_64/clang/release
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
@@ -62,8 +60,7 @@ git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
-mkdir build\executor5.master\main\trunk\win\cl\release\64
-call ..\builder\scripts\setenv build\executor5.master\main\trunk\win\cl\release\64
+call ..\builder\scripts\setenv build\executor5.master\main\trunk\windows-x86_64\cl\release
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% %builder_src_dir%
 nmake install

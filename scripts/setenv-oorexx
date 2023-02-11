@@ -47,7 +47,7 @@ alias cddocs='cd $oorexx_doc_dir'
 # PS1='\w\$ '
 # Ubuntu 20 : I have PROMPT_COMMAND=__vte_prompt_command, and that overwrites the title.
 # Unset this variable if you have no title.
-echo -n -e "\033]0;ooRexx $builder_target $builder_branch $builder_src_relative_path $builder_config $builder_bitness\007"
+echo -n -e "\033]0;ooRexx $builder_target $builder_branch $builder_src_relative_path $builder_config $builder_system_arch\007"
 
 export PATH
 export LD_LIBRARY_PATH
@@ -114,6 +114,8 @@ alias cdoorexxshell='cd $oorexx_oorexxshell'
 echo "Setting environment for the sandbox"
 export oorexx_sandbox=$builder_shared_dir/$builder_target/sandbox
 alias cdsandbox='cd $oorexx_sandbox'
+
+echo "Setting environment for the sandbox jlf"
 export oorexx_sandboxjlf=$oorexx_sandbox/jlf-executor
 if [ ! -d  "$oorexx_sandboxjlf" ] ; then export oorexx_sandboxjlf=$oorexx_sandbox/jlf ; fi
 prepend_path PATH "$oorexx_sandboxjlf"
@@ -153,38 +155,3 @@ alias cddemos='cd $oorexx_demos'
 
 export oorexx_unicode=$oorexx_sandboxjlf/unicode
 alias cdunicode='cd $oorexx_unicode'
-
-################################################################################
-# Other dependencies (like bsf4oorexx)
-################################################################################
-
-hostname=`hostname -s`
-other_dependencies="${builder_scripts_dir}.private/other_dependencies-oorexx-${builder_system}-${hostname}"
-if test -x "$other_dependencies"
-then
-    echo Running "$other_dependencies"
-    . "$other_dependencies"
-    if test $? != 0
-    then
-        return 1
-    fi
-fi
-
-################################################################################
-# Export some settings, to be used from child process
-################################################################################
-
-# See ~/.profile which defines $ENV = . ~/.bash_env ($BASH_ENV no longer defined)
-# See ~/.bashrc which calls ~/.bash_env
-# See ~/.bash_env which calls : . "$REXX_ENVIRONMENT"
-# See oorexxshell.rex which executes bash and sh in interactive mode, to have the aliases
-
-export REXX_ENVIRONMENT=$builder_config_dir/rexx_environment
-alias > "$REXX_ENVIRONMENT"
-
-# Because of MacOs SIP, I have to redeclare these variables if I want bsf4ooRexx working.
-echo "export LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
-echo "export DYLD_LIBRARY_PATH=`echo $DYLD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
-
-export EXECUTOR_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
-export EXECUTOR_DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH

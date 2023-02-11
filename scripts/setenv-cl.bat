@@ -1,10 +1,33 @@
 @echo off
 if defined echo echo %echo%
 
-if "%builder_bitness%" == "32" goto bitness_ok
-if "%builder_bitness%" == "64" goto bitness_ok
-echo Invalid builder_bitness : "%builder_bitness%" & exit /b 1
-:bitness_ok
+:: TOO BAD
+:: builder_bitness not yet defined (will be defined by the script in the parent directory)
+:: so must get it by testing the builder system name (parent directory)
+
+:: Associated directory in the build hierarchy
+:: .../<target[.branch]>/d1/d2/.../system-arch/compiler
+set current=%1
+set current=%current:&=^&%
+set current=%current:"=%
+
+:: .../<target[.branch]>/d1/d2/.../system-arch
+call shellscriptlib :dirname "%current%"
+set current="%dirname%"
+set current=%current:&=^&%
+set current=%current:"=%
+
+:: windows-x86_32, windows-x86_64, windows-arm64
+call shellscriptlib :basename "%current%"
+set builder_system_arch="%basename%"
+set builder_system_arch=%builder_system_arch:&=^&%
+set builder_system_arch=%builder_system_arch:"=%
+
+set builder_bitness=""
+if "%builder_system_arch%" == "windows-x86_32" set builder_bitness=32
+if "%builder_system_arch%" == "windows-x86_64" set builder_bitness=64
+if "%builder_system_arch%" == "windows-arm64" set builder_bitness=64
+if "%builder_bitness%" == "" ( echo Invalid builder_bitness : "%builder_bitness%" & exit /b 1 )
 
 :: The value to pass to vcvars, depending on ProcessorArchitecture and builderBitness
 set x86_32=x86

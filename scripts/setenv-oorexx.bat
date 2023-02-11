@@ -43,7 +43,7 @@ doskey cddoc=%oorexx_doc_drv% ^& cd %oorexx_doc_dir%
 doskey cddocs=%oorexx_doc_drv% ^& cd %oorexx_doc_dir%
 
 :: Title of console
-title ooRexx %builder_target% %builder_branch% %builder_src_relative_path% %builder_config% %builder_bitness%
+title ooRexx %builder_target% %builder_branch% %builder_src_relative_path% %builder_config% %builder_system_arch%
 
 call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 
@@ -64,12 +64,15 @@ call shellscriptlib :prepend_path PATH "%oorexx_test_trunk%\framework"
 doskey cdtest=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
 doskey cdtests=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
 
+:: Next section is not working under Windows 11 Home ARM.
+:: There is a workaround in the private script setenv-executor and setenv-official.
+
 :: Optional, to do manually if you have installed official ooRexx:
     :: From the directory official\incubator, reference some subdirectories in executor :
     :: mklink /d ooRexxShell-executor ..\..\executor\incubator\ooRexxShell
     :: mklink /d DocMusings-executor ..\..\executor\incubator\DocMusings
 
-    :: From the directory official/sandbox, reference some subdirectories in executor :
+    :: From the directory official\sandbox, reference some subdirectories in executor :
     :: mklink /d jlf-executor ..\..\executor\sandbox\jlf
 
     :: From the directory executor\incubator, reference some subdirectories in official :
@@ -83,7 +86,7 @@ call shellscriptlib :prepend_path PATH "%oorexx_incubator%"
 doskey cdincubator=%oorexx_incubator_drv% ^& cd %oorexx_incubator%
 
 echo Setting environment for DocMusings
-set oorexx_docmusings=%oorexx_incubator%\docmusings-executor
+if not defined oorexx_docmusings set oorexx_docmusings=%oorexx_incubator%\docmusings-executor
 if not exist "%oorexx_docmusings%" set oorexx_docmusings=%oorexx_incubator%\docmusings
 set oorexx_docmusings_drv=%oorexx_incubator_drv%
 doskey cddocmusings=%oorexx_docmusings_drv% ^& cd %oorexx_docmusings%
@@ -93,8 +96,8 @@ doskey cdtransformxml=%oorexx_transformxml_drv% ^& cd %oorexx_transformxml%
 call shellscriptlib :prepend_path PATH "%oorexx_docmusings%"
 
 echo Setting environment for ooRexxShell
-set oorexx_oorexxshell=%oorexx_incubator%/ooRexxShell-executor
-if not exist "%oorexx_oorexxshell%" set oorexx_oorexxshell=%oorexx_incubator%/ooRexxShell
+if not defined oorexx_oorexxshell set oorexx_oorexxshell=%oorexx_incubator%\ooRexxShell-executor
+if not exist "%oorexx_oorexxshell%" set oorexx_oorexxshell=%oorexx_incubator%\ooRexxShell
 call shellscriptlib :prepend_path PATH "%oorexx_oorexxshell%"
 doskey cdoorexxshell=%oorexx_incubator_drv% ^& cd %oorexx_oorexxshell%
 
@@ -106,7 +109,9 @@ echo Setting environment for the sandbox
 set oorexx_sandbox=%builder_shared_dir%\%builder_target%\sandbox
 set oorexx_sandbox_drv=%builder_shared_drv%
 doskey cdsandbox=%oorexx_sandbox_drv% ^& cd %oorexx_sandbox%
-set oorexx_sandboxjlf=%oorexx_sandbox%\jlf-executor
+
+echo Setting environment for the sandbox jlf
+if not defined oorexx_sandboxjlf set oorexx_sandboxjlf=%oorexx_sandbox%\jlf-executor
 if not exist "%oorexx_sandboxjlf%" set oorexx_sandboxjlf=%oorexx_sandbox%\jlf
 call shellscriptlib :prepend_path PATH "%oorexx_sandboxjlf%"
 doskey cdsandboxjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandboxjlf%
@@ -149,19 +154,6 @@ doskey cddemos=%oorexx_demos_drv% ^& cd %oorexx_demos%
 set oorexx_unicode=%oorexx_sandboxjlf%\unicode
 set oorexx_unicode_drv=%oorexx_sandbox_drv%
 doskey cdunicode=%oorexx_unicode_drv% ^& cd %oorexx_unicode%
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Other dependencies (like NSIS, BSF4ooRexx)
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-set other_dependencies="%builder_scripts_dir%.private\other_dependencies-oorexx-%builder_system%-%COMPUTERNAME%.bat"
-set other_dependencies=%other_dependencies:&=^&%
-set other_dependencies=%other_dependencies:"=%
-if exist "%other_dependencies%" (
-    echo Running "%other_dependencies%"
-    call "%other_dependencies%"
-    if errorlevel 1 exit /b 1
-)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Compatibility with old build system (oorexx <= 4.2)

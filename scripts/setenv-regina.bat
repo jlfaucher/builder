@@ -49,7 +49,7 @@ doskey cddoc=%regina_doc_drv% ^& cd %regina_doc_dir%
 doskey cddocs=%regina_doc_drv% ^& cd %regina_doc_dir%
 
 :: Title of console
-title Regina %builder_target% %builder_branch% %builder_src_relative_path% %builder_config% %builder_bitness%
+title Regina %builder_target% %builder_branch% %builder_src_relative_path% %builder_config% %builder_system_arch%
 
 call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 
@@ -61,16 +61,3 @@ echo Setting environment for executing Regina
 call shellscriptlib :prepend_path PATH "%builder_delivery_dir%\bin"
 :: no procedure for delivery, run from build
 call shellscriptlib :prepend_path PATH "%builder_build_dir%"
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Other dependencies (like NSIS, BSF4ooRexx)
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-set other_dependencies="%builder_scripts_dir%.private\other_dependencies-regina-%builder_system%-%COMPUTERNAME%.bat"
-set other_dependencies=%other_dependencies:&=^&%
-set other_dependencies=%other_dependencies:"=%
-if exist "%other_dependencies%" (
-    echo Running "%other_dependencies%"
-    call "%other_dependencies%"
-    if errorlevel 1 exit /b 1
-)

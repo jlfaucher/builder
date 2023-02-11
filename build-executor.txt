@@ -24,8 +24,8 @@ cd oorexx
 git clone https://github.com/jlfaucher/executor.git
 
 # Initialize the build environment:
-# build/<target[.branch]>/d1/d2/.../system/compiler/config/bitness
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+# build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/release
 
 # Several aliases are defined to navigate easily in the directories:
 alias
@@ -50,7 +50,7 @@ oorexxshell
 
 # Next time, when starting from a fresh console:
 cd <my directory>/rexx/oorexx
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos/clang/release/64/
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/release
 
 
 --------------------------------------------------------------------------------
@@ -68,8 +68,8 @@ cd oorexx
 git clone https://github.com/jlfaucher/executor.git
 
 # Initialize the build environment:
-# build/<target[.branch]>/d1/d2/.../system/compiler/config/bitness
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
+# build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/gcc/release
 
 # Several aliases are defined to navigate easily in the directories:
 alias
@@ -94,7 +94,7 @@ oorexxshell
 
 # Next time, when starting from a fresh console:
 cd <my directory>/rexx/oorexx
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/gcc/release
 
 
 --------------------------------------------------------------------------------
@@ -120,8 +120,8 @@ git clone https://github.com/jlfaucher/executor.git
 doskey /macros
 
 :: Initialize the build environment:
-:: build/<target[.branch]>/d1/d2/.../system/compiler/config/bitness
-call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\win\cl\release\64
+:: build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
+call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
 
 :: Configure
 cdbuild
@@ -132,7 +132,7 @@ nmake install
 cd <my directory>
 cd rexx
 git clone https://github.com/jlfaucher/rexx-gci.git
-:: and add <my directory>/rexx/rexx-gci/build/win/cl/release/64 to your PATH
+:: and add <my directory>/rexx/rexx-gci/build/windows-x86_64/cl/release to your PATH
 
 :: Optional: get the regex package (loaded by ooRexxShell if available)
 cdoorexx
@@ -147,4 +147,4 @@ oorexxshell
 
 :: Next time, when starting from a fresh console:
 cd <my directory>/rexx/oorexx
-call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\win\cl\release\64
+call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release

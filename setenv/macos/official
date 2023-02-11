@@ -1,0 +1,6 @@
+# $1 is mandatory: debug or profiling or reldbg or release
+
+# not using `arch` because returns "i386" on my MBP 2010 Intel.
+# x86_64, arm64
+ARCH=`uname -m`
+. ../builder/scripts/setenv build/official/main/trunk/macos-$ARCH/clang/$1

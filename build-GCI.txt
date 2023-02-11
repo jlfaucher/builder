@@ -6,7 +6,7 @@ cd <my directory>
 mkdir rexx
 cd rexx
 git clone https://github.com/jlfaucher/rexx-gci.git
-:: and add <my directory>/rexx/rexx-gci/build/win/cl/release/64 to your PATH
+:: and add <my directory>/rexx/rexx-gci/build/windows-x86_64/cl/release to your PATH
 
 
 --------------------------------------------------------------------------------

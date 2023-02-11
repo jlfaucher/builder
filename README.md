@@ -10,7 +10,7 @@ Usage :
 
 where  
 \<sources root\> is the root directory of the sources.  
-\<build path\> is <[path]target[.branch]/d1/d2/.../system/compiler/config/bitness>  
+\<build path\> is <[path]target[.branch]/d1/d2/.../system-arch/compiler/config>  
 
 For real examples, see:
 
@@ -27,28 +27,29 @@ The scripts/setenv script iterates over each directory, from deeper to root.
 If a script named setenv-"directory" exists in the directory of scripts then execute it.  
 If a script named setenv-"directory" exists in the directory of private scripts then execute it.  
 
-    /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/
+    /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release/
     Scripts currently defined :
-    |  setenv-64
     |  setenv-release
     |  setenv-build
     V  setenv-oorexx
 
 
     Examples of variables set by scripts/setenv (values for ubuntu):
+    builder_arch                x86_64
     builder_bitness             64
     builder_branch
-    builder_build_dir           /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/build
+    builder_build_dir           /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release/build
     builder_compiler            gcc
     builder_config              release
-    builder_config_dir          /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64
-    builder_delivery_dir        /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu/gcc/release/64/deliver
+    builder_config_dir          /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release
+    builder_delivery_dir        /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release/deliver
     builder_local_build_dir     /local/rexxlocal/oorexx/build
     builder_local_dir           /local/rexxlocal/oorexx
     builder_scripts_dir         /local/builder/scripts
     builder_shared_dir          /local/rexx/oorexx
     builder_src_relative_path   main/trunk
     builder_system              ubuntu
+    builder_system_arch         ubuntu-x86_64
     builder_target              official
     builder_target_branch       official
 

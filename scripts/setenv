@@ -11,13 +11,27 @@ export builder_scripts_dir="$( cd -P "$(dirname "$FILE")" && pwd )"
 
 prepend_path PATH "$builder_scripts_dir"
 
+# THE CURRENT DIRECTORY IS USED AS BUILDER SHARED DIR
+# This is the directory which contains the source, shared by all the platforms (MacOs, Linux, Windows)
+# Assumptions : build, official, executor and executor5 are all in the same shared directory.
+export builder_shared_dir=$PWD
+
 export builder_dir=`dirname "$builder_scripts_dir"`
 alias cdbuilder='cd $builder_dir'
 
+# Remember: this argument can be a relative path
 dir=$1
 if test -z "$dir"
 then
-    echo Mandatory argument: path to config directory \""build/<target[.branch]>/d1/d2/.../system/compiler/config/bitness"\"
+    echo Mandatory argument: path to config directory \""build/<target[.branch]>/d1/d2/.../system-arch/compiler/config"\"
+    return 1
+fi
+
+export builder_config=`basename "$dir"`     # debug, profiling, reldbg, release
+if test "$builder_config" != "debug" -a "$builder_config" != "profiling" -a "$builder_config" != "reldbg" -a "$builder_config" != "release"
+then
+    echo "Invalid config: $builder_config"
+    echo "Expected: debug or profiling or reldbg or release"
     return 1
 fi
 
@@ -36,17 +50,19 @@ then
     echo Directory "$dir" not found
     return 1
 fi
+
+# Fully qualified path
 dir="$( cd -P "$dir" && pwd )"
 echo $dir
 
+# KEEP THIS DECLARATION HERE, TO HAVE A FULLY QUALIFIED PATH
 export builder_config_dir=$dir
 
 # Retrieve system from builder_config_dir
-current=$builder_config_dir                     # <target[.branch]>/d1/d2/.../system/compiler/config/bitness
-current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system/compiler/config
-current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system/compiler
-current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system
-builder_system=`basename "$current"`
+current=$builder_config_dir                     # <target[.branch]>/d1/d2/.../system-arch/compiler/config
+current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system-arch/compiler
+current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system-arch
+builder_system_arch=`basename "$current"`
 
 hostname=`hostname -s`
 
@@ -56,6 +72,8 @@ hostname=`hostname -s`
 while [ "$dir" != "/" ]; do
     current=`basename "$dir"`
     echo "[current="$current"]"
+
+    # Script common to all machines
     script=${builder_scripts_dir}/setenv-${current}
     if [ -x "$script" ]; then
         echo Running "$script"
@@ -65,8 +83,9 @@ while [ "$dir" != "/" ]; do
             return 1
         fi
     fi
+
     # Private script
-    script=${builder_scripts_dir}.private/setenv-${current}-${builder_system}-${hostname}
+    script=${builder_scripts_dir}.private/setenv-${current}-${builder_system_arch}-${hostname}
     if [ -x "$script" ]; then
         echo Running "$script"
         . "$script" "$dir"
@@ -77,3 +96,22 @@ while [ "$dir" != "/" ]; do
     fi
     dir=`dirname "$dir"`
 done
+
+################################################################################
+# Export some settings, to be used from child process
+################################################################################
+
+# See ~/.profile which defines $ENV = . ~/.bash_env ($BASH_ENV no longer defined)
+# See ~/.bashrc which calls ~/.bash_env
+# See ~/.bash_env which calls : . "$REXX_ENVIRONMENT"
+# See oorexxshell.rex which executes bash and sh in interactive mode, to have the aliases
+
+export REXX_ENVIRONMENT=$builder_config_dir/rexx_environment
+alias > "$REXX_ENVIRONMENT"
+
+# Because of MacOs SIP, I have to redeclare these variables if I want bsf4ooRexx working.
+echo "export LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
+echo "export DYLD_LIBRARY_PATH=`echo $DYLD_LIBRARY_PATH`" >> "$REXX_ENVIRONMENT"
+
+export EXECUTOR_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+export EXECUTOR_DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH

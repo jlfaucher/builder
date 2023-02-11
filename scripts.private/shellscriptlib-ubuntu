@@ -1,0 +1,81 @@
+################################################################################
+#
+# Library of shell-script procedures for Ubuntu
+#
+################################################################################
+
+declare_java()
+{
+    if test -z "$JAVA_HOME"
+    then
+        JAVA_HOME=`readlink -f \`which java\``  # .../bin/java
+        JAVA_HOME=`dirname "$JAVA_HOME"`        # .../bin
+        JAVA_HOME=`dirname "$JAVA_HOME"`        # ...
+        export JAVA_HOME
+    fi
+    export INCLUDE
+    # you need to have a JDK installed, let INCLUDE point to its include directories to be able to resolve "jni.h"
+    prepend_path INCLUDE "$JAVA_HOME/include"
+    # libjvm.dylib
+    local JVMDIR
+    JVMDIR="$JAVA_HOME/jre/lib/amd64/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi   # legacy
+    JVMDIR="$JAVA_HOME/lib/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi             # from openjdk 11
+}
+# Ubuntu 16
+# JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+#   ./lib/amd64/server/libjvm.so
+# echo $LD_LIBRARY_PATH
+#   /Local/rexx/GCI/gci-source.1.1/build/ubuntu/gcc/release/64
+#   /local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20201022-beta/bsf4oorexx/install/64
+#   /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server
+#   /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/delivery/lib
+
+# Ubuntu 20
+# JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+#   ./lib/server/libjvm.so
+
+
+declare_bsf4oorexx_distribution()
+{
+    echo "Setting environment for bsf4oorexx"
+    export CLASSPATH
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME/$BSF4OOREXX_JAR"
+
+    export PATH
+    prepend_path PATH "$BSF4OOREXX_HOME"
+
+    BSF4OOREXX_LIBRARY_PATH=$BSF4OOREXX_HOME/install/lib/$builder_system_arch
+
+    export LD_LIBRARY_PATH
+    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"
+
+    # Needed from v641-20210715-beta
+    export JAVA_LIBRARY_PATH
+    prepend_path JAVA_LIBRARY_PATH "$builder_delivery_dir/lib:$BSF4OOREXX_LIBRARY_PATH"
+    export BSF4Rexx_JavaStartupOptions
+    BSF4Rexx_JavaStartupOptions="-Djava.library.path=$JAVA_LIBRARY_PATH"
+
+    alias cdbsf='cd $BSF4OOREXX_HOME'
+    alias cdbsf4oorexx='cd $BSF4OOREXX_HOME'
+}
+
+
+declare_bsf4oorexx_svn()
+{
+    echo "Setting environment for bsf4oorexx svn"
+    export CLASSPATH
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME"
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME/jars/janino/commons-compiler.jar"
+    prepend_path CLASSPATH "$BSF4OOREXX_HOME/jars/janino/janino.jar"
+
+    export PATH
+    prepend_path PATH "$BSF4OOREXX_HOME/bsf4oorexx.dev/bin"
+
+    BSF4OOREXX_LIBRARY_PATH=$BSF4OOREXX_HOME/bsf4oorexx.dev/source_cc/build/$builder_system_arch/$builder_compiler/$builder_config
+
+    export LD_LIBRARY_PATH
+    prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"
+
+    alias cdbsf='cd $BSF4OOREXX_HOME'
+    alias cdbsf4oorexx='cd $BSF4OOREXX_HOME'
+}

@@ -1,0 +1,5 @@
+# $1 is mandatory: debug or profiling or reldbg or release
+
+# x86_64, arm64
+ARCH=`uname -m`
+. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-$ARCH/clang/$1

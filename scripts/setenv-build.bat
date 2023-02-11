@@ -3,6 +3,9 @@ if defined echo echo %echo%
 
 :: Those variables must be defined before calling this script
 if not defined builder_config_dir echo builder_config_dir is undefined & exit /b 1
+if not defined builder_config echo builder_config is undefined & exit /b 1
+if not defined builder_shared_dir echo builder_shared_dir is undefined & exit /b 1
+if not defined builder_shared_drv echo builder_shared_drv is undefined & exit /b 1
 
 call shellscriptlib :drive "%builder_config_dir%"
 set builder_config_drv=%drive%
@@ -23,58 +26,11 @@ set builder_local_dir=%builder_local_dir:"=%
 call shellscriptlib :drive "%builder_local_dir%"
 set builder_local_drv=%drive%
 
-:: This is the directory which contains the source, shared by all the platforms (MacOs, Linux, Windows)
-:: Careful ! Not necessarily equal to builder_local_dir.
-:: Assumptions : build, official, executor and executor5 are all in the same shared directory.
-set builder_shared_dir=%cd%
-set builder_shared_dir=%builder_shared_dir:&=^&%
-set builder_shared_dir=%builder_shared_dir:"=%
-call shellscriptlib :drive "%builder_shared_dir%"
-set builder_shared_drv=%drive%
-
 :: Both variables contain an absolute path (same root) with a drive letter, no risk of wrong substitution
-:: <target[.branch]>/d1/d2/.../system/compiler/config/bitness
+:: <target[.branch]>/d1/d2/.../system-arch/compiler/config
 call set current=%%builder_config_dir:%build_dir%\=%%
 
-:: ok, seems redundant with setenv-32.bat and setenv-64.bat, but it's not.
-:: we assign the value to builder_bitness, because it may be unassigned if you did not define setenv-32.bat or setenv-64.bat.
-:: Here we check that the folder corresponding to the bitness is a valid bitness.
-
-:: 32, 64
-call shellscriptlib :basename "%current%"
-set builder_bitness="%basename%"
-set builder_bitness=%builder_bitness:&=^&%
-set builder_bitness=%builder_bitness:"=%
-
-if "%builder_bitness%" == "32" goto :bitness_ok
-if "%builder_bitness%" == "64" goto :bitness_ok
-echo Invalid bitness: %builder_bitness%
-echo Expected: 32 or 64
-exit /b 1
-:bitness_ok
-
-:: <target[.branch]>/d1/d2/.../system/compiler/config
-call shellscriptlib :dirname "%current%"
-set current="%dirname%"
-set current=%current:&=^&%
-set current=%current:"=%
-
-:: debug, profiling, reldbg, release
-call shellscriptlib :basename "%current%"
-set builder_config="%basename%"
-set builder_config=%builder_config:&=^&%
-set builder_config=%builder_config:"=%
-
-if "%builder_config%" == "debug" goto config_ok
-if "%builder_config%" == "profiling" goto config_ok
-if "%builder_config%" == "reldbg" goto config_ok
-if "%builder_config%" == "release" goto config_ok
-echo Invalid config: %builder_config%
-echo Expected: debug or profiling or reldbg or release
-exit /b 1
-:config_ok
-
-:: <target[.branch]>/d1/d2/.../system/compiler
+:: <target[.branch]>/d1/d2/.../system-arch/compiler
 call shellscriptlib :dirname "%current%"
 set current="%dirname%"
 set current=%current:&=^&%
@@ -85,16 +41,23 @@ set builder_compiler="%basename%"
 set builder_compiler=%builder_compiler:&=^&%
 set builder_compiler=%builder_compiler:"=%
 
-:: <target[.branch]>/d1/d2/.../system
+:: <target[.branch]>/d1/d2/.../system-arch
 call shellscriptlib :dirname "%current%"
 set current="%dirname%"
 set current=%current:&=^&%
 set current=%current:"=%
 
 call shellscriptlib :basename "%current%"
-set builder_system="%basename%"
-set builder_system=%builder_system:&=^&%
-set builder_system=%builder_system:"=%
+set builder_system_arch="%basename%"
+set builder_system_arch=%builder_system_arch:&=^&%
+set builder_system_arch=%builder_system_arch:"=%
+
+if not "%builder_system_arch%" == "%builder_system%-%builder_arch%" (
+    echo Inconsistency detected:
+    echo builder_system_arch = %builder_system_arch%
+    echo builder_system = %builder_system%
+    echo builder_arch = %builder_arch%
+)
 
 :: <target[.branch]>/d1/d2/...
 call shellscriptlib :dirname "%current%"

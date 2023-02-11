@@ -1,0 +1,39 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# 2019 jan 02 after upgrade to High Sierra and installation of Xcode 10.1
+# Xcode 10.1 doesn't support stdlibc++ anymore
+# https://github.com/MDAnalysis/mdanalysis/issues/2144
+# ld: library not found for -lstdc++
+export MACOSX_DEPLOYMENT_TARGET=10.9
+export CXXFLAGS="-stdlib=libc++ -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET $CXXFLAGS"
+export LDFLAGS="-stdlib=libc++ -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET $LDFLAGS"
+
+# REMEMBER
+# cmake has a cache in the build directory, where the value of the environment variable MACOSX_DEPLOYMENT_TARGET is stored.
+# This cache CMakeCache.txt must be deleted otherwise the new value is not taken into account.
+
+
+export builder_bitness=64
+
+# Regina : I have a mess -m32 -m64 if I don't use this configure option
+export regina_bitness=--enable-64bit
+
+# Under MacOs Apple Silicon, config --help
+#   --with-arch=option      build universal binaries on MacOS, option: one of "all 32bit 64bit intel apple-silicon ppc ppc64 x86_64 i386 arm64"
+
+# Redundant with builder_system_arch, but it's a good way to check the
+# consistency between the declarations here, and the system-arch directory
+# (checked in setenv-build)
+export builder_system="macos"
+builder_arch="x86_64"
+
+export CFLAGS="-arch $builder_arch $CFLAGS"
+export CXXFLAGS="-arch $builder_arch $CXXFLAGS"
+export LDFLAGS="-arch $builder_arch $LDFLAGS"
+
+# Can't remember why I declared this variable
+# Searched when it could be used, found:
+# https://gmplib.org/list-archives/gmp-discuss/2010-September/004312.html
+export ABI="64 $ABI"

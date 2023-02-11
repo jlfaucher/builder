@@ -17,7 +17,7 @@
 #    limitations under the License.
 # -----------------------------------------------------------------------------
 
-BLD_PATH = build/$(builder_system)/$(builder_compiler)/$(builder_config)/$(builder_bitness)
+BLD_PATH = build/$(builder_system_arch)/$(builder_compiler)/$(builder_config)
 
 INC_PATH = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I.
 # The path to the header files of ooRexx is declared in CPLUS_INCLUDE_PATH
