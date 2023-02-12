@@ -90,7 +90,7 @@ MacOs /etc/exports
 /local              -mapall=502          where 502 is the uid displayed by the command id.
 /Users/jlfaucher    -mapall=502
 
-Ubuntu fstab:
+Linux fstab:
 jlfaucher.local:/local	            /host/local	nfs	defaults	0	0
 jlfaucher.local:/Users/jlfaucher    /host/local nfs defaults    0   0
 

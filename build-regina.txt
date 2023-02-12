@@ -3,7 +3,7 @@ Regina directory hierarchy
 --------------------------------------------------------------------------------
 
 One MacOs host.
-One Ubuntu virtual machine.
+One Linux virtual machine.
 One Windows virtual machine.
 
 Only one occurence of the git & svn sources, stored on the MacOs host.
@@ -12,7 +12,7 @@ Any change made to the sources under MacOs is immediatly available from the VMs.
 Under MacOs, which is the main machine (host of the virtual machines):
 /local1                                 SMB share (exported, will be mounted as Y: under Windows VM)
     local@                              symbolic link to /local (the goal is to have Y:\local)
-/local                                  NFS share (exported, will be mounted as /host/local under Ubuntu VM)
+/local                                  NFS share (exported, will be mounted as /host/local under Linux VM)
     rexx/
         builder/                        Scripts to support builds for several branches, configurations, bitness
         regina/                         $builder_shared_dir
@@ -31,26 +31,26 @@ Under MacOs, which is the main machine (host of the virtual machines):
                         trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
 
 
-Ubuntu virtual machine:
+Linux virtual machine:
 The build directory is put inside the VM because of bad performances when accessing $builder_shared_dir.
 /host/local                             NFS mount MacOs /local
 /local
     rexx@                               symbolic link to /host/local/rexx
         builder/
         regina/                         $builder_shared_dir
-            build/                      not used for Ubuntu
+            build/                      not used for Linux
             ----------------------------
             official_delivery/          packaged source of specific versions
             official/                   svn sources of Regina
     rexxlocal/                          Local directory
         regina/                         $builder_local_dir
             ----------------------------
-            build/                      where all the builds and deliveries for Ubuntu are done.
+            build/                      where all the builds and deliveries for Linux are done.
                 official_delivery/
-                    3.9.5/              ubuntu-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
+                    3.9.5/              linux-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
                 official/
                     interpreter/
-                        trunk/          ubuntu-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
+                        trunk/          linux-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
 
 
 Windows virtual machine:
@@ -113,17 +113,17 @@ unzip regina395.zip
 
 
 --------------------------------------------------------------------------------
-MacOs & Ubuntu build for x86-64 or arm64
+MacOs & Linux build for x86-64 or arm64
 --------------------------------------------------------------------------------
 
 # Build the 64-bit release configuration of Regina official/interpreter/trunk:
 # MacOs
 cd /local/rexx/regina
 . ../builder/scripts/setenv build/official/interpreter/trunk/macos-x86_64/clang/release
-# Ubuntu
+# Linux
 cd /local/rexx/regina
-. ../builder/scripts/setenv /local/rexxlocal/regina/build/official/interpreter/trunk/ubuntu-x86_64/gcc/release
-# MacOs & Ubuntu
+. ../builder/scripts/setenv /local/rexxlocal/regina/build/official/interpreter/trunk/linux-x86_64/gcc/release
+# MacOs & Linux
 cdbuild
 $builder_src_dir/configure $regina_bitness --prefix=$builder_delivery_dir
 make install

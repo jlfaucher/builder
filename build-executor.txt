@@ -54,7 +54,7 @@ cd <my directory>/rexx/oorexx
 
 
 --------------------------------------------------------------------------------
-# Ubuntu
+# Linux
 --------------------------------------------------------------------------------
 
 cd <my directory>
@@ -69,7 +69,7 @@ git clone https://github.com/jlfaucher/executor.git
 
 # Initialize the build environment:
 # build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/gcc/release
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release
 
 # Several aliases are defined to navigate easily in the directories:
 alias
@@ -94,7 +94,7 @@ oorexxshell
 
 # Next time, when starting from a fresh console:
 cd <my directory>/rexx/oorexx
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/gcc/release
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release
 
 
 --------------------------------------------------------------------------------

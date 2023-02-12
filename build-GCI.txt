@@ -25,7 +25,7 @@ cd rexx
 cd rexx-gci
 cd src
 
-# MacOs & Ubuntu
+# MacOs & Linux
 make -f GNUmakefile-builder configure
 make -f GNUmakefile-builder
 

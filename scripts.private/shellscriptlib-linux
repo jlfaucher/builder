@@ -1,6 +1,6 @@
 ################################################################################
 #
-# Library of shell-script procedures for Ubuntu
+# Library of shell-script procedures for Linux
 #
 ################################################################################
 
@@ -25,10 +25,10 @@ declare_java()
 # JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 #   ./lib/amd64/server/libjvm.so
 # echo $LD_LIBRARY_PATH
-#   /Local/rexx/GCI/gci-source.1.1/build/ubuntu/gcc/release/64
-#   /local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20201022-beta/bsf4oorexx/install/64
+#   /Local/rexx/GCI/gci-source.1.1/build/linux-x86_64/gcc/release
+#   /local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20201022-beta/bsf4oorexx/lib/linux-x86_64
 #   /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server
-#   /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu/gcc/release/64/delivery/lib
+#   /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release/delivery/lib
 
 # Ubuntu 20
 # JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
@@ -39,12 +39,17 @@ declare_bsf4oorexx_distribution()
 {
     echo "Setting environment for bsf4oorexx"
     export CLASSPATH
-    prepend_path CLASSPATH "$BSF4OOREXX_HOME/$BSF4OOREXX_JAR"
+    if [ -f "$BSF4OOREXX_HOME/$BSF4OOREXX_JAR" ]; then prepend_path CLASSPATH "$BSF4OOREXX_HOME/$BSF4OOREXX_JAR"; fi
+    if [ -f "$BSF4OOREXX_HOME/lib/$BSF4OOREXX_JAR" ]; then prepend_path CLASSPATH "$BSF4OOREXX_HOME/lib/$BSF4OOREXX_JAR"; fi
+    if [ -f "$BSF4OOREXX_HOME/jars/$BSF4OOREXX_JAR" ]; then prepend_path CLASSPATH "$BSF4OOREXX_HOME/jars/$BSF4OOREXX_JAR"; fi
 
     export PATH
     prepend_path PATH "$BSF4OOREXX_HOME"
+    if [ -d "$BSF4OOREXX_HOME/bin" ]; then prepend_path PATH "$BSF4OOREXX_HOME/bin"; fi
 
-    BSF4OOREXX_LIBRARY_PATH=$BSF4OOREXX_HOME/install/lib/$builder_system_arch
+    BSF4OOREXX_LIBRARY_PATH=""
+    if [ -d "$BSF4OOREXX_HOME/lib/$builder_system_arch" ]; then prepend_path BSF4OOREXX_LIBRARY_PATH "$BSF4OOREXX_HOME/lib/$builder_system_arch"; fi
+    if [ -d "$BSF4OOREXX_HOME/lib" ]; then prepend_path BSF4OOREXX_LIBRARY_PATH "$BSF4OOREXX_HOME/lib"; fi
 
     export LD_LIBRARY_PATH
     prepend_path LD_LIBRARY_PATH "$BSF4OOREXX_LIBRARY_PATH"

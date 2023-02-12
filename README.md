@@ -27,29 +27,29 @@ The scripts/setenv script iterates over each directory, from deeper to root.
 If a script named setenv-"directory" exists in the directory of scripts then execute it.  
 If a script named setenv-"directory" exists in the directory of private scripts then execute it.  
 
-    /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release/
+    /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release/
     Scripts currently defined :
     |  setenv-release
     |  setenv-build
     V  setenv-oorexx
 
 
-    Examples of variables set by scripts/setenv (values for ubuntu):
+    Examples of variables set by scripts/setenv (values for linux):
     builder_arch                x86_64
     builder_bitness             64
     builder_branch
-    builder_build_dir           /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release/build
+    builder_build_dir           /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release/build
     builder_compiler            gcc
     builder_config              release
-    builder_config_dir          /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release
-    builder_delivery_dir        /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release/deliver
+    builder_config_dir          /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release
+    builder_delivery_dir        /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release/deliver
     builder_local_build_dir     /local/rexxlocal/oorexx/build
     builder_local_dir           /local/rexxlocal/oorexx
     builder_scripts_dir         /local/builder/scripts
     builder_shared_dir          /local/rexx/oorexx
     builder_src_relative_path   main/trunk
-    builder_system              ubuntu
-    builder_system_arch         ubuntu-x86_64
+    builder_system              linux
+    builder_system_arch         linux-x86_64
     builder_target              official
     builder_target_branch       official
 

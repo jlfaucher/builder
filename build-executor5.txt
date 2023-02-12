@@ -24,7 +24,7 @@ ln -s ../executor/sandbox sandbox
 
 
 --------------------------------------------------------------------------------
-# Ubuntu
+# Linux
 --------------------------------------------------------------------------------
 
 cd <my directory>
@@ -34,7 +34,7 @@ git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
-. ../builder/scripts/setenv build/executor5.master/main/trunk/macos-x86_64/clang/release
+. ../builder/scripts/setenv build/executor5.master/main/trunk/linux-x86_64/clang/release
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
