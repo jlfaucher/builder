@@ -6,6 +6,8 @@ if not defined builder_config_dir echo builder_config_dir is undefined & exit /b
 if not defined builder_config echo builder_config is undefined & exit /b 1
 if not defined builder_shared_dir echo builder_shared_dir is undefined & exit /b 1
 if not defined builder_shared_drv echo builder_shared_drv is undefined & exit /b 1
+if not defined builder_system echo builder_system is undefined & exit /b 1
+if not defined builder_arch echo builder_arch is undefined & exit /b 1
 
 call shellscriptlib :drive "%builder_config_dir%"
 set builder_config_drv=%drive%

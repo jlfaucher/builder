@@ -26,14 +26,16 @@ set builder_system_arch=%builder_system_arch:"=%
 set builder_bitness=""
 if "%builder_system_arch%" == "windows-x86_32" set builder_bitness=32
 if "%builder_system_arch%" == "windows-x86_64" set builder_bitness=64
+if "%builder_system_arch%" == "windows-arm32" set builder_bitness=32
 if "%builder_system_arch%" == "windows-arm64" set builder_bitness=64
-if "%builder_bitness%" == "" ( echo Invalid builder_bitness : "%builder_bitness%" & exit /b 1 )
+if %builder_bitness% == "" ( echo Invalid builder_bitness : "%builder_bitness%" & exit /b 1 )
 
 :: The value to pass to vcvars, depending on ProcessorArchitecture and builderBitness
 set x86_32=x86
 set x86_64=x86_amd64
 set amd64_32=amd64_x86
 set amd64_64=amd64
+set arm64_32=arm64_arm
 set arm64_64=arm64
 set compiler=%PROCESSOR_ARCHITECTURE%_%builder_bitness%
 if not defined %compiler%  goto error
@@ -230,3 +232,35 @@ It runs as a native 64-bit process on a 64-bit Windows operating system.
 compiler: ARM64 on x64 cross
 host computer architecture: x64
 build output (target) architecture: ARM64
+
+
+--------------------------------------------------
+Visual Studio 2022 for Windows ARM - vcvarsall.bat
+--------------------------------------------------
+
+arch            target      host
+x86             x86         x86
+x86_amd64       x64         x86
+x86_x64         x64         x86
+x86_arm         arm         x86
+x86_arm64       arm64       x86
+amd64           x64         x64
+x64             x64         x64
+amd64_x86       x86         x64
+x64_x86         x86         x64
+amd64_arm       arm         x64
+x64_arm         arm         x64
+amd64_arm64     arm64       x64
+x64_arm64       arm64       x64
+arm64           arm64       arm64
+arm64_amd64     x64         arm64
+arm64_x64       x64         arm64
+arm64_x86       x86         arm64
+arm64_arm       arm         arm64
+
+
+https://learn.microsoft.com/en-US/windows/msix/package/device-architecture
+x86
+x64
+ARM
+ARM64
