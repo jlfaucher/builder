@@ -9,17 +9,34 @@ if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; ex
 
 # load the helpers
 . ${builder_scripts_dir}/shellscriptlib
-. ${builder_scripts_dir}.private/shellscriptlib-macos
+. ${builder_scripts_dir}.private/shellscriptlib-linux
 
 
 [ -f /local/java/setenv.sh ] && . /local/java/setenv.sh
 declare_java
 
-export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20220131-ga/bsf4oorexx
-export BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
+# Version 641 - all platforms
+if [ "$builder_target" = "executor" ]
+then
+    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20220131-ga/bsf4oorexx
+    export BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
+    declare_bsf4oorexx_distribution
+fi
 
-declare_bsf4oorexx_distribution
+# Version 850 - all platforms - can't be used by Executor
+if [ "$builder_target" != "executor" ]
+then
+    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v850-20230109-beta/bsf4oorexx
+    export BSF4OOREXX_JAR=bsf4ooRexx-v850-20230109-bin.jar
+    declare_bsf4oorexx_distribution
+fi
 
+# Portable (641) - windows only
+#export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/bsf4oorexx_v641.20220131-Darwin-x86_64-portable-UNO-runtime
+#export BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
+#declare_bsf4oorexx_distribution
+
+# SVN sources
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
 #declare_bsf4oorexx_svn
 
@@ -41,6 +58,7 @@ echo "Setting environment for Dropbox scripts"
 prepend_path PATH "~/Dropbox/software/oorexx"
 
 echo "Setting environment for BATIK"
+# Remember: if v1.13 doesn't work see what has been done for macos
 export BATIK_ROOT=/local/XmlToolSet/batik-1.13
 export BATIK_RASTERIZER_JAR=$BATIK_ROOT/batik-rasterizer-1.13.jar
 

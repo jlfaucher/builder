@@ -64,11 +64,29 @@ call shellscriptlib :prepend_path PATH "E:\windiff"
 :: Provided with Visual Studio
 :: call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
 
-set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
-set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20220131-ga\bsf4oorexx
-set BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
-call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
+:: Version 641 - all platforms
+if "%builder_target%" == "executor" (
+    set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
+    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20220131-ga\bsf4oorexx
+    set BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
+    call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
+)
 
+:: Version 850 - all platforms - can't be used by Executor
+if not "%builder_target%" == "executor" (
+    set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
+    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20230109-beta\bsf4oorexx
+    set BSF4OOREXX_JAR=bsf4ooRexx-v850-20230109-bin.jar
+    call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
+)
+
+:: Portable (641) - windows only
+::set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
+::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\bsf4oorexx_v641.20220131-Windows-amd64-portable-UNO-runtime
+::set BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
+::call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
+
+:: SVN sources
 ::set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
 ::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\svn\trunk
 ::call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_svn
