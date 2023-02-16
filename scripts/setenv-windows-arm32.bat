@@ -19,6 +19,12 @@ LINK : fatal error LNK1104: cannot open file 'LIBCMT.lib'
 
 
 Not supported?
+
+See https://support.microsoft.com/en-us/windows/options-for-using-windows-11-with-mac-computers-with-apple-m1-and-m2-chips-cd15fd62-9b34-4b78-b0bc-121baa3c568c
+32-bit Arm apps available from the Store in Windows are not supported by Mac computers with M1 and M2 chips.
+32-bit Arm apps are in the process of being deprecated for all Arm versions of Windows.
+The preferred customer experience is to run 64-bit Arm apps, but customers can also use apps in x64 or x86 emulation on Mac M1 and M2 computers.
+
 See https://dotnet.microsoft.com/en-us/download/dotnet/7.0
 
 .NET 7 is available for these platforms:
