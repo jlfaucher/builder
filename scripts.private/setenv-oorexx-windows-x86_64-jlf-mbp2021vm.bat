@@ -3,7 +3,7 @@ if defined echo echo %echo%
 
 :: File naming convention
 :: setenv-oorexx-%builder_system_arch%-%COMPUTERNAME%.bat
-::               windows-arm64         jlf-mbp2021vm
+::               windows-x86_64        jlf-mbp2021vm
 
 :: Shared folders parameterized in PARALLELS:
 :: Y: is /Users/Shared
@@ -27,8 +27,11 @@ set BATIK_RASTERIZER_JAR=%BATIK_ROOT%\batik-rasterizer-1.13.jar
 :: Provided with Visual Studio
 :: call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
 
-:: Java 64-bit arm64 (aarch64)
-set JAVA_HOME="C:\Program Files (Arm)\BellSoft\LibericaJDK-17-Full"
+:: Java 64-bit x86_64 (amd64)
+:: Remember: BellSoft installer wanted to install C:\Program Files (Arm)\BellSoft
+:: But the ARM version was already there!
+:: Changed the install dir
+set JAVA_HOME="C:\Program Files\BellSoft\LibericaJDK-17-Full"
 set JAVA_JVM_FOLDER=bin\server
 set JAVA_HOME=%JAVA_HOME:"=%
 call shellscriptlib :prepend_path PATH "%JAVA_HOME%\bin"

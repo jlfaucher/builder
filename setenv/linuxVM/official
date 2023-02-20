@@ -1,5 +1,9 @@
 # $1 is mandatory: debug or profiling or reldbg or release
+# $2 is optional: architecture x86_32 or X86_64 or arm32 or arm64 (default is the machine hardware)
 
-# x86_64, arm64
-ARCH=`uname -m`
+ARCH="$2"
+if test -z "$ARCH"
+then
+    ARCH=`uname -m`
+fi
 . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-$ARCH/gcc/$1

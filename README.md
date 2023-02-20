@@ -19,6 +19,17 @@ For real examples, see:
 - [Build Regina][build_regina]
 
 
+Cross-compilation
+-----------------
+
+From host Windows 11 arm64 (see [setenv-cl.bat][setenv-cl.bat]):
+- x86_32
+- x86_64
+
+
+Other platforms: not tested but will work if the right toolchain is installed.
+
+
 Builder scripts
 ---------------
 
@@ -86,3 +97,4 @@ If a script named setenv-"directory" exists in the directory of private scripts 
 [build_executor]: build-executor.txt "Build Executor"
 [build_oorexx]: build-oorexx.txt "Build ooRexx"
 [build_regina]: build-regina.txt "Build Regina"
+[setenv-cl.bat]: https://github.com/jlfaucher/builder/blob/master/scripts/setenv-cl.bat "setenv-cl.bat" 

@@ -27,16 +27,67 @@ then
     return 1
 fi
 
-export builder_config=`basename "$dir"`     # debug, profiling, reldbg, release
-if test "$builder_config" != "debug" -a "$builder_config" != "profiling" -a "$builder_config" != "reldbg" -a "$builder_config" != "release"
+# config
+export builder_config=`basename "$dir"`
+case "$builder_config" in
+    "debug") ;;
+    "profiling") ;;
+    "reldbg") ;;
+    "release") ;;
+    *)
+        echo "Invalid config: $builder_config"
+        echo "Expected: debug or profiling or reldbg or release"
+        return 1
+        ;;
+esac
+
+# system-arch
+current=$dir                                    # <target[.branch]>/d1/d2/.../system-arch/compiler/config
+current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system-arch/compiler
+current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system-arch
+export builder_system_arch=`basename "$current"`
+
+# Split system-arch into system and arch
+IFS="-"; read -ra str_array <<< "$builder_system_arch"; IFS=" "
+export builder_system=${str_array[0]}
+export builder_arch=${str_array[1]}
+
+# Check system
+case "$builder_system" in
+    "windows") ;;
+    "macos") ;;
+    "linux") ;;
+    *)
+        echo "Invalid system: $builder_system"
+        echo "Expected: windows or macos or linux"
+        return 1
+        ;;
+esac
+
+# Check arch
+case "$builder_arch" in
+    "x86_32") ;;
+    "x86_64") ;;
+    "arm32") ;;
+    "arm64") ;;
+    *)
+        echo "Invalid architecture: $builder_arch"
+        echo "Expected: x86_32 or x86_64 or arm32 or arm64"
+        return 1
+        ;;
+esac
+
+# Check consistency system-arch
+if test "$builder_system_arch" != "${builder_system}-${builder_arch}"
 then
-    echo "Invalid config: $builder_config"
-    echo "Expected: debug or profiling or reldbg or release"
+    echo "Invalid system-arch: $builder_system_arch"
+    echo "Expected: only one dash separator"
     return 1
 fi
 
 if test ! -d "$dir"
 then
+    echo $dir
     while true; do
         read -p "Create directory '$dir' (Y/n)?" input
         case $input in
@@ -58,17 +109,12 @@ echo $dir
 # KEEP THIS DECLARATION HERE, TO HAVE A FULLY QUALIFIED PATH
 export builder_config_dir=$dir
 
-# Retrieve system from builder_config_dir
-current=$builder_config_dir                     # <target[.branch]>/d1/d2/.../system-arch/compiler/config
-current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system-arch/compiler
-current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system-arch
-builder_system_arch=`basename "$current"`
-
-hostname=`hostname -s`
+export builder_hostname=`hostname -s`
 
 # Iterate over each directory, from deeper to root.
 # If a script named setenv-<dir> exists in the directory of scripts then execute it.
-# If a script named setenv-<dir> exists in the directory of private scripts then execute it.
+# If a script named setenv-<dir>-<system-arch>-<computername> exists in the directory of private scripts then execute it.
+# If a script named setenv-<dir>-<computername> exists in the directory of private scripts then execute it.
 while [ "$dir" != "/" ]; do
     current=`basename "$dir"`
     echo "[current="$current"]"
@@ -84,8 +130,8 @@ while [ "$dir" != "/" ]; do
         fi
     fi
 
-    # Private script
-    script=${builder_scripts_dir}.private/setenv-${current}-${builder_system_arch}-${hostname}
+    # Private script builder_system_arch + builder_hostname
+    script=${builder_scripts_dir}.private/setenv-${current}-${builder_system_arch}-${builder_hostname}
     if [ -x "$script" ]; then
         echo Running "$script"
         . "$script" "$dir"
@@ -94,6 +140,18 @@ while [ "$dir" != "/" ]; do
             return 1
         fi
     fi
+
+    # Private script builder_hostname
+    script=${builder_scripts_dir}.private/setenv-${current}-${builder_hostname}
+    if [ -x "$script" ]; then
+        echo Running "$script"
+        . "$script" "$dir"
+        if test $? != 0
+        then
+            return 1
+        fi
+    fi
+
     dir=`dirname "$dir"`
 done
 

@@ -23,12 +23,6 @@ export regina_bitness=--enable-64bit
 # Under MacOs Apple Silicon, config --help
 #   --with-arch=option      build universal binaries on MacOS, option: one of "all 32bit 64bit intel apple-silicon ppc ppc64 x86_64 i386 arm64"
 
-# Redundant with builder_system_arch, but it's a good way to check the
-# consistency between the declarations here, and the system-arch directory
-# (checked in setenv-build)
-export builder_system="macos"
-export builder_arch="arm64"
-
 export CFLAGS="-arch $builder_arch $CFLAGS"
 export CXXFLAGS="-arch $builder_arch $CXXFLAGS"
 export LDFLAGS="-arch $builder_arch $LDFLAGS"

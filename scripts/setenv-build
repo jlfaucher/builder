@@ -4,13 +4,15 @@ if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; ex
 
 # Those variables must be defined before calling this script
 if test -z "$builder_config_dir" ; then echo "builder_config_dir is undefined" ; return 1 ; fi
-if test -z "$builder_config" ; then echo "builder_config is undefined" ; return 1 ; fi
 if test -z "$builder_shared_dir" ; then echo "builder_shared_dir is undefined" ; return 1 ; fi
-if test -z "$builder_system" ; then echo "builder_system is undefined" ; return 1 ; fi
-if test -z "$builder_arch" ; then echo "builder_arch is undefined" ; return 1 ; fi
 
 # Associated directory in the build hierarchy
 build_dir=$1
+if test -z "$build_dir"
+then
+    echo "Mandatory argument: path to the associated directory in the build hierarchy"
+    return 1
+fi
 
 # The shared drive provided by vmWare or VirtualBox is TOO SLOW !
 # So I put the binary files on a local drive inside the VM.
@@ -24,15 +26,6 @@ current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../sy
 export builder_compiler=`basename "$current"`
 
 current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system-arch
-export builder_system_arch=`basename "$current"`
-
-if test "$builder_system_arch" != "${builder_system}-${builder_arch}"
-then
-    echo "Inconsistency detected:"
-    echo "builder_system_arch = $builder_system_arch"
-    echo "builder_system = $builder_system"
-    echo "builder_arch = $builder_arch"
-fi
 
 current=`dirname "$current"`                    # <target[.branch]>/d1/d2/...
 export builder_target_branch=${current%%/*}     # executor.<branch> or executor5.<branch> or official

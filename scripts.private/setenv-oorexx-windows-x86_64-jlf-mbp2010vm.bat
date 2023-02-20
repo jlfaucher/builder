@@ -31,13 +31,8 @@ set BATIK_RASTERIZER_JAR=%BATIK_ROOT%\batik-rasterizer-1.13.jar
 call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
 
 :: Java
-if "%builder_bitness%" == "32" (
-set JAVA_HOME="32 bits no more available"
-set JAVA_JVM_FOLDER=
-) else (
 set JAVA_HOME="C:\Program Files\BellSoft\LibericaJDK-17-Full"
 set JAVA_JVM_FOLDER=bin\server
-)
 set JAVA_HOME=%JAVA_HOME:"=%
 call shellscriptlib :prepend_path PATH "%JAVA_HOME%\bin"
 call shellscriptlib :prepend_path PATH "%JAVA_HOME%\%JAVA_JVM_FOLDER%"
@@ -66,7 +61,7 @@ call shellscriptlib :prepend_path PATH "E:\windiff"
 :: cmake
 call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
 
-:: Version 641 - all platforms
+:: bsf4oorexx version 641 - all platforms
 if "%builder_target%" == "executor" (
     set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
     set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v641-20220131-ga\bsf4oorexx
@@ -74,7 +69,7 @@ if "%builder_target%" == "executor" (
     call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
 )
 
-:: Version 850 - all platforms - can't be used by Executor
+:: bsf4oorexx version 850 - all platforms - can't be used by Executor
 if not "%builder_target%" == "executor" (
     set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
     set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20230109-beta\bsf4oorexx
@@ -82,13 +77,13 @@ if not "%builder_target%" == "executor" (
     call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
 )
 
-:: Portable (641) - windows only
+:: bsf4oorexx portable (641) - windows only
 ::set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
 ::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\bsf4oorexx_v641.20220131-Windows-amd64-portable-UNO-runtime
 ::set BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
 ::call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
 
-:: SVN sources
+:: bsf4oorexx SVN sources
 ::set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
 ::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\svn\trunk
 ::call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_svn

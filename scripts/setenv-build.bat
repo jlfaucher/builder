@@ -3,17 +3,18 @@ if defined echo echo %echo%
 
 :: Those variables must be defined before calling this script
 if not defined builder_config_dir echo builder_config_dir is undefined & exit /b 1
-if not defined builder_config echo builder_config is undefined & exit /b 1
 if not defined builder_shared_dir echo builder_shared_dir is undefined & exit /b 1
 if not defined builder_shared_drv echo builder_shared_drv is undefined & exit /b 1
-if not defined builder_system echo builder_system is undefined & exit /b 1
-if not defined builder_arch echo builder_arch is undefined & exit /b 1
 
 call shellscriptlib :drive "%builder_config_dir%"
 set builder_config_drv=%drive%
 
 :: Associated directory in the build hierarchy
 set build_dir=%1
+if not defined build_dir (
+    echo Mandatory argument: path to the associated directory in the build hierarchy"
+    exit /b 1
+)
 set build_dir=%build_dir:&=^&%
 set build_dir=%build_dir:"=%
 
@@ -48,18 +49,6 @@ call shellscriptlib :dirname "%current%"
 set current="%dirname%"
 set current=%current:&=^&%
 set current=%current:"=%
-
-call shellscriptlib :basename "%current%"
-set builder_system_arch="%basename%"
-set builder_system_arch=%builder_system_arch:&=^&%
-set builder_system_arch=%builder_system_arch:"=%
-
-if not "%builder_system_arch%" == "%builder_system%-%builder_arch%" (
-    echo Inconsistency detected:
-    echo builder_system_arch = %builder_system_arch%
-    echo builder_system = %builder_system%
-    echo builder_arch = %builder_arch%
-)
 
 :: <target[.branch]>/d1/d2/...
 call shellscriptlib :dirname "%current%"

@@ -1,6 +1,10 @@
 # $1 is mandatory: debug or profiling or reldbg or release
+# $2 is optional: architecture x86_32 or X86_64 or arm32 or arm64 (default is the machine hardware)
 
-# not using `arch` because returns "i386" on my MBP 2010 Intel.
-# x86_64, arm64
-ARCH=`uname -m`
+ARCH="$2"
+if test -z "$ARCH"
+then
+    # not using `arch` because returns "i386" on my MBP 2010 Intel.
+    ARCH=`uname -m`
+fi
 . ../builder/scripts/setenv build/official/interpreter/trunk/macos-$ARCH/clang/$1

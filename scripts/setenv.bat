@@ -39,7 +39,7 @@ if not defined dir (
 set dir=%dir:&=^&%
 set dir=%dir:"=%
 
-:: debug, profiling, reldbg, release
+:: config
 call shellscriptlib :basename "%dir%"
 set builder_config="%basename%"
 set builder_config=%builder_config:&=^&%
@@ -54,7 +54,61 @@ echo Expected: debug or profiling or reldbg or release
 exit /b 1
 :config_ok
 
+:: system-arch
+    :: <target[.branch]>/d1/d2/.../system-arch/compiler/config
+    set current=%dir%
+
+    :: <target[.branch]>/d1/d2/.../system-arch/compiler
+    call shellscriptlib :dirname "%current%"
+    set current="%dirname%"
+    set current=%current:&=^&%
+    set current=%current:"=%
+
+    :: <target[.branch]>/d1/d2/.../system-arch
+    call shellscriptlib :dirname "%current%"
+    set current="%dirname%"
+    set current=%current:&=^&%
+    set current=%current:"=%
+    call shellscriptlib :basename "%current%"
+    set builder_system_arch="%basename%"
+    set builder_system_arch=%builder_system_arch:&=^&%
+    set builder_system_arch=%builder_system_arch:"=%
+::
+
+:: Split system-arch into system and arch
+for /F "tokens=1,2 delims=-" %%i in ("%builder_system_arch%") do (
+set builder_system=%%i
+set builder_arch=%%j
+)
+
+:: Check system
+if "%builder_system%" == "windows" goto :builder_system_ok
+if "%builder_system%" == "macos" goto :builder_system_ok
+if "%builder_system%" == "linux" goto :builder_system_ok
+echo Invalid system "%builder_system%"
+echo Expected: windows or macos or linux
+exit /b 1
+:builder_system_ok
+
+:: Check arch
+if "%builder_arch%" == "x86_32" goto :builder_arch_ok
+if "%builder_arch%" == "x86_64" goto :builder_arch_ok
+if "%builder_arch%" == "arm32" goto :builder_arch_ok
+if "%builder_arch%" == "arm64" goto :builder_arch_ok
+echo Invalid architecture "%builder_arch%"
+echo Expected: x86_32 or x86_64 or arm32 or arm64
+exit /b 1
+:builder_arch_ok
+
+:: Check consistency system-arch
+if not "%builder_system_arch%" == "%builder_system%-%builder_arch%" (
+    echo Invalid system-arch: %builder_system_arch%
+    echo Expected: only one dash separator
+    exit /b 1
+)
+
 if exist "%dir%" goto :directory_exists
+echo %dir%
 :ask_create_directory
     set input=Y
     set /p input=Create directory (Y/n)?
@@ -85,31 +139,14 @@ call shellscriptlib :drive "%dir%"
 set drv=%drive%
 set builder_config_drv=%drive%
 
-:: Retrieve system from builder_config_dir
-    :: <target[.branch]>/d1/d2/.../system-arch/compiler/config
-    set current=%builder_config_dir%
-
-    :: <target[.branch]>/d1/d2/.../system-arch/compiler
-    call shellscriptlib :dirname "%current%"
-    set current="%dirname%"
-    set current=%current:&=^&%
-    set current=%current:"=%
-
-    :: <target[.branch]>/d1/d2/.../system-arch
-    call shellscriptlib :dirname "%current%"
-    set current="%dirname%"
-    set current=%current:&=^&%
-    set current=%current:"=%
-    call shellscriptlib :basename "%current%"
-    set builder_system_arch="%basename%"
-    set builder_system_arch=%builder_system_arch:&=^&%
-    set builder_system_arch=%builder_system_arch:"=%
-::
+for /F "usebackq" %%i in (`"hostname 2>nul"`) do set builder_hostname=%%i
+:: Fallback: COMPUTERNAME is the hostname in upper case.
+if not defined builder_hostname set builder_hostname=%COMPUTERNAME%
 
 :: Iterate over each directory, from deeper to root.
 :: If a script named setenv-<dir>.bat exists in the directory of scripts then execute it.
-:: If a script named setenv-<dir>-<system>-<computername>.bat exists in the directory of private scripts then execute it.
-:: If a script named setenv-<dir>.bat exists in the current directory then execute it.
+:: If a script named setenv-<dir>-<system-arch>-<computername>.bat exists in the directory of private scripts then execute it.
+:: If a script named setenv-<dir>-<computername>.bat exists in the directory of private scripts then execute it.
 :loop
     if "%dir%"=="%drv%" goto :endloop
     call shellscriptlib :basename "%dir%"
@@ -126,8 +163,18 @@ set builder_config_drv=%drive%
         if errorlevel 1 exit /b 1
     )
 
-    :: Private script
-    set script="%builder_scripts_dir%.private\setenv-%current%-%builder_system_arch%-%COMPUTERNAME%.bat"
+    :: Private script builder_system_arch + builder_hostname
+    set script="%builder_scripts_dir%.private\setenv-%current%-%builder_system_arch%-%builder_hostname%.bat"
+    set script=%script:&=^&%
+    set script=%script:"=%
+    if exist "%script%" (
+        echo Running "%script%"
+        call "%script%" "%dir%"
+        if errorlevel 1 exit /b 1
+    )
+
+    :: Private script builder_hostname
+    set script="%builder_scripts_dir%.private\setenv-%current%-%builder_hostname%.bat"
     set script=%script:&=^&%
     set script=%script:"=%
     if exist "%script%" (
