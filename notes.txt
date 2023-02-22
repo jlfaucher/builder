@@ -411,3 +411,25 @@ rustc --print target-list
     x86_64-uwp-windows-gnu
     x86_64-uwp-windows-msvc
     x86_64-wrs-vxworks
+
+--------------------------------------------------------------------------------
+Xcode architectures
+--------------------------------------------------------------------------------
+
+https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary
+
+For makefiles you create outside of Xcode, pass the appropriate architecture
+values to the compiler using the -target option. The following example shows a
+makefile that compiles a single-source file twice—once for each architecture.
+It then creates a universal binary by merging the resulting executable files
+together with the lipo tool.
+
+x86_app: main.c
+    $(CC) main.c -o x86_app -target x86_64-apple-macos10.12
+arm_app: main.c
+    $(CC) main.c -o arm_app -target arm64-apple-macos11
+universal_app: x86_app arm_app
+    lipo -create -output universal_app x86_app arm_app
+
+Wrap Platform-Specific Code with Conditional Compilation Macros
+For C-based code, the system defines a set of macros for you to use in /usr/include/TargetConditionals.h.
