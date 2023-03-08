@@ -6,7 +6,7 @@ if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; ex
 # Xcode 10.1 doesn't support stdlibc++ anymore
 # https://github.com/MDAnalysis/mdanalysis/issues/2144
 # ld: library not found for -lstdc++
-export MACOSX_DEPLOYMENT_TARGET=10.9
+export MACOSX_DEPLOYMENT_TARGET=10.13
 export CXXFLAGS="-stdlib=libc++ -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET $CXXFLAGS"
 export LDFLAGS="-stdlib=libc++ -mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET $LDFLAGS"
 
