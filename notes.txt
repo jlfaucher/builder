@@ -167,6 +167,31 @@ INSTALLER runs these:
 Architectures
 --------------------------------------------------------------------------------
 
+Should I use aarch64 instead of arm64?
+
+https://stackoverflow.com/questions/31851611/differences-between-arm64-and-aarch64
+"AArch64" and "ARM64" are different names for the same thing.
+But... read all the answers, it seems the only official name is "AArch64".
+
+https://devblogs.microsoft.com/oldnewthing/20220726-00/?p=106898
+The 64-bit version of the ARM architecture is formally known as AArch64.
+It is the 64-bit version of classic 32-bit ARM, which has been retroactively renamed AArch32.
+Even though the architecture formally goes by the name AArch64, many people
+(including Windows) call it arm64.
+
+https://en.wikipedia.org/wiki/AArch64
+AArch64 or ARM64 is the 64-bit extension of the ARM architecture family
+24 occurences of the word "AArch64".
+1 occurence of the word "ARM64"
+
+https://memgraph.com/blog/ship-it-on-arm64-or-is-it-aarch64
+We found that usually, the Debian packages have an arm64 suffix
+while RPM has an aarch64 suffix.
+Therefore we are using x86_64 and aarch64 suffix for our RPM packages,
+and amd64 and arm64 for our Debian packages.
+And the good thing is that Docker follows the same convention
+
+
 llc --version
 LLVM (http://llvm.org/):
   LLVM version 15.0.6
