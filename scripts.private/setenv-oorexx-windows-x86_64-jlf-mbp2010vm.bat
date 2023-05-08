@@ -2,8 +2,8 @@
 if defined echo echo %echo%
 
 :: File naming convention
-:: setenv-oorexx-%builder_system_arch%-%COMPUTERNAME%.bat
-::               windows-x86_64        jlf-mbp2010vm
+:: setenv-%current%-%builder_system_arch%-%builder_hostname%.bat
+::        oorexx    windows-x86_64        jlf-mbp2010vm
 
 :: Shared folders parameterized in VMWARE:
 :: name "jlfaucher" folder "jlfaucher" Read & Write

@@ -2,8 +2,8 @@
 if defined echo echo %echo%
 
 :: File naming convention
-:: setenv-oorexx-%builder_system_arch%-%COMPUTERNAME%.bat
-::               windows-arm64         jlf-mbp2021vm
+:: setenv-%current%-%builder_hostname%.bat
+::        official  jlf-mbp2021vm
 
 :: Those variables must be defined before calling this script
 if not defined builder_shared_dir echo builder_shared_dir is undefined & exit /b 1

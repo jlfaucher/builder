@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # File naming convention
-# setenv-oorexx-${builder_system_arch}-${hostname}
-#               ubuntu-x86_64          jlfaucher-mbp2010
+# setenv-${current}-${builder_system_arch}-${builder_hostname}
+#        oorexx     linux-x86_64           jlfaucher-mbp2010
 
 if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # File naming convention
-# setenv-oorexx-${builder_system_arch}-${hostname}
-#               macos-x86_64           jlfaucher-mbp2021
+# setenv-${current}-${builder_system_arch}-${builder_hostname}
+#        oorexx     macos-arm64            jlfaucher-mbp2021
 
 if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
 
@@ -12,6 +12,7 @@ if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; ex
 . ${builder_scripts_dir}.private/shellscriptlib-macos
 
 
+# I install a jdk with support for JFX
 [ -f /local/java/setenv.sh ] && . /local/java/setenv.sh
 declare_java
 

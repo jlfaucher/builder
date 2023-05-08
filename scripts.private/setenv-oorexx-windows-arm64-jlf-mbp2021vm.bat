@@ -2,8 +2,8 @@
 if defined echo echo %echo%
 
 :: File naming convention
-:: setenv-oorexx-%builder_system_arch%-%COMPUTERNAME%.bat
-::               windows-arm64         jlf-mbp2021vm
+:: setenv-%current%-%builder_system_arch%-%builder_hostname%.bat
+::        oorexx    windows-arm64         jlf-mbp2021vm
 
 :: Shared folders parameterized in PARALLELS:
 :: Y: is /Users/Shared
