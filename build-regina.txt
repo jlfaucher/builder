@@ -1,8 +1,11 @@
-Shell prerequisite for AcOS & Linux:
+Shell prerequisite for MacOS & Linux:
     Works only with bash.
     If your shell is not bash, then launch bash from your shell session and follow the instructions.
     At the end, you can launch yor shell from the bash session, it will inherit the environment
     variables but NOT the aliases.
+
+Shell prerequisite for Windows:
+    Works only with cmd.
 
 
 --------------------------------------------------------------------------------

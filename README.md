@@ -2,7 +2,7 @@ Builder
 =======
 
 Scripts to support builds for several branches, configurations, bitness.  
-Works only with bash.
+Works only with bash (MacOS & Linux) or cmd (Windows).
 
 Usage :
 
