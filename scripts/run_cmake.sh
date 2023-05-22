@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Copied from build-oorexx.txt
                 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir $@
 #               make install

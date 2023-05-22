@@ -1,7 +1,8 @@
 Builder
 =======
 
-Scripts to support builds for several branches, configurations, bitness.
+Scripts to support builds for several branches, configurations, bitness.  
+Works only with bash.
 
 Usage :
 

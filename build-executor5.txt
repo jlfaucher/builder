@@ -1,6 +1,20 @@
 This file is a subset of build-oorexx.txt, limited to the build of executor5.
 
 
+Shell prerequisite for MacOS:
+    Works only with bash.
+    If your shell is zsh, then launch bash from your shell session and follow the instructions.
+    At the end, you can launch zsh from the bash session, but some libraries (like bsf)
+    may not work because of SIP. The workaround for bash works only for bash.
+    The zsh session will inherit the environment variables but NOT the aliases.
+
+Shell prerequisite for Linux:
+    Works only with bash.
+    If your shell is not bash, then launch bash from your shell session and follow the instructions.
+    At the end, you can launch yor shell from the bash session, it will inherit the environment
+    variables but NOT the aliases.
+
+
 --------------------------------------------------------------------------------
 # MacOs
 --------------------------------------------------------------------------------

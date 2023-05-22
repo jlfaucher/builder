@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ -z "$BASH_VERSION" ]; then
+   echo "Works only with bash"
+   return 1
+fi
+
 if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
 
 # Path to this script

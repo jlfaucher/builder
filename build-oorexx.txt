@@ -1,10 +1,23 @@
-Prerequisite for Executor:
+Compiler prerequisite for Executor:
     Your compiler supports C++17 under MacOs and C++20 under Windows.
     Needed for ICU4X which is now included in the sources of Executor.
 
     Tested with Apple clang version 14.0.0 (clang-1400.0.29.202)
     Tested with clang+llvm-15.0.3-x86_64-apple-darwin
     Tested with Microsoft Visual Studio Community 2022 (64-bit) - Version 17.3.6
+
+Shell prerequisite for MacOS:
+    Works only with bash.
+    If your shell is zsh, then launch bash from your shell session and follow the instructions.
+    At the end, you can launch zsh from the bash session, but some libraries (like bsf)
+    may not work because of SIP. The workaround for bash works only for bash.
+    The zsh session will inherit the environment variables but NOT the aliases.
+
+Shell prerequisite for Linux:
+    Works only with bash.
+    If your shell is not bash, then launch bash from your shell session and follow the instructions.
+    At the end, you can launch yor shell from the bash session, it will inherit the environment
+    variables but NOT the aliases.
 
 
 --------------------------------------------------------------------------------
