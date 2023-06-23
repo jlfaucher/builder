@@ -342,7 +342,8 @@ Build the 64-bit release configuration of official ooRexx trunk, executor master
 
 # Prerequisite
 # - No space in the path to the current directory.
-# - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+# - ooRexx:   Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+# - Executor: Visual Studio 2022
 # - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 # - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
 # - Install xalan-c: https://xalan.apache.org/xalan-c/
