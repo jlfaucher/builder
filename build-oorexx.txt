@@ -4,6 +4,7 @@ Compiler prerequisite for Executor:
 
     Tested with Apple clang version 14.0.0 (clang-1400.0.29.202)
     Tested with clang+llvm-15.0.3-x86_64-apple-darwin
+    Tested with clang+llvm-15.0.6-arm64-apple-darwin21.0
     Tested with Microsoft Visual Studio Community 2022 (64-bit) - Version 17.3.6
 
 Shell prerequisite for MacOS:
@@ -272,18 +273,22 @@ Build the 64-bit release configuration of official ooRexx trunk, executor master
 cd /local/rexx/oorexx
 
 # Initialize the build environment (only one of them):
-# MacOs ooRexx
-. ../builder/scripts/setenv build/official/main/trunk/macos-x86_64/clang/release
-# MacOs executor
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/release
-# MacOs executor5
-. ../builder/scripts/setenv build/executor5.master/main/trunk/macos-x86_64/clang/release
-# Linux ooRexx
-. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release
-# Linux executor
-. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release
-# Linux executor5
-. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/linux-x86_64/clang/release
+# MacOs
+    # system-arch is macos-arm64 or macos-x86_64.
+    # MacOs ooRexx
+    . ../builder/scripts/setenv build/official/main/trunk/macos-arm64/clang/release
+    # MacOs executor
+    . ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/release
+    # MacOs executor5
+    . ../builder/scripts/setenv build/executor5.master/main/trunk/macos-arm64/clang/release
+# Linux
+    # system-arch is linux-arm64 or linux-x86_64.
+    # Linux ooRexx
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release
+    # Linux executor
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release
+    # Linux executor5
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/linux-x86_64/clang/release
 
 # Now build...
 cdbuild
@@ -355,12 +360,13 @@ cd \local\rexxlocal\oorexx
 :: Shared directory
 y:
 cd \local\rexx\oorexx
-:: ooRexx
-call ..\builder\scripts\setenv e:build\official\main\trunk\windows-x86_64\cl\release\
-:: executor
-call ..\builder\scripts\setenv e:build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
-:: executor5
-call ..\builder\scripts\setenv e:build\executor5.master\main\trunk\windows-x86_64\cl\release
+# system-arch is windows-arm64 or windows-x86_64.
+    :: ooRexx
+    call ..\builder\scripts\setenv e:build\official\main\trunk\windows-x86_64\cl\release\
+    :: executor
+    call ..\builder\scripts\setenv e:build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
+    :: executor5
+    call ..\builder\scripts\setenv e:build\executor5.master\main\trunk\windows-x86_64\cl\release
 :: Now build...
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %builder_src_dir%

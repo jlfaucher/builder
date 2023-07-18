@@ -19,7 +19,7 @@ Shell prerequisite for Windows:
 
 
 --------------------------------------------------------------------------------
-# MacOs
+# MacOs for arm64 or x86_64
 --------------------------------------------------------------------------------
 
 cd <my directory>
@@ -29,7 +29,8 @@ git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
-. ../builder/scripts/setenv build/executor5.master/main/trunk/macos-x86_64/clang/release
+# system-arch is macos-arm64 or macos-x86_64.
+. ../builder/scripts/setenv build/executor5.master/main/trunk/macos-arm64/clang/release
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
 make install
@@ -41,7 +42,7 @@ ln -s ../executor/sandbox sandbox
 
 
 --------------------------------------------------------------------------------
-# Linux
+# Linux for x86_64
 --------------------------------------------------------------------------------
 
 cd <my directory>
@@ -63,7 +64,7 @@ ln -s ../executor/sandbox sandbox
 
 
 --------------------------------------------------------------------------------
-# Windows
+# Windows for arm64 or x86_64
 --------------------------------------------------------------------------------
 # Prerequisite
 # - No space in the path to the current directory.
@@ -77,6 +78,7 @@ git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
+# system-arch is windows-arm64 or windows-x86_64.
 call ..\builder\scripts\setenv build\executor5.master\main\trunk\windows-x86_64\cl\release
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% %builder_src_dir%
