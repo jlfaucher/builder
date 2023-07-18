@@ -10,7 +10,7 @@ if defined echo echo %echo%
 if not defined builder_shared_dir echo builder_shared_dir is undefined & exit /b 1
 if not defined builder_shared_drv echo builder_shared_drv is undefined & exit /b 1
 
-:: Workaround because symbolic links not supported :-((((
+:: Workaround because symbolic links on network drivenot supported :-((((
 :: In order to find the package regex.cls, must add the official incubator in PATH
 set oorexx_official_incubator=%builder_shared_dir%\official\incubator
 set oorexx_official_incubator_drv=%builder_shared_drv%
