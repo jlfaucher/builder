@@ -109,26 +109,28 @@ fi
 
 # Fully qualified path
 dir="$( cd -P "$dir" && pwd )"
-echo $dir
 
 # KEEP THIS DECLARATION HERE, TO HAVE A FULLY QUALIFIED PATH
 export builder_config_dir=$dir
 
 export builder_hostname=`hostname -s`
 
+# 2023.07.18: add prefix "builder_private_" to avoid accidental overwriting
+builder_private_dir=$dir
+
 # Iterate over each directory, from deeper to root.
 # If a script named setenv-<dir> exists in the directory of scripts then execute it.
 # If a script named setenv-<dir>-<system-arch>-<computername> exists in the directory of private scripts then execute it.
 # If a script named setenv-<dir>-<computername> exists in the directory of private scripts then execute it.
-while [ "$dir" != "/" ]; do
-    current=`basename "$dir"`
-    echo "[current="$current"]"
+while [ "$builder_private_dir" != "/" ]; do
+    builder_private_current=`basename "$builder_private_dir"`
+    echo "[builder_private_current="$builder_private_current"]"
 
     # Script common to all machines
-    script=${builder_scripts_dir}/setenv-${current}
+    script=${builder_scripts_dir}/setenv-${builder_private_current}
     if [ -x "$script" ]; then
         echo Running "$script"
-        . "$script" "$dir"
+        . "$script" "$builder_private_dir"
         if test $? != 0
         then
             return 1
@@ -136,10 +138,10 @@ while [ "$dir" != "/" ]; do
     fi
 
     # Private script builder_system_arch + builder_hostname
-    script=${builder_scripts_dir}.private/setenv-${current}-${builder_system_arch}-${builder_hostname}
+    script=${builder_scripts_dir}.private/setenv-${builder_private_current}-${builder_system_arch}-${builder_hostname}
     if [ -x "$script" ]; then
         echo Running "$script"
-        . "$script" "$dir"
+        . "$script" "$builder_private_dir"
         if test $? != 0
         then
             return 1
@@ -147,17 +149,17 @@ while [ "$dir" != "/" ]; do
     fi
 
     # Private script builder_hostname
-    script=${builder_scripts_dir}.private/setenv-${current}-${builder_hostname}
+    script=${builder_scripts_dir}.private/setenv-${builder_private_current}-${builder_hostname}
     if [ -x "$script" ]; then
         echo Running "$script"
-        . "$script" "$dir"
+        . "$script" "$builder_private_dir"
         if test $? != 0
         then
             return 1
         fi
     fi
 
-    dir=`dirname "$dir"`
+    builder_private_dir=`dirname "$builder_private_dir"`
 done
 
 ################################################################################
