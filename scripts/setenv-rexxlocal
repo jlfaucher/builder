@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Pfff...
+# Workaround for Linux where the folder "rexx" is renamed "rexxlocal" inside the VM.
+# Forward to the 'rexx' script.
+. "$builder_scripts_dir/setenv-rexx" "$@"
