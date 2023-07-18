@@ -11,16 +11,4 @@ if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; ex
 . $builder_scripts_dir/shellscriptlib
 
 
-# Apparently, under MacOs, Regina has no built-in support for GCI (64 bits not supported ?)
-# Use the external GCI
-echo "Setting environment for GCI"
-#export GCI_HOME=$builder_shared_dir/../rexx-gci
-export GCI_HOME="$( cd -P "$(dirname "$builder_shared_dir")" && pwd )"/rexx-gci
-GCI_LIBRARY_PATH=$GCI_HOME/build/$builder_system_arch/$builder_compiler/$builder_config
-# MacOs
-export DYLD_LIBRARY_PATH
-prepend_path DYLD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
-# Ubuntu
-export LD_LIBRARY_PATH
-prepend_path LD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
-alias cdgci='cd $GCI_HOME'
+# Nothing for the moment

@@ -23,28 +23,12 @@ call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\local\XmlToolSet\xsltproc\b
 set BATIK_ROOT=%HOST_DRIVE%\local\XmlToolSet\batik-1.13
 set BATIK_RASTERIZER_JAR=%BATIK_ROOT%\batik-rasterizer-1.13.jar
 
-:: Git
-:: Provided with Visual Studio
-:: call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
-
 :: Java 32-bit x86_32 (i586)
 set JAVA_HOME="C:\Program Files (x86)\BellSoft\LibericaJDK-17-Full"
 set JAVA_JVM_FOLDER=bin\server
 set JAVA_HOME=%JAVA_HOME:"=%
 call shellscriptlib :prepend_path PATH "%JAVA_HOME%\bin"
 call shellscriptlib :prepend_path PATH "%JAVA_HOME%\%JAVA_JVM_FOLDER%"
-
-:: GCI
-echo Setting environment for GCI
-call shellscriptlib :dirname "%builder_shared_dir%"
-set GCI_HOME="%dirname%\rexx-gci"
-set GCI_HOME=%GCI_HOME:&=^&%
-set GCI_HOME=%GCI_HOME:"=%
-set GCI_LIBRARY_PATH=%GCI_HOME%\build\%builder_system_arch%\%builder_compiler%\%builder_config%
-call shellscriptlib :prepend_path PATH "%GCI_LIBRARY_PATH%"
-call shellscriptlib :drive "%GCI_HOME%"
-set GCI_HOME_DRIVE=%drive%
-doskey cdgci=%GCI_HOME_DRIVE% ^& cd %GCI_HOME%
 
 :: NSIS
 call shellscriptlib :prepend_path PATH "E:\nsis\Nsis_longStrings"
@@ -54,10 +38,6 @@ call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\jlfaucher\Dropbox\software\
 
 :: windiff
 call shellscriptlib :prepend_path PATH "E:\windiff"
-
-:: cmake
-:: Provided with Visual Studio
-:: call shellscriptlib :prepend_path PATH "C:\Program Files\CMake\bin"
 
 :: bsf4oorexx version 641 - all platforms
 if "%builder_target%" == "executor" (

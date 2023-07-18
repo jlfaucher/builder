@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# load the helpers
+. $builder_scripts_dir/shellscriptlib
+
+# Those variables must be defined before calling this script
+if test -z "$builder_config" ; then echo "builder_config is undefined" ; return 1 ; fi
+if test -z "$builder_compiler" ; then echo "builder_compiler is undefined" ; return 1 ; fi
+if test -z "$builder_shared_dir" ; then echo "builder_shared_dir is undefined" ; return 1 ; fi
+if test -z "$builder_system_arch" ; then echo "builder_system_arch is undefined" ; return 1 ; fi
+
+echo "Setting environment for GCI"
+#export GCI_HOME=$builder_shared_dir/../rexx-gci
+export GCI_HOME="$( cd -P "$(dirname "$builder_shared_dir")" && pwd )"/rexx-gci
+GCI_LIBRARY_PATH=$GCI_HOME/build/$builder_system_arch/$builder_compiler/$builder_config
+# MacOs
+export DYLD_LIBRARY_PATH
+prepend_path DYLD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
+# Ubuntu
+export LD_LIBRARY_PATH
+prepend_path LD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
+alias cdgci='cd $GCI_HOME'

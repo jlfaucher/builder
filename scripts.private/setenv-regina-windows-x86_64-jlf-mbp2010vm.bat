@@ -14,18 +14,6 @@ if defined echo echo %echo%
 :: Y: seems faster than X:
 set HOST_DRIVE=Y:
 
-:: GCI
-echo Setting environment for GCI
-call shellscriptlib :dirname "%builder_shared_dir%"
-set GCI_HOME="%dirname%\rexx-gci"
-set GCI_HOME=%GCI_HOME:&=^&%
-set GCI_HOME=%GCI_HOME:"=%
-set GCI_LIBRARY_PATH=%GCI_HOME%\build\%builder_system_arch%\%builder_compiler%\%builder_config%
-call shellscriptlib :prepend_path PATH "%GCI_LIBRARY_PATH%"
-call shellscriptlib :drive "%GCI_HOME%"
-set GCI_HOME_DRIVE=%drive%
-doskey cdgci=%GCI_HOME_DRIVE% ^& cd %GCI_HOME%
-
 :: NSIS
 call shellscriptlib :prepend_path PATH "E:\nsis\Nsis_longStrings"
 

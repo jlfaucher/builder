@@ -40,14 +40,6 @@ fi
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
 #declare_bsf4oorexx_svn
 
-echo "Setting environment for GCI"
-#export GCI_HOME=$builder_shared_dir/../rexx-gci
-export GCI_HOME="$( cd -P "$(dirname "$builder_shared_dir")" && pwd )"/rexx-gci
-GCI_LIBRARY_PATH=$GCI_HOME/build/$builder_system_arch/$builder_compiler/$builder_config
-export DYLD_LIBRARY_PATH
-prepend_path DYLD_LIBRARY_PATH "$GCI_LIBRARY_PATH"
-alias cdgci='cd $GCI_HOME'
-
 echo "Setting environment for ICU"
 . /local/Unicode/ICU/setenv.sh
 
