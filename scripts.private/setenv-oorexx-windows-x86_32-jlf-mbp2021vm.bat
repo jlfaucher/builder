@@ -50,8 +50,8 @@ if "%builder_target%" == "executor" (
 :: bsf4oorexx version 850 - all platforms - can't be used by Executor
 if not "%builder_target%" == "executor" (
     set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
-    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20230109-beta\bsf4oorexx
-    set BSF4OOREXX_JAR=bsf4ooRexx-v850-20230109-bin.jar
+    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20230718-beta\bsf4oorexx
+    set BSF4OOREXX_JAR=bsf4ooRexx-v850-20230718-bin.jar
     call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
 )
 
