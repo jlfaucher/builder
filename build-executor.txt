@@ -31,6 +31,10 @@ Shell prerequisite for Windows:
 # MacOs for arm64 or x86_64
 --------------------------------------------------------------------------------
 
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
 cd <my directory>
 mkdir rexx
 cd rexx
@@ -76,6 +80,10 @@ cd <my directory>/rexx/oorexx
 --------------------------------------------------------------------------------
 # Linux for arm64 or x86_64
 --------------------------------------------------------------------------------
+
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
 
 cd <my directory>
 mkdir rexx

@@ -1,0 +1,16 @@
+
+#echo "Running .bash_env (SHLVL=$SHLVL)"
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias df='df -h'
+alias du='du -h'
+alias ls='ls -aF'
+alias ll='ls -laF'
+
+export FIGNORE=$FIGNORE:.DS_Store
+
+if test -f "$REXX_ENVIRONMENT"
+then
+    . "$REXX_ENVIRONMENT" > /dev/null 2>&1
+fi

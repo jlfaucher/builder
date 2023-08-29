@@ -126,6 +126,10 @@ unzip regina395.zip
 MacOs & Linux build for x86-64 or arm64
 --------------------------------------------------------------------------------
 
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
 # Build the 64-bit release configuration of Regina official/interpreter/trunk:
 # MacOs
 cd /local/rexx/regina

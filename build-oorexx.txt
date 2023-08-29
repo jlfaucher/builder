@@ -270,6 +270,10 @@ NEW BUILD SYSTEM (cmake)
 Build the 64-bit release configuration of official ooRexx trunk, executor master branch
 --------------------------------------------------------------------------------
 
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
 cd /local/rexx/oorexx
 
 # Initialize the build environment (only one of them):
@@ -323,6 +327,10 @@ MacOs & Linux build
 OLD BUILD SYSTEM (configure) + adaptations
 Build the 64-bit release configuration of official ooRexx release 4.2.0
 --------------------------------------------------------------------------------
+
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
 
 # MacOs
 cd /local/rexx/oorexx
