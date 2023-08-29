@@ -1,9 +1,10 @@
 @echo off
 if defined echo echo %echo%
 
-set CFLAGS=/D_DEBUG /DDEBUG %CFLAGS%
-set CPPFLAGS=/D_DEBUG /DDEBUG %CPPFLAGS%
-set CXXFLAGS=/D_DEBUG /DDEBUG %CXXFLAGS%
+:: MUST use DEBUG=Y for Regina, otherwise no symbols loaded
+set CFLAGS=/D_DEBUG /DDEBUG=Y %CFLAGS%
+set CPPFLAGS=/D_DEBUG /DDEBUG=Y %CPPFLAGS%
+set CXXFLAGS=/D_DEBUG /DDEBUG=Y %CXXFLAGS%
 
 :: Old build system (makeorx DEBUG)
 set rel=0
