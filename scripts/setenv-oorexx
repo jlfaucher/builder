@@ -55,6 +55,7 @@ export DYLD_LIBRARY_PATH
 export C_INCLUDE_PATH
 export CPLUS_INCLUDE_PATH
 export LIBRARY_PATH
+export NLSPATH
 
 prepend_path PATH "$builder_shared_dir/scripts"
 
@@ -67,6 +68,7 @@ echo "Setting environment for running ooRexx"
 prepend_path PATH "$builder_delivery_dir/bin"
 prepend_path LD_LIBRARY_PATH "$builder_delivery_dir/lib"
 prepend_path DYLD_LIBRARY_PATH "$builder_delivery_dir/lib"
+prepend_path NLSPATH "$builder_delivery_dir/bin/rexx.cat"
 
 echo "Setting environment for ooRexx test framework"
 prepend_path PATH "$oorexx_test_trunk"
