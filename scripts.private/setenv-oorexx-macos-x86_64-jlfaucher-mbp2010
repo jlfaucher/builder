@@ -57,6 +57,6 @@ echo "Setting environment for BATIK"
 export BATIK_ROOT=/local/XmlToolSet/batik-1.7
 export BATIK_RASTERIZER_JAR=$BATIK_ROOT/batik-rasterizer.jar
 
-echo "Setting environment for Zig"
-. /local/zig/setenv-0.9.1.sh
+#echo "Setting environment for Zig"
+#. /local/zig/setenv-0.9.1.sh
 
