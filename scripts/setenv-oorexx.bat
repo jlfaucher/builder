@@ -48,6 +48,7 @@ title ooRexx %builder_target% %builder_branch% %builder_src_relative_path% %buil
 call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 
 :: Needed by extensions\platform\windows\ole\events.cpp for for AgtCtl_i.c
+:: 09/01/2024 to remove? this directory no longer exists with recent Visual Studio
 set sdk=C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A
 if exist "%sdk%" set INCLUDE=%INCLUDE%;%sdk%\include
 
