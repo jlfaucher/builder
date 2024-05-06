@@ -28,14 +28,14 @@ Under MacOs, which is the main machine (host of the virtual machines):
         regina/                         $builder_shared_dir
             ----------------------------
             official_delivery/          packaged source of specific versions
-                3.9.5/                  last delivered version (older : 3.9.4, 3.9.3, 3.9.1, 3.9.0, 3.8.2, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.0)
+                3.9.6/                  last delivered version (older : 3.9.5, 3.9.4, 3.9.3, 3.9.1, 3.9.0, 3.8.2, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.0)
             official/                   svn sources of Regina
                 interpreter/
                     trunk/              next version to deliver
             ----------------------------
             build/                      where all the builds and deliveries for MacOs are done.
                 official_delivery/
-                    3.9.5/              macos-[x86_64|arm64]/clang/[debug|reldbg|release]
+                    3.9.6/              macos-[x86_64|arm64]/clang/[debug|reldbg|release]
                 official/
                     interpreter/
                         trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
@@ -57,7 +57,7 @@ The build directory is put inside the VM because of bad performances when access
             ----------------------------
             build/                      where all the builds and deliveries for Linux are done.
                 official_delivery/
-                    3.9.5/              linux-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
+                    3.9.6/              linux-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
                 official/
                     interpreter/
                         trunk/          linux-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
@@ -82,7 +82,7 @@ E:\local\
             ----------------------------
             build/                      where all the builds and deliveries for Windows are done.
                 official_delivery/
-                    3.9.5/              windows-[x86_64|arm64]/cl/[debug|reldbg|release]
+                    3.9.6/              windows-[x86_64|arm64]/cl/[debug|reldbg|release]
                 official/
                     interpreter/
                         trunk/          windows-[x86_64|arm64]/cl/[debug|reldbg|release]
@@ -100,7 +100,7 @@ git clone https://github.com/jlfaucher/builder.git
 Getting the svn sources of Regina
 --------------------------------------------------------------------------------
 
-# To get everything (71 MB: trunk, all releases):
+# To get everything (77 MB: trunk, all releases):
 cd /local/rexx/regina
 svn checkout svn://svn.code.sf.net/p/regina-rexx/code/ official
 
@@ -118,8 +118,8 @@ Download from
 https://sourceforge.net/projects/regina-rexx/files/
 
 Example :
-cd /local/rexx/regina/official_delivery/3.9.5
-unzip regina395.zip
+cd /local/rexx/regina/official_delivery/3.9.6
+unzip regina396.zip
 
 
 --------------------------------------------------------------------------------
