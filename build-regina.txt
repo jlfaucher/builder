@@ -132,12 +132,15 @@ MacOs & Linux build for x86-64 or arm64
 
 # Build the 64-bit release configuration of Regina official/interpreter/trunk:
 # MacOs
-cd /local/rexx/regina
-. ../builder/scripts/setenv build/official/interpreter/trunk/macos-x86_64/clang/release
+    # system-arch is macos-arm64 or macos-x86_64.
+    cd /local/rexx/regina
+    . ../builder/scripts/setenv build/official/interpreter/trunk/macos-x86_64/clang/release
 # Linux
-cd /local/rexx/regina
-. ../builder/scripts/setenv /local/rexxlocal/regina/build/official/interpreter/trunk/linux-x86_64/gcc/release
-# MacOs & Linux
+    # system-arch is linux-arm64 or linux-x86_64.
+    cd /local/rexx/regina
+    . ../builder/scripts/setenv /local/rexxlocal/regina/build/official/interpreter/trunk/linux-x86_64/gcc/release
+
+# Now build...
 cdbuild
 $builder_src_dir/configure $regina_bitness --prefix=$builder_delivery_dir
 make install
@@ -164,13 +167,14 @@ make install
 Windows build for x86-64 or arm64
 --------------------------------------------------------------------------------
 
-# Build the 64-bit release configuration of Regina official/interpreter/trunk:
+:: Build the 64-bit release configuration of Regina official/interpreter/trunk:
 :: Local directory in the virtual machine for Windows
 e:
 cd \local\rexxlocal\regina
 :: Shared directory
 y:
 cd \local\rexx\regina
+:: system-arch is windows-arm64 or windows-x86_64 or windows-x86_32.
 call ..\builder\scripts\setenv e:build\official\interpreter\trunk\windows-x86_64\cl\release
 cdbuild
 nmake /f %builder_src_dir%\makefile.win%builder_bitness%.vc
