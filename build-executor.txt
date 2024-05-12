@@ -159,13 +159,6 @@ cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL
 # The binaries are installed in %builder_delivery_dir%
 nmake install
 
-:: Optional: if you want colors in ooRexxShell, install rexx-gci:
-cd <my directory>
-cd rexx
-git clone https://github.com/jlfaucher/rexx-gci.git
-:: and add <my directory>/rexx/rexx-gci/build/windows-x86_64/cl/release to your PATH
-:: or  add <my directory>/rexx/rexx-gci/build/windows-arm64/cl/release to your PATH
-
 :: Optional: get the regex package (loaded by ooRexxShell if available)
 cdoorexx
 svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
