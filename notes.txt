@@ -1,4 +1,28 @@
 --------------------------------------------------------------------------------
+Windows WSL: Creation of the build environment
+--------------------------------------------------------------------------------
+
+# This procedure follows the ooRexx directory hierarchy described in build-oorexx.txt.
+# It's not the best choice in terms of speed (requires 17 min for a full build),
+# but the best choice for using the same source files from any environment.
+
+# The ooRexx sources are available on the Y: drive
+# (network drive mapped on a macOS directory)
+sudo mkdir /mnt/y
+sudo mount -t drvfs Y: /mnt/y
+
+# The macos HOME directory is available on the Z: drive
+sudo mkdir /mnt/z
+sudo mount -t drvfs Z: /mnt/z
+
+sudo mkdir /local
+sudo ln -s /mnt/y/local/rexx /local/rexx
+sudo ln -s /mnt/c/jlf/local/rexxlocal /local/rexxlocal
+
+# See build-oorexx.txt for the build procedure.
+
+
+--------------------------------------------------------------------------------
 Details of the commands executed by make
 --------------------------------------------------------------------------------
 

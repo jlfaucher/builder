@@ -82,6 +82,7 @@ Under MacOs, which is the main machine (host of the virtual machines):
 
 Linux virtual machine:
 The build directory is put inside the VM because of bad performances when accessing $builder_shared_dir.
+See notes.txt for "WSL: Creation of the build environment".
 /host/local                             NFS mount MacOs /local
 /local
     rexx@                               symbolic link to /host/local/rexx
@@ -99,21 +100,21 @@ The build directory is put inside the VM because of bad performances when access
                 executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
                     sandbox/
                         jlf/
-                            trunk/      linux-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
+                            trunk/      ubuntu-[x86_64|aarch64]/gcc/[debug|profiling|reldbg|release]
                 executor5.master/       other branches : none for the moment
                     main/
-                        trunk/          linux-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
+                        trunk/          ubuntu-[x86_64|aarch64]/gcc/[debug|profiling|reldbg|release]
                 official/
                     main/
                         branches
                             4.2/
-                                trunk/  linux-x86_64/gcc/[debug|profiling|reldbg|release]
+                                trunk/  ubuntu-x86_64/gcc/[debug|profiling|reldbg|release]
                         releases/
                             4.2.0/
-                                trunk/  linux-x86_64/gcc/[debug|profiling|reldbg|release]
+                                trunk/  ubuntu-x86_64/gcc/[debug|profiling|reldbg|release]
                             5.0.0/
-                                trunk/  linux-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
-                        trunk/          linux-[x86_64|arm64]/gcc/[debug|profiling|reldbg|release]
+                                trunk/  ubuntu-[x86_64|aarch64]/gcc/[debug|profiling|reldbg|release]
+                        trunk/          ubuntu-[x86_64|aarch64]/gcc/[debug|profiling|reldbg|release]
 
 
 Windows virtual machine:
@@ -286,13 +287,13 @@ cd /local/rexx/oorexx
     # MacOs executor5
     . ../builder/scripts/setenv build/executor5.master/main/trunk/macos-arm64/clang/release
 # Linux
-    # system-arch is linux-arm64 or linux-x86_64.
+    # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
     # Linux ooRexx
-    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release
     # Linux executor
-    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/gcc/release
     # Linux executor5
-    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/linux-x86_64/clang/release
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-x86_64/clang/release
 
 # Now build...
 cdbuild
@@ -337,7 +338,7 @@ cd /local/rexx/oorexx
 . ../builder/scripts/setenv build/official/main/releases/4.2.0/trunk/macos-x86_64/clang/release
 # Linux
 cd /local/rexx/oorexx
-. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/releases/4.2.0/trunk/linux-x86_64/gcc/release
+. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/releases/4.2.0/trunk/ubuntu-x86_64/gcc/release
 # MacOs & Linux
 cdtrunk
 ./bootstrap
@@ -353,13 +354,13 @@ NEW BUILD SYSTEM (cmake)
 Build the 64-bit release configuration of official ooRexx trunk, executor master branch
 --------------------------------------------------------------------------------
 
-# Prerequisite
-# - No space in the path to the current directory.
-# - ooRexx:   Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
-# - Executor: Visual Studio 2022
-# - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
-# - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
-# - Install xalan-c: https://xalan.apache.org/xalan-c/
+:: Prerequisite
+:: - No space in the path to the current directory.
+:: - ooRexx:   Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+:: - Executor: Visual Studio 2022
+:: - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+:: - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
+:: - Install xalan-c: https://xalan.apache.org/xalan-c/
 
 
 :: Local directory in the virtual machine for Windows
@@ -380,7 +381,7 @@ cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk %builder_src_dir%
 nmake install
 
-# Optional
+:: Optional
 nmake nsis_template_installer
 
 
@@ -390,16 +391,16 @@ OLD BUILD SYSTEM (makeorx) + adaptations
 Build the 64-bit release configuration of official ooRexx release 4.2.0
 --------------------------------------------------------------------------------
 
-# Prerequisite
-# - No space in the path to the current directory.
-# - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
-# - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
-# - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
-# - Install xalan-c: https://xalan.apache.org/xalan-c/
-# - Adapt scripts.private\other_dependencies-oorexx.bat to your COMPUTERNAME:
-#     - add killer.exe in PATH.
-#     - add NSIS in PATH.
-#     - add xalan-c in PATH.
+:: Prerequisite
+:: - No space in the path to the current directory.
+:: - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+:: - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+:: - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
+:: - Install xalan-c: https://xalan.apache.org/xalan-c/
+:: - Adapt scripts.private\other_dependencies-oorexx.bat to your COMPUTERNAME:
+::     - add killer.exe in PATH.
+::     - add NSIS in PATH.
+::     - add xalan-c in PATH.
 
 
 :: Local directory in the virtual machine for Windows

@@ -78,7 +78,7 @@ cd <my directory>/rexx/oorexx
 
 
 --------------------------------------------------------------------------------
-# Linux for arm64 or x86_64
+# Linux for aarch64 or x86_64
 --------------------------------------------------------------------------------
 
 # Remember: the instructions in this section work only with bash.
@@ -97,6 +97,7 @@ git clone https://github.com/jlfaucher/executor.git
 
 # Initialize the build environment:
 # build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
+# system-arch is ubuntu-aarch64 or ubuntu-x86_64.
 . ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release
 
 # Several aliases are defined to navigate easily in the directories:
@@ -122,16 +123,17 @@ oorexxshell
 
 # Next time, when starting from a fresh console:
 cd <my directory>/rexx/oorexx
+# system-arch is ubuntu-aarch64 or ubuntu-x86_64.
 . ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release
 
 
 --------------------------------------------------------------------------------
-# Windows for arm64 or x86_64
+:: Windows for arm64 or x86_64
 --------------------------------------------------------------------------------
-# Prerequisite
-# - No space in the path to the current directory.
-# - Visual Studio 2022 is installed. See scripts\setenv-cl.bat
-# - (needed?) An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+:: Prerequisite
+:: - No space in the path to the current directory.
+:: - Visual Studio 2022 is installed. See scripts\setenv-cl.bat
+:: - (needed?) An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 
 
 cd <my directory>
@@ -146,7 +148,7 @@ git clone https://github.com/jlfaucher/executor.git
 
 :: Initialize the build environment:
 :: build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
-# system-arch is windows-arm64 or windows-x86_64.
+:: system-arch is windows-arm64 or windows-x86_64.
 call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
 
 :: Several macros are defined to navigate easily in the directories:
@@ -156,7 +158,7 @@ doskey /macros
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% %builder_src_dir%
 
-# The binaries are installed in %builder_delivery_dir%
+:: The binaries are installed in %builder_delivery_dir%
 nmake install
 
 :: Optional: get the regex package (loaded by ooRexxShell if available)
@@ -172,5 +174,5 @@ oorexxshell
 
 :: Next time, when starting from a fresh console:
 cd <my directory>/rexx/oorexx
-# system-arch is windows-arm64 or windows-x86_64.
+:: system-arch is windows-arm64 or windows-x86_64.
 call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release

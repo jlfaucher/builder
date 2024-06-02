@@ -29,14 +29,26 @@ Shell prerequisite for Windows:
 cd <my directory>
 mkdir rexx
 cd rexx
+
+# Get the sources
 git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
+
+# Initialize the build environment:
+# build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
 # system-arch is macos-arm64 or macos-x86_64.
 . ../builder/scripts/setenv build/executor5.master/main/trunk/macos-arm64/clang/release
+
+# Several aliases are defined to navigate easily in the directories:
+alias
+
+# Configure
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
+
+# The binaries are installed in $builder_delivery_dir
 make install
 
 # Optional: if you installed Executor
@@ -44,9 +56,14 @@ make install
 ln -s ../executor/incubator incubator
 ln -s ../executor/sandbox sandbox
 
+# Next time, when starting from a fresh console:
+cd <my directory>/rexx/oorexx
+# system-arch is macos-arm64 or macos-x86_64.
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/release
+
 
 --------------------------------------------------------------------------------
-# Linux for x86_64
+# Linux for aarch64 or x86_64
 --------------------------------------------------------------------------------
 
 # Remember: the instructions in this section work only with bash.
@@ -56,13 +73,26 @@ ln -s ../executor/sandbox sandbox
 cd <my directory>
 mkdir rexx
 cd rexx
+
+# Get the sources
 git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
+
+# Initialize the build environment:
+# build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
+# system-arch is ubuntu-aarch64 or ubuntu-x86_64.
 . ../builder/scripts/setenv build/executor5.master/main/trunk/linux-x86_64/clang/release
+
+# Several aliases are defined to navigate easily in the directories:
+alias
+
+# Configure
 cdbuild
 cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
+
+# The binaries are installed in $builder_delivery_dir
 make install
 
 # Optional: if you installed Executor
@@ -70,32 +100,51 @@ make install
 ln -s ../executor/incubator incubator
 ln -s ../executor/sandbox sandbox
 
+# Next time, when starting from a fresh console:
+cd <my directory>/rexx/oorexx
+# system-arch is ubuntu-aarch64 or ubuntu-x86_64.
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release
+
 
 --------------------------------------------------------------------------------
-# Windows for arm64 or x86_64
+:: Windows for arm64 or x86_64
 --------------------------------------------------------------------------------
-# Prerequisite
-# - No space in the path to the current directory.
-# - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
-# - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+:: Prerequisite
+:: - No space in the path to the current directory.
+:: - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+:: - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 
 cd <my directory>
 mkdir rexx
 cd rexx
+
+:: Get the sources
 git clone https://github.com/jlfaucher/builder.git
 mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
-# system-arch is windows-arm64 or windows-x86_64.
+
+:: Initialize the build environment:
+:: build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
+:: system-arch is windows-arm64 or windows-x86_64.
 call ..\builder\scripts\setenv build\executor5.master\main\trunk\windows-x86_64\cl\release
+
+:: Several macros are defined to navigate easily in the directories:
+doskey /macros
+
+:: Configure
 cdbuild
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% %builder_src_dir%
+
+:: The binaries are installed in %builder_delivery_dir%
 nmake install
 
-# Optional: if you installed Executor
-# From the directory executor5, reference some subdirectories in executor :
+:: Optional: if you installed Executor
+:: From the directory executor5, reference some subdirectories in executor :
 mklink /d incubator ..\executor\incubator
 mklink /d sandbox ..\executor\sandbox
 
-# Optional: if you want colors in ooRexxShell, install rexx-gci.
-See build-GCI.txt
+:: Next time, when starting from a fresh console:
+cd <my directory>/rexx/oorexx
+:: system-arch is windows-arm64 or windows-x86_64.
+call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release

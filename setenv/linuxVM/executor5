@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # $1 is mandatory: debug or profiling or reldbg or release
-# $2 is optional: architecture x86_32 or X86_64 or arm32 or arm64 (default is the machine hardware)
+# $2 is optional: architecture x86_32 or X86_64 or aarch32 or aarch64 (default is the machine hardware)
 
 if [ -z "$BASH_VERSION" ]; then
    echo "Works only with bash"
