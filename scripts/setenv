@@ -62,9 +62,10 @@ case "$builder_system" in
     "windows") ;;
     "macos") ;;
     "linux") ;;
+    "ubuntu") ;;
     *)
         echo "Invalid system: $builder_system"
-        echo "Expected: windows or macos or linux"
+        echo "Expected: windows or macos or linux or ubuntu"
         return 1
         ;;
 esac
@@ -75,9 +76,11 @@ case "$builder_arch" in
     "x86_64") ;;
     "arm32") ;;
     "arm64") ;;
+    "aarch32") ;;
+    "aarch64") ;;
     *)
         echo "Invalid architecture: $builder_arch"
-        echo "Expected: x86_32 or x86_64 or arm32 or arm64"
+        echo "Expected: x86_32 or x86_64 or arm32 or arm64 or aarch32 or aarch64"
         return 1
         ;;
 esac
@@ -116,21 +119,22 @@ export builder_config_dir=$dir
 export builder_hostname=`hostname -s`
 
 # 2023.07.18: add prefix "builder_private_" to avoid accidental overwriting
-builder_private_dir=$dir
+# 2024.06.02: better prefix "builder_iteration_"
+builder_iteration_dir=$dir
 
 # Iterate over each directory, from deeper to root.
 # If a script named setenv-<dir> exists in the directory of scripts then execute it.
 # If a script named setenv-<dir>-<system-arch>-<computername> exists in the directory of private scripts then execute it.
 # If a script named setenv-<dir>-<computername> exists in the directory of private scripts then execute it.
-while [ "$builder_private_dir" != "/" ]; do
-    builder_private_current=`basename "$builder_private_dir"`
-    echo "[builder_private_current="$builder_private_current"]"
+while [ "$builder_iteration_dir" != "/" ]; do
+    builder_iteration_current=`basename "$builder_iteration_dir"`
+    echo "[builder_iteration_current="$builder_iteration_current"]"
 
     # Script common to all machines
-    script=${builder_scripts_dir}/setenv-${builder_private_current}
+    script=${builder_scripts_dir}/setenv-${builder_iteration_current}
     if [ -x "$script" ]; then
         echo Running "$script"
-        . "$script" "$builder_private_dir"
+        . "$script" "$builder_iteration_dir"
         if test $? != 0
         then
             return 1
@@ -138,10 +142,10 @@ while [ "$builder_private_dir" != "/" ]; do
     fi
 
     # Private script builder_system_arch + builder_hostname
-    script=${builder_scripts_dir}.private/setenv-${builder_private_current}-${builder_system_arch}-${builder_hostname}
+    script=${builder_scripts_dir}.private/setenv-${builder_iteration_current}-${builder_system_arch}-${builder_hostname}
     if [ -x "$script" ]; then
         echo Running "$script"
-        . "$script" "$builder_private_dir"
+        . "$script" "$builder_iteration_dir"
         if test $? != 0
         then
             return 1
@@ -149,17 +153,17 @@ while [ "$builder_private_dir" != "/" ]; do
     fi
 
     # Private script builder_hostname
-    script=${builder_scripts_dir}.private/setenv-${builder_private_current}-${builder_hostname}
+    script=${builder_scripts_dir}.private/setenv-${builder_iteration_current}-${builder_hostname}
     if [ -x "$script" ]; then
         echo Running "$script"
-        . "$script" "$builder_private_dir"
+        . "$script" "$builder_iteration_dir"
         if test $? != 0
         then
             return 1
         fi
     fi
 
-    builder_private_dir=`dirname "$builder_private_dir"`
+    builder_iteration_dir=`dirname "$builder_iteration_dir"`
 done
 
 ################################################################################

@@ -83,10 +83,8 @@ set builder_arch=%%j
 
 :: Check system
 if "%builder_system%" == "windows" goto :builder_system_ok
-if "%builder_system%" == "macos" goto :builder_system_ok
-if "%builder_system%" == "linux" goto :builder_system_ok
 echo Invalid system "%builder_system%"
-echo Expected: windows or macos or linux
+echo Expected: windows
 exit /b 1
 :builder_system_ok
 
@@ -143,52 +141,53 @@ for /F "usebackq" %%i in (`"hostname 2>nul"`) do set builder_hostname=%%i
 if not defined builder_hostname set builder_hostname=%COMPUTERNAME%
 
 :: 2023.07.18: add prefix "builder_private_" to avoid accidental overwriting
-set builder_private_dir=%dir%
+:: 2024.06.02: better prefix "builder_iteration_"
+set builder_iteration_dir=%dir%
 
 :: Iterate over each directory, from deeper to root.
 :: If a script named setenv-<dir>.bat exists in the directory of scripts then execute it.
 :: If a script named setenv-<dir>-<system-arch>-<computername>.bat exists in the directory of private scripts then execute it.
 :: If a script named setenv-<dir>-<computername>.bat exists in the directory of private scripts then execute it.
 :loop
-    if "%builder_private_dir%"=="%drv%" goto :endloop
-    call shellscriptlib :basename "%builder_private_dir%"
-    set builder_private_current=%basename%
-    echo [builder_private_current=%builder_private_current%]
+    if "%builder_iteration_dir%"=="%drv%" goto :endloop
+    call shellscriptlib :basename "%builder_iteration_dir%"
+    set builder_iteration_current=%basename%
+    echo [builder_iteration_current=%builder_iteration_current%]
 
     :: Script common to all machines
-    set script="%builder_scripts_dir%\setenv-%builder_private_current%.bat"
+    set script="%builder_scripts_dir%\setenv-%builder_iteration_current%.bat"
     set script=%script:&=^&%
     set script=%script:"=%
     if exist "%script%" (
         echo Running "%script%"
-        call "%script%" "%builder_private_dir%"
+        call "%script%" "%builder_iteration_dir%"
         if errorlevel 1 exit /b 1
     )
 
     :: Private script builder_system_arch + builder_hostname
-    set script="%builder_scripts_dir%.private\setenv-%builder_private_current%-%builder_system_arch%-%builder_hostname%.bat"
+    set script="%builder_scripts_dir%.private\setenv-%builder_iteration_current%-%builder_system_arch%-%builder_hostname%.bat"
     set script=%script:&=^&%
     set script=%script:"=%
     if exist "%script%" (
         echo Running "%script%"
-        call "%script%" "%builder_private_dir%"
+        call "%script%" "%builder_iteration_dir%"
         if errorlevel 1 exit /b 1
     )
 
     :: Private script builder_hostname
-    set script="%builder_scripts_dir%.private\setenv-%builder_private_current%-%builder_hostname%.bat"
+    set script="%builder_scripts_dir%.private\setenv-%builder_iteration_current%-%builder_hostname%.bat"
     set script=%script:&=^&%
     set script=%script:"=%
     if exist "%script%" (
         echo Running "%script%"
-        call "%script%" "%builder_private_dir%"
+        call "%script%" "%builder_iteration_dir%"
         if errorlevel 1 exit /b 1
     )
 
-    call shellscriptlib :dirname "%builder_private_dir%"
-    set builder_private_dir="%dirname%"
-    set builder_private_dir=%builder_private_dir:&=^&%
-    set builder_private_dir=%builder_private_dir:"=%
+    call shellscriptlib :dirname "%builder_iteration_dir%"
+    set builder_iteration_dir="%dirname%"
+    set builder_iteration_dir=%builder_iteration_dir:&=^&%
+    set builder_iteration_dir=%builder_iteration_dir:"=%
     goto :loop
 :endloop
 
