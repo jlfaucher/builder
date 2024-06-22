@@ -2,8 +2,7 @@ This file is a subset of build-oorexx.txt, limited to the build of executor.
 
 
 Compiler prerequisite:
-    Your compiler supports C++17 under MacOs and C++20 under Windows.
-    Needed for ICU4X which is now included in the sources of Executor.
+    Your compiler supports C++17.
 
     Tested with Apple clang version 14.0.0 (clang-1400.0.29.202)
     Tested with clang+llvm-15.0.3-x86_64-apple-darwin
