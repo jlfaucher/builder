@@ -46,8 +46,8 @@ echo "Setting environment for ICU"
 echo "Setting environment for BOOST"
 . /local/cpp/boost/setenv.sh
 
-echo "Setting environment for Dropbox scripts"
-prepend_path PATH "~/Dropbox/software/oorexx"
+echo "Setting environment for Home scripts"
+prepend_path PATH "~/software/oorexx"
 
 echo "Setting environment for BATIK"
 # Remember: if v1.13 doesn't work see what has been done for macos

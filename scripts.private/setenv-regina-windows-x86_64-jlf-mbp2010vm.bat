@@ -17,8 +17,8 @@ set HOST_DRIVE=Y:
 :: NSIS
 call shellscriptlib :prepend_path PATH "E:\nsis\Nsis_longStrings"
 
-:: Dropbox scripts
-call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\jlfaucher\Dropbox\software\Rexx"
+:: Home scripts
+call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\jlfaucher\software\Rexx"
 
 :: windiff
 call shellscriptlib :prepend_path PATH "E:\windiff"

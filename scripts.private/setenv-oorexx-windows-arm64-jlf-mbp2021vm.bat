@@ -37,8 +37,8 @@ call shellscriptlib :prepend_path PATH "%JAVA_HOME%\%JAVA_JVM_FOLDER%"
 :: NSIS
 call shellscriptlib :prepend_path PATH "E:\nsis\Nsis_longStrings"
 
-:: Dropbox scripts
-call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\jlfaucher\Dropbox\software\oorexx"
+:: Home scripts
+call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\jlfaucher\software\oorexx"
 
 :: windiff
 call shellscriptlib :prepend_path PATH "E:\windiff"
