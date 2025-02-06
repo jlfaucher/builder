@@ -134,7 +134,7 @@ MacOs & Linux build for x86-64 or arm64
 # MacOs
     # system-arch is macos-arm64 or macos-x86_64.
     cd /local/rexx/regina
-    . ../builder/scripts/setenv build/official/interpreter/trunk/macos-x86_64/clang/release
+    . ../builder/scripts/setenv build/official/interpreter/trunk/macos-arm64/clang/release
 # Linux
     # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
     cd /local/rexx/regina
