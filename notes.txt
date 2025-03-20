@@ -19,6 +19,15 @@ sudo mkdir /local
 sudo ln -s /mnt/y/local/rexx /local/rexx
 sudo ln -s /mnt/c/jlf/local/rexxlocal /local/rexxlocal
 
+# /etc/wsl.conf, add:
+[automount]
+mountFsTab=true
+
+# /etc/fstab add (use tabs):
+Y:	/mnt/y	drvfs	defaults	0	0
+Z:	/mnt/z	drvfs	defaults	0	0
+
+
 # See build-oorexx.txt for the build procedure.
 
 
