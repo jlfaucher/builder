@@ -7,7 +7,6 @@
 
 
 # Replace by your path (no space !)
-BSF4OOREXX=/local/rexx/bsf4oorexx
 OOREXX=/local/rexx/oorexx
 
 
@@ -101,17 +100,6 @@ diff_view()
 actions()
 {
     local action=$1
-
-
-    ################################################################################
-    # bsf4oorexx/trunk
-    ################################################################################
-
-    local source=$BUILDER_ADAPTATIONS/bsf4oorexx/trunk/bsf4oorexx.dev/source_cc
-    local target=$BSF4OOREXX/svn/trunk/bsf4oorexx.dev/source_cc
-    $action $source $target Makefile-builder-windows
-    $action $source $target Makefile-builder-macosx
-    $action $source $target Makefile-builder-linux
 
 
     ################################################################################

@@ -3,7 +3,6 @@ if defined echo echo %echo%
 setlocal
 
 :: Replace by your path (no space !)
-set BSF4OOREXX=y:\local\rexx\bsf4oorexx
 set OOREXX=y:\local\rexx\oorexx
 
 goto :main
@@ -107,18 +106,6 @@ goto :main
 :actions
     setlocal
     set action=%1
-
-
-    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    :: bsf4oorexx\trunk
-    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    set source=%BUILDER_ADAPTATIONS%\bsf4oorexx\trunk\bsf4oorexx.dev\source_cc
-    set target=%BSF4OOREXX%\svn\trunk\bsf4oorexx.dev\source_cc
-    call :%action% %source% %target% Makefile-builder-windows
-    call :%action% %source% %target% Makefile-builder-macosx
-    call :%action% %source% %target% Makefile-builder-linux
-    if "%stop%" == "1" goto :eof
 
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
