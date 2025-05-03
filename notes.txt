@@ -28,6 +28,15 @@ Y:	/mnt/y	drvfs	defaults	0	0
 Z:	/mnt/z	drvfs	defaults	0	0
 
 
+# How to install a RECENT version of clang
+https://official-stockfish.github.io/docs/fishtest-wiki/Advanced-Topics.html
+cd ~/tmp
+wget https://apt.llvm.org/llvm.sh
+sudo bash llvm.sh
+# In the next line, replace 19 by the installed version (four occurrences to replace)
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 19 --slave /usr/bin/clang++ clang++ /usr/bin/clang++-19 --slave /usr/bin/llvm-profdata llvm-profdata /usr/bin/llvm-profdata-19
+
+
 # See build-oorexx.txt for the build procedure.
 
 

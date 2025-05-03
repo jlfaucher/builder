@@ -7,8 +7,12 @@ Compiler prerequisite:
     Tested with Apple clang version 14.0.0 (clang-1400.0.29.202)
     Tested with clang+llvm-15.0.3-x86_64-apple-darwin
     Tested with clang+llvm-15.0.6-arm64-apple-darwin21.0
-    Tested under WSL with gcc/g++ GNU 11.4.0
+    Tested under WSL with clang/clang++ version 19.1.7 (could work with an older version, not tested)
     Tested with Microsoft Visual Studio Community 2022 (64-bit) - Version 17.3.6
+
+    NOTE:
+    Under Linux or WSL, gcc is NOT supported: crash when running rexximage.
+    Use clang.
 
 Shell prerequisite for MacOS:
     Works only with bash.
@@ -56,7 +60,7 @@ alias
 
 # Configure
 cdbuild
-cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
 
 # The binaries are installed in $builder_delivery_dir
 make install
@@ -100,14 +104,14 @@ git clone --depth 1 https://github.com/jlfaucher/executor.git
 # Initialize the build environment:
 # build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
 # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/gcc/release
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/clang/release
 
 # Several aliases are defined to navigate easily in the directories:
 alias
 
 # Configure
 cdbuild
-cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir $builder_src_dir
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
 
 # The binaries are installed in $builder_delivery_dir
 make install
@@ -126,7 +130,7 @@ oorexxshell
 # Next time, when starting from a fresh console:
 cd <my directory>/rexx/oorexx
 # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/gcc/release
+. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/clang/release
 
 
 --------------------------------------------------------------------------------
@@ -159,7 +163,7 @@ doskey /macros
 
 :: Configure
 cdbuild
-cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% %builder_src_dir%
+cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DCMAKE_C_COMPILER=%CMAKE_C_COMPILER% -DCMAKE_CXX_COMPILER=%CMAKE_CXX_COMPILER% %builder_src_dir%
 
 :: The binaries are installed in %builder_delivery_dir%
 nmake install

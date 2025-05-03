@@ -36,6 +36,12 @@ if "%PROCESSOR_ARCHITECTURE%" == "ARM64" if "%builder_system_arch%" == "windows-
 if "%PROCESSOR_ARCHITECTURE%" == "ARM64" if "%builder_system_arch%" == "windows-arm64"  set compiler_option=arm64
 if not defined compiler_option  goto error
 
+:: Variables defined for building with cmake:
+set CMAKE_C_COMPILER=cl
+set CMAKE_CXX_COMPILER=cl
+:: yes! no quotes
+set CMAKE_GENERATOR=NMake Makefiles
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Visual Studio 2022 (internal version: 17.0, cl version 19.30)

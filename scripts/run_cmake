@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Copied from build-oorexx.txt
+                cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir $@
+#               make install
+# rpm (Linux)   cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_RPM=1 -DOS_DIST=`uname` $builder_src_dir
+#               make install
+#               cpack -G RPM
+# deb (Linux)   cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_DEB=1 -DOS_DIST=`uname` $builder_src_dir
+#               make install
+#               cpack -G DEB
+# dmg (MacOs)   cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_DMG=1 -DOS_DIST=`uname` $builder_src_dir
+#               make install
+#               . ./build_macOS_dmg.sh

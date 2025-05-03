@@ -27,15 +27,15 @@ Under MacOs, which is the main machine (host of the virtual machines):
         builder/                        Scripts to support builds for several branches, configurations, bitness
         regina/                         $builder_shared_dir
             ----------------------------
-            official_delivery/          packaged source of specific versions
-                3.9.6/                  last delivered version (older : 3.9.5, 3.9.4, 3.9.3, 3.9.1, 3.9.0, 3.8.2, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.0)
+            official_delivery_src/      packaged sources of specific versions
+                3.9.7/                  last delivered version (older : 3.9.6, 3.9.5, 3.9.4, 3.9.3, 3.9.1, 3.9.0, 3.8.2, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.0)
             official/                   svn sources of Regina
                 interpreter/
                     trunk/              next version to deliver
             ----------------------------
             build/                      where all the builds and deliveries for MacOs are done.
-                official_delivery/
-                    3.9.6/              macos-[x86_64|arm64]/clang/[debug|reldbg|release]
+                official_delivery_src/
+                    3.9.7/              macos-[x86_64|arm64]/clang/[debug|reldbg|release]
                 official/
                     interpreter/
                         trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
@@ -43,6 +43,7 @@ Under MacOs, which is the main machine (host of the virtual machines):
 
 Linux virtual machine:
 The build directory is put inside the VM because of bad performances when accessing $builder_shared_dir.
+See notes.txt for "WSL: Creation of the build environment".
 /host/local                             NFS mount MacOs /local
 /local
     rexx@                               symbolic link to /host/local/rexx
@@ -50,17 +51,17 @@ The build directory is put inside the VM because of bad performances when access
         regina/                         $builder_shared_dir
             build/                      not used for Linux
             ----------------------------
-            official_delivery/          packaged source of specific versions
+            official_delivery_src/      packaged sources of specific versions
             official/                   svn sources of Regina
     rexxlocal/                          Local directory
         regina/                         $builder_local_dir
             ----------------------------
             build/                      where all the builds and deliveries for Linux are done.
-                official_delivery/
-                    3.9.6/              ubuntu-[x86_64|aarch64]/gcc/[debug|profiling|reldbg|release]
+                official_delivery_src/
+                    3.9.7/              ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
                 official/
                     interpreter/
-                        trunk/          ubuntu-[x86_64|aarch64]/gcc/[debug|profiling|reldbg|release]
+                        trunk/          ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
 
 
 Windows virtual machine:
@@ -74,15 +75,15 @@ Y:\local
         regina\                         $builder_shared_dir
             build\                      not used
             ----------------------------
-            official_delivery/          packaged source of specific versions
+            official_delivery_src/      packaged sources of specific versions
             official\                   svn sources of Regina
 E:\local\
     rexxlocal/                          Local directory
         regina/                         $builder_local_dir
             ----------------------------
             build/                      where all the builds and deliveries for Windows are done.
-                official_delivery/
-                    3.9.6/              windows-[x86_64|arm64]/cl/[debug|reldbg|release]
+                official_delivery_src/
+                    3.9.7/              windows-[x86_64|arm64]/cl/[debug|reldbg|release]
                 official/
                     interpreter/
                         trunk/          windows-[x86_64|arm64]/cl/[debug|reldbg|release]
@@ -118,8 +119,8 @@ Download from
 https://sourceforge.net/projects/regina-rexx/files/
 
 Example :
-cd /local/rexx/regina/official_delivery/3.9.6
-unzip regina396.zip
+cd /local/rexx/regina/official_delivery/3.9.7
+unzip regina397.zip
 
 
 --------------------------------------------------------------------------------
@@ -130,19 +131,27 @@ MacOs & Linux build for x86-64 or arm64
 # If you use another shell (like zsh), then type bash -l
 # See the folder setenv/bash for examples of configuration files for bash.
 
+cd /local/rexx/regina
+
 # Build the 64-bit release configuration of Regina official/interpreter/trunk:
 # MacOs
     # system-arch is macos-arm64 or macos-x86_64.
-    cd /local/rexx/regina
+    # macOS SVN sources
     . ../builder/scripts/setenv build/official/interpreter/trunk/macos-arm64/clang/release
+    # macOS packaged sources of 3.9.7
+    . ../builder/scripts/setenv build/official_delivery_src/3.9.7/macos-arm64/clang/release
 # Linux
     # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
-    cd /local/rexx/regina
+    # WSL ARM aarch64 gcc
+    . ../builder/scripts/setenv /local/rexxlocal/regina/build/official/interpreter/trunk/ubuntu-aarch64/gcc/release
+    # WSL ARM aarch64 clang
+    . ../builder/scripts/setenv /local/rexxlocal/regina/build/official/interpreter/trunk/ubuntu-aarch64/clang/release
+    # Ubuntu x86_64 gcc
     . ../builder/scripts/setenv /local/rexxlocal/regina/build/official/interpreter/trunk/ubuntu-x86_64/gcc/release
 
 # Now build...
 cdbuild
-$builder_src_dir/configure $regina_bitness --prefix=$builder_delivery_dir
+$builder_src_dir/configure CC=$CONFIGURE_C_COMPILER CXX=$CONFIGURE_CXX_COMPILER $regina_bitness --prefix=$builder_delivery_dir
 make install
 
 
@@ -164,10 +173,13 @@ make install
 
 
 --------------------------------------------------------------------------------
-Windows build for x86-64 or arm64
+Windows build for x86_32 or x86-64 or arm64
 --------------------------------------------------------------------------------
 
-:: Build the 64-bit release configuration of Regina official/interpreter/trunk:
+:: From host Windows 11 arm64
+:: x86_64 Ko (build done, but runtime error "Side by side configuration is incorrect")
+
+:: Build the 32-bit or 64-bit release configuration of Regina official/interpreter/trunk:
 :: Local directory in the virtual machine for Windows
 e:
 cd \local\rexxlocal\regina

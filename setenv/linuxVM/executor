@@ -15,4 +15,4 @@ if test -z "$ARCH"
 then
     ARCH=`uname -m`
 fi
-. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-$ARCH/gcc/$1
+. ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-$ARCH/clang/$1
