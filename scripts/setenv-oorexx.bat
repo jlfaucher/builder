@@ -50,11 +50,11 @@ call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 :: Needed by extensions\platform\windows\ole\events.cpp for for AgtCtl_i.c
 :: 09/01/2024 to remove? this directory no longer exists with recent Visual Studio
 set sdk=C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A
-if exist "%sdk%" set INCLUDE=%INCLUDE%;%sdk%\include
+if exist "%sdk%" call shellscriptlib :prepend_path INCLUDE "%sdk%\include"
 
 echo Setting environment for building with ooRexx
-set INCLUDE=%builder_delivery_dir%\api;%INCLUDE%
-set LIB=%builder_delivery_dir%\api;%LIB%
+call shellscriptlib :prepend_path INCLUDE "%builder_delivery_dir%\api"
+call shellscriptlib :prepend_path LIB "%builder_delivery_dir%\api"
 
 echo Setting environment for executing ooRexx
 call shellscriptlib :prepend_path PATH "%builder_delivery_dir%"

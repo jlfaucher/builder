@@ -54,8 +54,8 @@ title Regina %builder_target% %builder_branch% %builder_src_relative_path% %buil
 call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 
 echo Setting environment for building with Regina
-set INCLUDE=%builder_delivery_dir%\include;%INCLUDE%
-set LIB=%builder_delivery_dir%\lib;%LIB%
+call shellscriptlib :prepend_path INCLUDE "%builder_delivery_dir%\include"
+call shellscriptlib :prepend_path LIB "%builder_delivery_dir%\lib"
 
 echo Setting environment for executing Regina
 call shellscriptlib :prepend_path PATH "%builder_delivery_dir%\bin"
