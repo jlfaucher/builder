@@ -491,3 +491,61 @@ universal_app: x86_app arm_app
 
 Wrap Platform-Specific Code with Conditional Compilation Macros
 For C-based code, the system defines a set of macros for you to use in /usr/include/TargetConditionals.h.
+
+
+--------------------------------------------------------------------------------
+Apple arm64 vs arm64e
+--------------------------------------------------------------------------------
+
+https://github.com/lelegard/arm-cpusysregs/blob/main/docs/arm64e-on-macos.md
+
+    Several new instructions were defined to implement "defensive security" against
+    malware code injection. This type of code injection usually starts with a buffer
+    overflow (due to a bug in an application or library) and implements
+    Return-Oriented Programing (ROP) techniques when it smashes the stack or
+    Jump-Oriented Programming (JOP) when it smashes other types of data structure,
+    typically in the heap.
+
+    Pointer Code Authentication (PAC) :
+    A deterministic but unpredictable short "signature" is added to code and data
+    pointers to detect invalid injected code addresses. This signature is added in
+    the 16 or 8 most significant bits of the 64-pointers, otherwise unused since no
+    address space uses 2^64 bytes.
+
+    Branch Target Identification (BTI) :
+    Targets of valid jump and branch instructions are identified by a special
+    instruction so that using any unexpected ROP or JOP gadget address results in an
+    invalid instruction.
+
+    Apple invented arm64e...
+    Defining a new ABI allows to use the full power of PAC, on data structure,
+    C++ vtables, etc.
+    Compiling a module with -arch arm64e marks the object code with that platform
+    name. Building an application or library for arm64e requires that all
+    compilation units were built for arm64e. This is why defining a new platform ABI
+    is the solution to get the full power of PAC.
+
+    -arch arm64e is specific to macOS and is available in the Apple version of clang
+    only.
+
+
+https://github.com/swiftlang/llvm-project/blob/apple/main/clang/docs/PointerAuthentication.rst
+
+    Pointer authentication is a technology which offers strong probabilistic
+    protection against exploiting a broad class of memory bugs to take control of
+    program execution. When adopted consistently in a language ABI, it provides a
+    form of relatively fine-grained control flow integrity (CFI) check that resists
+    both return-oriented programming (ROP) and jump-oriented programming (JOP)
+    attacks.
+
+    Terms in use:
+    - Pointer authentication is a target-independent language technology.
+    - ARMv8.3 is an AArch64 architecture revision of that provides hardware support
+      for pointer authentication. It is implemented on several shipping processors,
+      including the Apple A12 and later.
+    - arm64e is a specific ABI for (not yet fully stable) for implementing pointer
+      authentication on ARMv8.3 on certain Apple operating systems.
+
+
+https://developer.apple.com/documentation/security/preparing-your-app-to-work-with-pointer-authentication
+Preparing your app to work with pointer authentication
