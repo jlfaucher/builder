@@ -98,12 +98,19 @@ echo Expected: x86_32 or x86_64 or arm32 or arm64
 exit /b 1
 :builder_arch_ok
 
-:: Check consistency system-arch
-if not "%builder_system_arch%" == "%builder_system%-%builder_arch%" (
-    echo Invalid system-arch: %builder_system_arch%
-    echo Expected: only one dash separator
-    exit /b 1
-)
+:: Check system-arch
+if "%builder_system_arch%" == "windows-x86_32" goto :builder_system_arch_ok
+if "%builder_system_arch%" == "windows-x86_64" goto :builder_system_arch_ok
+if "%builder_system_arch%" == "windows-arm32" goto :builder_system_arch_ok
+if "%builder_system_arch%" == "windows-arm64" goto :builder_system_arch_ok
+echo Unsupported system-architecture: %builder_system_arch%
+echo Expected:"
+echo windows-x86_32
+echo windows-x86_64
+echo windows-arm32
+echo windows-arm64
+exit /b 1
+:builder_system_arch_ok
 
 if exist "%dir%" goto :directory_exists
 echo %dir%

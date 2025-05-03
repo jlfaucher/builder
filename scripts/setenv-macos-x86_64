@@ -2,6 +2,9 @@
 
 if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
 
+# Those variables must be defined before calling this script
+if test -z "$builder_arch" ; then echo "builder_arch is undefined" ; return 1 ; fi
+
 # 2019 jan 02 after upgrade to High Sierra and installation of Xcode 10.1
 # Xcode 10.1 doesn't support stdlibc++ anymore
 # https://github.com/MDAnalysis/mdanalysis/issues/2144
@@ -23,6 +26,9 @@ export regina_bitness=--enable-64bit
 # Under MacOs Apple Silicon, config --help
 #   --with-arch=option      build universal binaries on MacOS, option: one of "all 32bit 64bit intel apple-silicon ppc ppc64 x86_64 i386 arm64"
 
+# -arch is an Apple ld-specific option
+# -arch arch_name: Specifies which architecture (e.g. arm64, arm64e, x86_64, x86_64h) the output file should be.
+# On Apple silicon, -arch x86_64 creates a dual binary (arm64 and x86_64), whereas -arch arm64 creates a single binary.
 export CFLAGS="-arch $builder_arch $CFLAGS"
 export CXXFLAGS="-arch $builder_arch $CXXFLAGS"
 export LDFLAGS="-arch $builder_arch $LDFLAGS"

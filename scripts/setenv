@@ -59,39 +59,44 @@ export builder_arch=${str_array[1]}
 
 # Check system
 case "$builder_system" in
-    "windows") ;;
     "macos") ;;
-    "linux") ;;
     "ubuntu") ;;
     *)
         echo "Invalid system: $builder_system"
-        echo "Expected: windows or macos or linux or ubuntu"
+        echo "Expected: macos or ubuntu"
         return 1
         ;;
 esac
 
 # Check arch
 case "$builder_arch" in
-    "x86_32") ;;
     "x86_64") ;;
-    "arm32") ;;
     "arm64") ;;
     "aarch32") ;;
     "aarch64") ;;
     *)
         echo "Invalid architecture: $builder_arch"
-        echo "Expected: x86_32 or x86_64 or arm32 or arm64 or aarch32 or aarch64"
+        echo "Expected: x86_64 or arm64 or aarch32 or aarch64"
         return 1
         ;;
 esac
 
-# Check consistency system-arch
-if test "$builder_system_arch" != "${builder_system}-${builder_arch}"
-then
-    echo "Invalid system-arch: $builder_system_arch"
-    echo "Expected: only one dash separator"
-    return 1
-fi
+# Check system-arch
+case "$builder_system_arch" in
+    "macos-arm64") ;;
+    "macos-x86_64") ;;
+    "ubuntu-aarch64") ;;
+    "ubuntu-x86_64") ;;
+    *)
+        echo "Unsupported system-architecture: $builder_system_arch"
+        echo "Expected:"
+        echo "macos-arm64"
+        echo "macos-x86_64"
+        echo "ubuntu-aarch64"
+        echo "ubuntu-x86_64"
+        return 1
+        ;;
+esac
 
 if test ! -d "$dir"
 then
