@@ -3,8 +3,17 @@ Adaptation
 
 This directory contains adaptations of
 
-- BSF4OORexx
 - ooRexx (old branches, old releases)
+
+    # oorexx/official/main/branches/4.2
+    # oorexx/official/main/releases/3.1.2
+    # oorexx/official/main/releases/3.2.0
+    # oorexx/official/main/releases/4.0.0
+    # oorexx/official/main/releases/4.0.1
+    # oorexx/official/main/releases/4.1.0
+    # oorexx/official/main/releases/4.1.1
+    # oorexx/official/main/releases/4.2.0
+    # oorexx/official/test/branches/4.2.0
 
 to let build with the builder.
 
@@ -16,7 +25,7 @@ will create hard links (you may need to adapt the paths at the beginning of the 
 This script can be re-executed as much as you want.
 
 - create_links.bat  (for Windows)
-- create_links.sh   (for Linux/MacOs)
+- create_links      (for Linux/MacOs)
 
 By default, the actions are not executed.  
 Use the option -doit to really execute the actions.
