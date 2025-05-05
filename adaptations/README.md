@@ -5,66 +5,54 @@ This directory contains adaptations of
 
 - ooRexx (old branches, old releases)
 
-    # oorexx/official/main/branches/4.2
-    # oorexx/official/main/releases/3.1.2
-    # oorexx/official/main/releases/3.2.0
-    # oorexx/official/main/releases/4.0.0
-    # oorexx/official/main/releases/4.0.1
-    # oorexx/official/main/releases/4.1.0
-    # oorexx/official/main/releases/4.1.1
-    # oorexx/official/main/releases/4.2.0
-    # oorexx/official/test/branches/4.2.0
+    - [oorexx/official/main/branches/4.2][adaptation_main_branches_42]
+    - [oorexx/official/main/releases/3.1.2][adaptation_main_releases_312]
+    - [oorexx/official/main/releases/3.2.0][adaptation_main_releases_320]
+    - [oorexx/official/main/releases/4.0.0][adaptation_main_releases_400]
+    - [oorexx/official/main/releases/4.0.1][adaptation_main_releases_401]
+    - [oorexx/official/main/releases/4.1.0][adaptation_main_releases_410]
+    - [oorexx/official/main/releases/4.1.1][adaptation_main_releases_411]
+    - [oorexx/official/main/releases/4.2.0][adaptation_main_releases_420]
+    - [oorexx/official/test/branches/4.2.0][adaptation_test_branches_420]
 
 to let build with the builder.
 
 The files in the subdirectories are either new files or existing files that have
 been adaptated for some reasons.
 
-You can copy manually these files or you can execute the script create_links which
-will create hard links (you may need to adapt the paths at the beginning of the script).  
-This script can be re-executed as much as you want.
+You can copy manually these files or you can execute the script copy_files
+(you may need to adapt the paths at the beginning of the script).  
+This script can be re-executed as much as you want.  
+A copy is done only if the source is different from the target.  
+If a copy must be done and the target exists then a confirmation is asked.
 
-- create_links.bat  (for Windows)
-- create_links      (for Linux/MacOs)
+- [copy_files.bat][copy_files_for_windows]  (for Windows)
+- [copy_files][copy_files_for_linux_macos]      (for Linux/MacOs)
 
 By default, the actions are not executed.  
 Use the option -doit to really execute the actions.
 
-Notes about the script create_links
------------------------------------
 
-Careful:
-SVN does not manage correctly the symbolic links.  
-It does not see the file referenced by the link.  
-Instead, SVN sees something like that (a text file of 1 line) whose status is "~" (obstructed):  
+Procedure to keep the adaptations in sync
+-----------------------------------------
 
-    link /local/builder/adaptations/oorexx/official/main/trunk/CMakeLists.txt
+    copy_files -diff
+    copy_files -diffview
 
-When the corresponding file in the SVN repository is modified, then SVN compares
-this new version with the pseudo file of 1 line, and there is systematically a conflict.  
-That's why the script creates HARD links.
+Analyze the differences and merge into the adaptations if needed.  
+After the merge, you can copy the adapted files:
 
-Careful:  
-SVN does not manage correctly the hard links.  
-[https://stackoverflow.com/questions/12456501/svn-with-hard-links](https://stackoverflow.com/questions/12456501/svn-with-hard-links)  
-After svn update, some hard links may become independent files (the link count
-becomes 1) if the corresponding file was updated in the repository.
+    copy_files -doit
 
-Procedure to keep the adaptations in sync:
 
-    create_links -diff
-
-If some diffs are found, then you have some files that lost their hard link.
-
-    create_links -diffview
-
-Analyze the differences and merge into the adaptations.  
-After the merge, you can create the links:
-
-    create_links -doit
-
-Remember:
-You can see the number of hard links with ls -l (second column):
-
-    -rw-r--r--@  2 jlfaucher  admin  109081 31 jul 08:39 CMakeLists.txt
-    -rw-r--r--   1 jlfaucher  admin     340 18 jui 09:39 CONTRIBUTORS
+[adaptation_main_branches_42]: oorexx/official/main/branches/4.2/trunk "main branch 4.2"
+[adaptation_main_releases_312]: oorexx/official/main/releases/3.1.2/trunk "main release 3.1.2"
+[adaptation_main_releases_320]: oorexx/official/main/releases/3.2.0/trunk "main release 3.2.0"
+[adaptation_main_releases_400]: oorexx/official/main/releases/4.0.0/trunk "main release 4.0.0"
+[adaptation_main_releases_401]: oorexx/official/main/releases/4.0.1/trunk "main release 4.0.1"
+[adaptation_main_releases_410]: oorexx/official/main/releases/4.1.0/trunk "main release 4.1.0"
+[adaptation_main_releases_411]: oorexx/official/main/releases/4.1.1/trunk "main release 4.1.1"
+[adaptation_main_releases_420]: oorexx/official/main/releases/4.2.0/trunk "main release 4.2.0"
+[adaptation_test_branches_420]: oorexx/official/test/branches/4.2.0/trunk "test branch 4.2.0"
+[copy_files_for_windows]: copy_files.bat "copy_files.bat"
+[copy_files_for_linux_macos]: copy_files "copy_files"

@@ -20,7 +20,7 @@ help()
 }
 
 
-mklink()
+copy_file()
 {
     local source_dir=$1
     local target_dir=$2
@@ -37,21 +37,22 @@ mklink()
     local error=$?
     if [ $error -ne 0 ]
     then
-        # Symbolic links are not supported by SVN, better to create hard links
-        $execute ln -f $source $target
+        # source is different from target. A copy is needed.
+        # -i to be safe, ask confirmation if target exists.
+        $execute cp -i $source $target
     fi
 }
 
 
-show_mklink()
+show_copy()
 {
-    mklink $1 $2 $3 echo
+    copy_file $1 $2 $3 echo
 }
 
 
-do_mklink()
+do_copy()
 {
-    mklink $1 $2 $3
+    copy_file $1 $2 $3
 }
 
 
@@ -236,9 +237,18 @@ actions()
 
 
     ################################################################################
+    # oorexx\official\test\trunk
+    ################################################################################
+
+    local source=$BUILDER_ADAPTATIONS/oorexx/official/test/trunk/external/API
+    local target=$OOREXX/official/test/trunk/external/API
+    $action $source $target Makefile.windows
+
+
+    ################################################################################
 
     echo
-    if [ "$action" == "show_mklink" ]
+    if [ "$action" == "show_copy" ]
     then
         echo "Use the option -doit to really execute the actions"
     else
@@ -267,8 +277,8 @@ BUILDER_ADAPTATIONS="$( cd -P "$(dirname "$FILE")" && pwd )"
 check $BUILDER_ADAPTATIONS mandatory
 
 if [ "$1" == "" ]; then help
-elif [ "$1" == "-show" ]; then actions show_mklink
-elif [ "$1" == "-doit" ]; then actions do_mklink
+elif [ "$1" == "-show" ]; then actions show_copy
+elif [ "$1" == "-doit" ]; then actions do_copy
 elif [ "$1" == "-diff" ]; then actions diff_mini
 elif [ "$1" == "-diffview" ]; then actions diff_view
 else

@@ -147,8 +147,15 @@ Supported architectures
         build done, but runtime error "Side by side configuration is incorrect"
 
 
-[configure-smbd-to-follow-symbolic-links]: http://superuser.com/questions/555715/mac-os-x-10-8-configure-smbd-to-follow-symbolic-links "Configure smbd to follow symbolic links"
+Adaptations
+-----------
+
+To build older branches or versions (e.g., 4.2.0), some [adaptations][adaptations]
+must be applied.
+
+
 [build_executor]: build-executor.txt "Build Executor"
 [build_oorexx]: build-oorexx.txt "Build ooRexx"
 [build_regina]: build-regina.txt "Build Regina"
 [setenv-cl.bat]: https://github.com/jlfaucher/builder/blob/master/scripts/setenv-cl.bat "setenv-cl.bat" 
+[adaptations]: adaptations "adaptations"

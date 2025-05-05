@@ -2,15 +2,16 @@
 if defined echo echo %echo%
 setlocal
 
-:: Replace by your path (no space !)
-set OOREXX=y:\local\rexx\oorexx
-
-goto :main
-
 :: Helper script for Windows.
 :: The files under adaptation can be referenced from the packages being adapted,
 :: using symbolic or hard links.
 :: You can use this script to create those links.
+
+
+:: Replace by your path (no space !)
+set OOREXX=y:\local\rexx\oorexx
+
+goto :main
 
 
 :help
@@ -22,7 +23,7 @@ goto :main
     goto :eof
 
 
-:mklink
+:copy_file
     setlocal
     set source_dir=%1
     set target_dir=%2
@@ -38,21 +39,21 @@ goto :main
 
     fc %source% %target% >nul 2>&1
     if errorlevel 1 (
-        if exist %target% %execute% del /F /Q %target%
-        :: Symbolic links are not supported by SVN, better to create hard links
-        %execute% mklink /H %target% %source%
+        rem source is different from target. A copy is needed.
+        rem /-Y to be safe, ask confirmation if target exists.
+        %execute% copy /-Y %source% %target%
     )
     endlocal
     goto :eof
 
 
-:show_mklink
-    call :mklink %1 %2 %3 echo
+:show_copy
+    call :copy_file %1 %2 %3 echo
     goto :eof
 
 
-:do_mklink
-    call :mklink %1 %2 %3
+:do_copy
+    call :copy_file %1 %2 %3
     goto :eof
 
 
@@ -252,16 +253,6 @@ goto :main
 
 
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    :: oorexx\official\main\trunk
-    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\trunk
-    set target=%OOREXX%\official\main\trunk
-    call :%action% %source% %target% CMakeLists.txt
-    if "%stop%" == "1" goto :eof
-
-
-    ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     :: oorexx\official\test\branches\4.2.0
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -284,7 +275,7 @@ goto :main
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     echo.
-    if "%action%" == "show_mklink" (
+    if "%action%" == "show_copy" (
         echo Use the option -doit to really execute the actions.
     ) else (
         echo Done.
@@ -325,9 +316,9 @@ if "%stop%" == "1" exit /B 1
 if "%1" == "" (
     call :help
 ) else if "%1" == "-show" (
-    call :actions show_mklink
+    call :actions show_copy
 ) else if "%1" == "-doit" (
-    call :actions do_mklink
+    call :actions do_copy
 ) else if "%1" == "-diff" (
     call :actions diff_mini
 ) else if "%1" == "-diffview" (
