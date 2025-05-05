@@ -558,3 +558,40 @@ https://github.com/swiftlang/llvm-project/blob/apple/main/clang/docs/PointerAuth
 
 https://developer.apple.com/documentation/security/preparing-your-app-to-work-with-pointer-authentication
 Preparing your app to work with pointer authentication
+
+
+--------------------------------------------------------------------------------
+Unsorted notes on compilers
+--------------------------------------------------------------------------------
+
+-Wall
+
+Well, first, we need to start pushing back on the 00UB definition of UB.
+We should all start using -fwrapv, -fno-delete-null-pointer-checks, -fno-strict-overflow, and -fno-strict-aliasing on Clang and GCC (and the equivalents on MSVC).
+
+If writing code in a non-portable dialect of C isn't your thing,
+then the -ftrapv and -fcatch-undefined-behavior flags (along with the other tools mentioned before) can be useful weapons in your arsenal to track down these sorts of bugs.
+Enabling them in your debug builds can be a great way to find related bugs early.
+These flags can also be useful in production code if you are building security critical applications.
+While they provide no guarantee that they will find all bugs, they do find a useful subset of bugs.
+
+
+https://clang.llvm.org/docs/CrossCompilation.html
+
+https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
+
+https://docs.kernel.org/kbuild/llvm.html
+
+https://blog.kowalczyk.info/article/j/guide-to-predefined-macros-in-c-compilers-gcc-clang-msvc-etc..html
+
+https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
+
+https://mcilloni.ovh/2021/02/09/cxx-cross-clang/
+
+https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
+
+https://gist.github.com/progrium/b286cd8c82ce0825b2eb3b0b3a0720a0
+Setting up M1 Macs for x86 development with Homebrew
+---
+arch -arm64 rexx
+arch -x86_64 rexx
