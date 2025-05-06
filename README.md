@@ -111,7 +111,7 @@ Supported architectures
     Regina          ok              ko (3)          todo
 
 
-    Windows 11 ARM (see [setenv-cl.bat][setenv-cl.bat])
+    Windows 11 ARM
                     windows-arm64   windows-arm32   windows-x86_64  windows-x86_32
     executor        ok              ko (4)          ok              ok
     ooRexx 4.2      ko (5)          ko (4)          ko (6)          ko (6)
@@ -157,5 +157,4 @@ must be applied.
 [build_executor]: build-executor.txt "Build Executor"
 [build_oorexx]: build-oorexx.txt "Build ooRexx"
 [build_regina]: build-regina.txt "Build Regina"
-[setenv-cl.bat]: https://github.com/jlfaucher/builder/blob/master/scripts/setenv-cl.bat "setenv-cl.bat" 
 [adaptations]: adaptations "adaptations"
