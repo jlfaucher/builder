@@ -3,7 +3,7 @@ if defined echo echo %echo%
 
 :: File naming convention
 :: setenv-%current%-%builder_system_arch%-%builder_hostname%.bat
-::        oorexx    windows-arm64         jlf-mbp2021vm
+::        oorexx    windows-x86_64        jlfaucher-mbp2021-winvm
 
 :: Shared folders parameterized in PARALLELS:
 :: Y: is /Users/Shared
@@ -23,12 +23,11 @@ call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\local\XmlToolSet\xsltproc\b
 set BATIK_ROOT=%HOST_DRIVE%\local\XmlToolSet\batik-1.13
 set BATIK_RASTERIZER_JAR=%BATIK_ROOT%\batik-rasterizer-1.13.jar
 
-:: Git
-:: Provided with Visual Studio
-:: call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
-
-:: Java 64-bit arm64 (aarch64)
-set JAVA_HOME="C:\Program Files (Arm)\BellSoft\LibericaJDK-17-Full"
+:: Java 64-bit x86_64 (amd64)
+:: Remember: BellSoft installer wanted to install C:\Program Files (Arm)\BellSoft
+:: But the ARM version was already there!
+:: Changed the install dir
+set JAVA_HOME="C:\Program Files\BellSoft\LibericaJDK-17-Full"
 set JAVA_JVM_FOLDER=bin\server
 set JAVA_HOME=%JAVA_HOME:"=%
 call shellscriptlib :prepend_path PATH "%JAVA_HOME%\bin"
@@ -54,8 +53,8 @@ if "%builder_target%" == "executor" (
 :: bsf4oorexx version 850 - all platforms - can't be used by Executor
 if not "%builder_target%" == "executor" (
     set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
-    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20240510-refresh\bsf4oorexx
-    set BSF4OOREXX_JAR=bsf4ooRexx-v850-20240510-bin.jar
+    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20230718-beta\bsf4oorexx
+    set BSF4OOREXX_JAR=bsf4ooRexx-v850-20230718-bin.jar
     call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
 )
 

@@ -3,8 +3,8 @@ if defined echo echo %echo%
 
 :: File naming convention
 :: setenv-%current%-%builder_hostname%.bat
-::        executor5.master
-::                  jlf-mbp2021vm
+::        executor.master
+::                  jlfaucher-mbp2021-winvm
 
 :: Those variables must be defined before calling this script
 if not defined builder_shared_dir echo builder_shared_dir is undefined & exit /b 1
