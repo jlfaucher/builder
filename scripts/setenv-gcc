@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Variables set for building with cmake:
+export CMAKE_C_COMPILER=gcc
+export CMAKE_CXX_COMPILER=g++
+export CMAKE_GENERATOR="Unix Makefiles"
+
+# Variables set for building with configure:
+export CONFIGURE_C_COMPILER=gcc
+export CONFIGURE_CXX_COMPILER=g++

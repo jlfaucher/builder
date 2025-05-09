@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# regina can't be built with clang on WSL
+# cc: error: unrecognized command-line option ‘-m64’
+# No problem on macOS
+
+# Variables set for building with cmake:
+export CMAKE_C_COMPILER=clang
+export CMAKE_CXX_COMPILER=clang++
+export CMAKE_GENERATOR="Unix Makefiles"
+
+# Variables set for building with configure:
+export CONFIGURE_C_COMPILER=clang
+export CONFIGURE_CXX_COMPILER=clang++

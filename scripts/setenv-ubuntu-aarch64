@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Those variables must be defined before calling this script
+if test -z "$builder_arch" ; then echo "builder_arch is undefined" ; return 1 ; fi
+
+# I don't know how to cross compile
+ARCH=`uname -m`
+if [ "$ARCH" != "$builder_arch" ] ; then echo "Architecture $builder_arch not supported" ; return 1 ; fi
+
+export builder_bitness=64
+
+# Regina : I have a mess -m32 -m64 if I don't use this configure option
+export regina_bitness=--enable-64bit
