@@ -3,7 +3,7 @@ if defined echo echo %echo%
 
 :: File naming convention
 :: setenv-%current%-%builder_system_arch%-%builder_hostname%.bat
-::        oorexx    windows-x86_64        jlf-mbp2010vm
+::        oorexx    windows-x86_32        jlfaucher-mbp2010-winvm
 
 :: Shared folders parameterized in VMWARE:
 :: name "jlfaucher" folder "jlfaucher" Read & Write
@@ -31,7 +31,7 @@ set BATIK_RASTERIZER_JAR=%BATIK_ROOT%\batik-rasterizer-1.13.jar
 call shellscriptlib :prepend_path PATH "C:\Program Files\Git\bin"
 
 :: Java
-set JAVA_HOME="C:\Program Files\BellSoft\LibericaJDK-17-Full"
+set JAVA_HOME="C:\Program Files (x86)\BellSoft\LibericaJDK-17-Full"
 set JAVA_JVM_FOLDER=bin\server
 set JAVA_HOME=%JAVA_HOME:"=%
 call shellscriptlib :prepend_path PATH "%JAVA_HOME%\bin"

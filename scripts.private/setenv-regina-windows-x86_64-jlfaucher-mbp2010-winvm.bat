@@ -3,7 +3,7 @@ if defined echo echo %echo%
 
 :: File naming convention
 :: setenv-%current%-%builder_system_arch%-%builder_hostname%.bat
-::        regina    windows-x86_64        jlf-mbp2010vm
+::        regina    windows-x86_64        jlfaucher-mbp2010-winvm
 
 :: Shared folders parameterized in VMWARE:
 :: name "jlfaucher" folder "jlfaucher" Read & Write
