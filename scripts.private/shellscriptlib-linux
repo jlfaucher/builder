@@ -10,18 +10,26 @@ declare_java()
 {
     if test -z "$JAVA_HOME"
     then
-        JAVA_HOME=`readlink -f \`which java\``  # .../bin/java
-        JAVA_HOME=`dirname "$JAVA_HOME"`        # .../bin
-        JAVA_HOME=`dirname "$JAVA_HOME"`        # ...
-        export JAVA_HOME
+        local JAVA
+        JAVA=`which java`
+        if test ! -z "$JAVA"
+        then
+            JAVA_HOME=`readlink -f "$JAVA"`         # .../bin/java
+            JAVA_HOME=`dirname "$JAVA_HOME"`        # .../bin
+            JAVA_HOME=`dirname "$JAVA_HOME"`        # ...
+            export JAVA_HOME
+        fi
     fi
-    export INCLUDE
-    # you need to have a JDK installed, let INCLUDE point to its include directories to be able to resolve "jni.h"
-    prepend_path INCLUDE "$JAVA_HOME/include"
-    # libjvm.dylib
-    local JVMDIR
-    JVMDIR="$JAVA_HOME/jre/lib/amd64/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi   # legacy
-    JVMDIR="$JAVA_HOME/lib/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi             # from openjdk 11
+    if test ! -z "$JAVA_HOME"
+    then
+        export INCLUDE
+        # you need to have a JDK installed, let INCLUDE point to its include directories to be able to resolve "jni.h"
+        prepend_path INCLUDE "$JAVA_HOME/include"
+        # libjvm.dylib
+        local JVMDIR
+        JVMDIR="$JAVA_HOME/jre/lib/amd64/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi   # legacy
+        JVMDIR="$JAVA_HOME/lib/server"; if test -f "$JVMDIR/libjvm.so"; then prepend_path LD_LIBRARY_PATH "$JVMDIR"; fi             # from openjdk 11
+    fi
 }
 # Ubuntu 16
 # JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
