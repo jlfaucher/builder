@@ -263,8 +263,6 @@ CD  %OR_APISAMPLESRC%\wpipe\wpipe3
 IF %USELOGFILE% equ 1 ( NMAKE /F rexxapi3.mak >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F rexxapi3.mak )
 if ERRORLEVEL 1 goto error
 
-goto arounderr
-
 :oodialog
 REM *** oodialog
 REM
@@ -316,35 +314,6 @@ if ERRORLEVEL 1 goto error
 %SRC_DRV%
 CD  %OR_OODIALOGSAMPLES%\userGuide\exercises\Exercise08\Product\res
 IF %USELOGFILE% equ 1 ( NMAKE /F res.mak MACHINE=%CPU% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F res.mak MACHINE=%CPU% )
-if ERRORLEVEL 1 goto error
-
-goto arounderr
-
-:oodialog_unicode
-:oodialogA
-REM *** oodialog
-REM
-@ECHO Building byte-char version of OODIALOG.WCHAR..
-%SRC_DRV%
-CD  %OR_OODIALOGSRCW%
-IF %USELOGFILE% equ 1 ( NMAKE /F OODIALOG.MAK "WCHAR=0" %args% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F OODIALOG.MAK "WCHAR=0" %args%)
-if ERRORLEVEL 1 goto error
-if /i "%component%" neq "oodialog_unicode" goto oodialogW_classes
-
-:oodialogW
-REM *** oodialog
-REM
-@ECHO Building wide-char version of OODIALOG.WCHAR..
-%SRC_DRV%
-CD  %OR_OODIALOGSRCW%
-IF %USELOGFILE% equ 1 ( NMAKE /F OODIALOG.MAK "WCHAR=1" %args% >>%OR_ERRLOG% 2>&1 ) else ( NMAKE /F OODIALOG.MAK "WCHAR=1" %args%)
-if ERRORLEVEL 1 goto error
-
-:oodialogW_classes
-ECHO Building OODIALOG.WCHAR classes
-%BUILD_DRV%
-CD %OR_OUTDIR%
-IF %USELOGFILE% equ 1 ( REXX %OR_OODIALOGSRCW%\build_ooDialog_cls.rex >>%OR_ERRLOG% 2>&1 ) else ( REXX %OR_OODIALOGSRCW%\build_ooDialog_cls.rex )
 if ERRORLEVEL 1 goto error
 
 goto arounderr

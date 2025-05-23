@@ -207,11 +207,6 @@ goto :main
     :: oorexx\official\main\releases\4.2.0
     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\api\platform\windows
-    set target=%OOREXX%\official\main\releases\4.2.0\trunk\api\platform\windows
-    call :%action% %source% %target% rexxapitypes.h
-    if "%stop%" == "1" goto :eof
-
     set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk
     set target=%OOREXX%\official\main\releases\4.2.0\trunk
     call :%action% %source% %target% cl_infos.cpp
@@ -226,10 +221,38 @@ goto :main
     call :%action% %source% %target% oorexxapi.h
     if "%stop%" == "1" goto :eof
 
-    :: set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
-    :: set target%$OOREXX%\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
-    :: call :%action% $source %target% rexxutil.cpp
-    :: if "%stop%" == "1" goto :eof
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\api\platform\windows
+    set target=%OOREXX%\official\main\releases\4.2.0\trunk\api\platform\windows
+    call :%action% %source% %target% rexxapitypes.h
+    if "%stop%" == "1" goto :eof
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\extensions\platform\windows\ole
+    set target=%$OOREXX%\official\main\releases\4.2.0\trunk\extensions\platform\windows\ole
+    call :%action% $source %target% events.cpp
+    call :%action% $source %target% orexxole.def
+    if "%stop%" == "1" goto :eof
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\extensions\platform\windows\oodialog
+    set target=%$OOREXX%\official\main\releases\4.2.0\trunk\extensions\platform\windows\oodialog
+    call :%action% $source %target% APICommon.hpp
+    call :%action% $source %target% ooDialog.def
+    call :%action% $source %target% oodPackageEntry.cpp
+    if "%stop%" == "1" goto :eof
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\extensions\platform\windows\orxscrpt
+    set target=%$OOREXX%\official\main\releases\4.2.0\trunk\extensions\platform\windows\orxscrpt
+    call :%action% $source %target% orxscrpt.def
+    if "%stop%" == "1" goto :eof
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\unix
+    set target=%$OOREXX%\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\unix
+    call :%action% $source %target% rexxutil.cpp
+    if "%stop%" == "1" goto :eof
+
+    set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
+    set target=%$OOREXX%\official\main\releases\4.2.0\trunk\extensions\rexxutil\platform\windows
+    call :%action% $source %target% rexxutil.def
+    if "%stop%" == "1" goto :eof
 
     set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\interpreter\api
     set target=%OOREXX%\official\main\releases\4.2.0\trunk\interpreter\api
@@ -239,6 +262,7 @@ goto :main
     set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\interpreter\platform\windows
     set target=%OOREXX%\official\main\releases\4.2.0\trunk\interpreter\platform\windows
     call :%action% %source% %target% PlatformDefinitions.h
+    call :%action% %source% %target% SysInterpreterInstance.cpp
     if "%stop%" == "1" goto :eof
 
     set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\lib
@@ -249,6 +273,8 @@ goto :main
     set source=%BUILDER_ADAPTATIONS%\oorexx\official\main\releases\4.2.0\trunk\platform\windows
     set target=%OOREXX%\official\main\releases\4.2.0\trunk\platform\windows
     call :%action% %source% %target% buildorx.bat
+    call :%action% %source% %target% rexxarm64.exe.manifest
+    call :%action% %source% %target% rxregexp.def
     if "%stop%" == "1" goto :eof
 
 

@@ -142,10 +142,14 @@ SET NODOTS=%MAJOR_NUM%%MINOR_NUM%%LVL_NUM%_%BLD_NUM%
 SET DOTVER=/DVERSION=%MAJOR_NUM%.%MINOR_NUM%.%LVL_NUM%.%BLD_NUM%
 SET NODOTVER=/DNODOTVER=%NODOTS%
 SET SRCDIR=/DSRCDIR=%SRC_DRV%%SRC_DIR%
-if %CPU% == X86 (
-  SET CPUNAME=x86_32
+if %CPU% == ARM64 (
+  SET CPUNAME=arm64
 ) else (
-  SET CPUNAME=x86_64
+    if %CPU% == X86 (
+      SET CPUNAME=x86_32
+    ) else (
+      SET CPUNAME=x86_64
+    )
 )
 SET CPUDEF=/DCPU=%CPUNAME%
 
@@ -560,7 +564,7 @@ REM - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 REM  :DETERMINE_COMPILER
 REM    This section attempts to determine the compiler version and build type.
 REM    MSVCVER is set to a standard value that the make files can recognize.
-REM    CPU is set to X86 or X64 to define if this is a 32-bit or 64-bit build
+REM    CPU is set to X86 or X64 or ARM64 to define if this is a 32-bit or 64-bit build
 REM
 REM    We don't check for failure here.  If MSVCVER does not get set, the build
 REM    will fail later on with descriptive messages.  CPU will always get set,
@@ -689,7 +693,7 @@ if %USELOGFILE% EQU 1 (
   echo SRC_DIR: %SRC_DIR%
   echo BUILD_DRV: %BUILD_DRV%
   echo BUILD_DIR: %BUILD_DIR%
-  echo CPU: %CPU%
+  echo CPU: %x%
   echo MSVCVER: %MSVCVER%
   echo NO_BUILD_LOG: %NO_BUILD_LOG%
   echo DOC_LOCATION: %DOC_LOCATION%

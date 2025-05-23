@@ -190,10 +190,6 @@ actions()
     # oorexx/official/main/releases/4.2.0
     ################################################################################
 
-    local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/api/platform/windows
-    local target=$OOREXX/official/main/releases/4.2.0/trunk/api/platform/windows
-    $action $source $target rexxapitypes.h
-
     local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk
     local target=$OOREXX/official/main/releases/4.2.0/trunk
     $action $source $target cl_infos.cpp
@@ -206,9 +202,32 @@ actions()
     local target=$OOREXX/official/main/releases/4.2.0/trunk/api
     $action $source $target oorexxapi.h
 
+    local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/api/platform/windows
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/api/platform/windows
+    $action $source $target rexxapitypes.h
+
+    local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/extensions/platform/windows/ole
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/extensions/platform/windows/ole
+    $action $source $target events.cpp
+    $action $source $target orexxole.def
+
+    local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/extensions/platform/windows/oodialog
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/extensions/platform/windows/oodialog
+    $action $source $target APICommon.hpp
+    $action $source $target ooDialog.def
+    $action $source $target oodPackageEntry.cpp
+
+    local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/extensions/platform/windows/orxscrpt
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/extensions/platform/windows/orxscrpt
+    $action $source $target orxscrpt.def
+
     local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/extensions/rexxutil/platform/unix
     local target=$OOREXX/official/main/releases/4.2.0/trunk/extensions/rexxutil/platform/unix
     $action $source $target rexxutil.cpp
+
+    local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/extensions/rexxutil/platform/windows
+    local target=$OOREXX/official/main/releases/4.2.0/trunk/extensions/rexxutil/platform/windows
+    $action $source $target rexxutil.def
 
     local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/interpreter/api
     local target=$OOREXX/official/main/releases/4.2.0/trunk/interpreter/api
@@ -217,6 +236,7 @@ actions()
     local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/interpreter/platform/windows
     local target=$OOREXX/official/main/releases/4.2.0/trunk/interpreter/platform/windows
     $action $source $target PlatformDefinitions.h
+    $action $source $target SysInterpreterInstance.cpp
 
     local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/lib
     local target=$OOREXX/official/main/releases/4.2.0/trunk/lib
@@ -225,6 +245,8 @@ actions()
     local source=$BUILDER_ADAPTATIONS/oorexx/official/main/releases/4.2.0/trunk/platform/windows
     local target=$OOREXX/official/main/releases/4.2.0/trunk/platform/windows
     $action $source $target buildorx.bat
+    $action $source $target rexxarm64.exe.manifest
+    $action $source $target rxregexp.def
 
 
     ################################################################################

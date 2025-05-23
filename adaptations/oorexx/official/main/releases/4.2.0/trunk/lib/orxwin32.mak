@@ -220,10 +220,14 @@ lflags_exe =
 #
 # set up the rc flags used
 #
+!IF "$(CPU)" == "ARM64"
+M_FILE = "rexxarm64.exe.manifest"
+!ELSE
 !IF "$(CPU)" == "X64"
 M_FILE = "rexx64.exe.manifest"
 !ELSE
 M_FILE = "rexx32.exe.manifest"
+!ENDIF
 !ENDIF
 rcflags_common=rc /DWIN32 -dOOREXX_VER=$(ORX_MAJOR) -dOOREXX_REL=$(ORX_MINOR) -dOOREXX_SUB=$(ORX_MOD_LVL) -dOOREXX_BLD=$(ORX_BLD_LVL) -dOOREXX_VER_STR=\"$(ORX_VER_STR)\" -dOOREXX_COPY_YEAR=\"$(ORX_COPY_YEAR)\" -dMANIFEST_FILE=$(M_FILE)
 

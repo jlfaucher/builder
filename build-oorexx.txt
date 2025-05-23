@@ -419,15 +419,6 @@ Build the 32-bit or 64-bit release configuration of official ooRexx release 4.2.
 ::     - add NSIS in PATH.
 ::     - add xalan-c in PATH.
 
-:: Maybe this can be fixed, did not try...
-:: Build fails on Windows 11 arm64, target windows-arm64:
-:: LNK1112: module machine type 'ARM64' conflicts with target machine type 'x64'
-:: NMAKE : fatal error U1077: 'lib -machine:X64 ...
-
-:: Maybe this can be fixed, did not try...
-:: Build fails on Windows 11 arm64, target windows-x86_64 and windows-x86_32:
-:: \interpreter\platform\windows\SysInterpreterInstance.cpp(124): error C2039: '_file': is not a member of '_iobuf'
-
 :: Local directory in the virtual machine for Windows
 e:
 cd \local\rexxlocal\oorexx
@@ -438,5 +429,3 @@ cd \local\rexx\oorexx
 call ..\builder\scripts\setenv e:build\official\main\releases\4.2.0\trunk\windows-x86_64\cl\release
 cdtrunk
 makeorx_verbose %BUILD_TYPE%
-:: oodialog is not built by default.
-makeorx_verbose %BUILD_TYPE% oodialog_unicode

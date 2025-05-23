@@ -114,9 +114,9 @@ Supported architectures
     Windows 11 ARM
                     windows-arm64   windows-arm32   windows-x86_64  windows-x86_32
     executor        ok              ko (4)          ok              ok
-    ooRexx 4.2      ko (5)          ko (4)          ko (6)          ko (6)
+    ooRexx 4.2      ok              ko (4)          ok              ok
     ooRexx 5        ok              ko (4)          ok              ok
-    Regina          ko (7)          ko (4)          ko (8)          ok
+    Regina          ko (5)          ko (4)          ko (6)          ok
 
 
     Other platforms: not tested.
@@ -136,14 +136,10 @@ Supported architectures
     (4) nmake
         LINK : fatal error LNK1104: cannot open file 'LIBCMT.lib'
     (5) nmake
-        LNK1112: module machine type 'ARM64' conflicts with target machine type 'x64'
-    (6) nmake
-        interpreter\platform\windows\SysInterpreterInstance.cpp(116): error C2039: '_file': is not a member of '_iobuf'
-    (7) nmake
         LINK : fatal error LNK1104: cannot open file 'Y:\local\rexx\regina\official\interpreter\trunk\regina_arm64_dll.def'
         mt_winarm64.ts.obj : error LNK2005: tsds already defined in mt_win64.ts.obj
         mt_winarm64.ts.obj : error LNK2005: __regina_ReginaSetMutex already defined in mt_win64.ts.obj
-    (8) rexx
+    (6) rexx
         build done, but runtime error "Side by side configuration is incorrect"
 
 

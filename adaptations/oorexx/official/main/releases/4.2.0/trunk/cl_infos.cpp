@@ -16,12 +16,21 @@ if (_MSC_VER >= 1600) mscver="10.0";
 if (_MSC_VER >= 1700) mscver="11.0";
 if (_MSC_VER >= 1800) mscver="12.0";
 if (_MSC_VER >= 1900) mscver="14.0";
+
 int bitness=32;
 char *cpu="X86";
-#ifdef _WIN64
-bitness=64;
-cpu="X64";
+
+#if _M_ARM == 7
+    bitness=32;
+    cpu="ARM32";
+#elif defined _M_ARM64
+    bitness=64;
+    cpu="ARM64";
+#elif defined _WIN64
+    bitness=64;
+    cpu="X64";
 #endif
+
 printf("%s %s %i\n", mscver, cpu, bitness);
 }
 
