@@ -561,6 +561,77 @@ Preparing your app to work with pointer authentication
 
 
 --------------------------------------------------------------------------------
+Microsoft cl predefined macros
+--------------------------------------------------------------------------------
+
+List predefined macros
+cl /PD /Zc:preprocessor y:cl_infos.cpp > z:\Downloads\cl_macros.txt
+
+
+Macros defined for system architecture windows-x86_32:
+    #define _W64
+    #define _M_IX86_FP 2
+        Defined as an integer literal value that indicates the /arch compiler option that was set, or the default.
+        This macro is always defined when the compilation target is an x86 processor.
+        Otherwise, undefined.
+        When defined, the value is:
+        - 0 if the /arch:IA32 compiler option was set.
+        - 1 if the /arch:SSE compiler option was set.
+        - 2 if the /arch:SSE2, /arch:AVX, /arch:AVX2, /arch:AVX512 or /arch:AVX10.1 compiler option was set.
+          This value is the default if an /arch compiler option wasn't specified.
+          When /arch:AVX is specified, the macro __AVX__ is also defined.
+          When /arch:AVX2 is specified, both __AVX__ and __AVX2__ are also defined.
+          When /arch:AVX512 is specified, __AVX__, __AVX2__, __AVX512BW__, __AVX512CD__, __AVX512DQ__, __AVX512F__, and __AVX512VL__ are also defined.
+          When /arch:AVX10.1 is specified, __AVX__, __AVX2__, __AVX512BW__, __AVX512CD__, __AVX512DQ__, __AVX512F__, __AVX512VL__ and __AVX10_VER__ are also defined.
+        - For more information, see /arch (x86).
+    #define _M_IX86 600
+        Defined as the integer literal value 600 for compilations that target x86 processors.
+        This macro isn't defined for x64 or ARM compilation targets.
+    #define _WIN32 1
+
+
+Macros defined for system architecture windows-arm32:
+    #define _M_ARM_NT 1
+    #define _M_ARM 7
+        Defined as the integer literal value 7 for compilations that target ARM processors.
+        Undefined for ARM64, ARM64EC, and other targets.
+    #define _M_ARM_FP 31
+        Defined as an integer literal value that indicates which /arch compiler option was set for ARM processor targets.
+        Otherwise, undefined.
+        - A value in the range 30-39 if no /arch ARM option was specified, indicating the default architecture for ARM was set (VFPv3).
+        - A value in the range 40-49 if /arch:VFPv4 was set.
+        - For more information, see /arch (ARM).
+    #define _M_ARMT _M_ARM
+    #define _WIN32 1
+        Defined as 1 when the compilation target is 32-bit ARM, 64-bit ARM, x86, or x64.
+        Otherwise, undefined.
+
+https://learn.microsoft.com/en-us/cpp/preprocessor/predefined-macros
+Predefined macros
+
+    __ARM_ARCH Defined as an integer literal that represents the ARM architecture version.
+    The value is defined as 8 for the Armv8-A architecture.
+    For 8.1 and onwards, the value is scaled for minor versions, such as X.Y, by using the formula X * 100 + Y as defined by the ARM C language extension.
+    For example, for Armv8.1, __ARM_ARCH is 8 * 100 + 1 or 801.
+    To set the ARM architecture version, see /arch (ARM64).
+    This macro was introduced in Visual Studio 2022 version 17.10.
+
+    _M_AMD64 Defined as the integer literal value 100 for compilations that target x64 processors or ARM64EC.
+    Otherwise, undefined.
+
+
+--------------------------------------------------------------------------------
+Microsoft cl installation
+--------------------------------------------------------------------------------
+
+Individual components
+C++ ARM build tools (latest)
+    for system architecture windows-arm32
+C++ Clang Compiler for Windows
+    needed to build some Rust crates
+
+
+--------------------------------------------------------------------------------
 Unsorted notes on compilers
 --------------------------------------------------------------------------------
 
