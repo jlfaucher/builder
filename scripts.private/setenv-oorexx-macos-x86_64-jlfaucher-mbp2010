@@ -15,19 +15,16 @@ if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; ex
 [ -f /local/java/setenv.sh ] && . /local/java/setenv.sh
 declare_java
 
-# bsf4oorexx version 641 - all platforms
-if [ "$builder_target" = "executor" ]
+if [ "$builder_target" = "official" -a "$builder_src_relative_path" = "main/trunk" ]
 then
-    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20220131-ga/bsf4oorexx
-    export BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
+    # bsf4oorexx version 850 - all platforms - can't be used by Executor
+    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v850-20240707-refresh/bsf4oorexx
+    export BSF4OOREXX_JAR=bsf4ooRexx-v850-20240707-bin.jar
     declare_bsf4oorexx_distribution
-fi
-
-# bsf4oorexx version 850 - all platforms - can't be used by Executor
-if [ "$builder_target" != "executor" ]
-then
-    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v850-20230718-beta/bsf4oorexx
-    export BSF4OOREXX_JAR=bsf4ooRexx-v850-20230718-bin.jar
+else
+    # bsf4oorexx version 641 - all platforms
+    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v641-20221002-refresh/bsf4oorexx
+    export BSF4OOREXX_JAR=bsf4ooRexx-v641-20221002-bin.jar
     declare_bsf4oorexx_distribution
 fi
 
