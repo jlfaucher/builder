@@ -28,7 +28,7 @@ set builder_dir=%builder_dir:"=%
 
 call shellscriptlib :drive "%builder_dir%"
 set builder_dir_drv=%drive%
-doskey cdbuilder=%builder_drv% ^& cd %builder_dir%
+doskey cdbuilder=%builder_dir_drv% ^& cd %builder_dir%
 
 :: Remember: this argument can be a relative path
 set dir=%1
