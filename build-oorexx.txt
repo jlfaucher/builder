@@ -266,8 +266,7 @@ Changes that must be applied before the first build
 See the directory builder/adaptations.
 The files in the subdirectories are either new files or existing files that have
 been adaptated for some reasons.
-You can copy manually these files or you can execute the script create_links
-which will create hard links
+You can copy manually these files or you can execute the script copy_files.
 
 
 --------------------------------------------------------------------------------

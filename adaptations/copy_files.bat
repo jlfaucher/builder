@@ -3,9 +3,9 @@ if defined echo echo %echo%
 setlocal
 
 :: Helper script for Windows.
-:: The files under adaptation can be referenced from the packages being adapted,
-:: using symbolic or hard links.
-:: You can use this script to create those links.
+:: You can use this script to copy the adapted files.
+:: A copy is done only if the source is different from the target.
+:: If a copy must be done and the target exists then a confirmation is asked.
 
 
 :: Replace by your path (no space !)
