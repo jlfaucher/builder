@@ -2,9 +2,10 @@
 if defined echo echo %echo%
 
 :: MUST use DEBUG=Y for Regina, otherwise no symbols loaded
-set CFLAGS=/D_DEBUG /DDEBUG=Y %CFLAGS%
-set CPPFLAGS=/D_DEBUG /DDEBUG=Y %CPPFLAGS%
-set CXXFLAGS=/D_DEBUG /DDEBUG=Y %CXXFLAGS%
+:: Don't define _DEBUG, to be aligned with setenv-debug
+set CFLAGS=/DDEBUG=Y %CFLAGS%
+set CPPFLAGS=/DDEBUG=Y %CPPFLAGS%
+set CXXFLAGS=/DDEBUG=Y %CXXFLAGS%
 
 :: Old build system (makeorx DEBUG)
 set rel=0
