@@ -1,17 +1,17 @@
 Builder
 =======
 
-Scripts to support builds for several branches, configurations, bitness.  
-Works only with bash (MacOS & Linux) or cmd (Windows).
+Scripts to manage builds for multiple branches, configurations and architectures (32 or 64 bits).  
+Works only with `bash` (MacOS & Linux) or `cmd` (Windows).
 
-Usage :
+Usage:
 
-    cd <sources root> # will define $builder_shared_dir
-    . <builder path>scripts/setenv <build path>  # will define $builder_config_dir
+    cd <sources_root>                            # will define $builder_shared_dir
+    . <builder_path>/scripts/setenv <build_path> # will define $builder_config_dir
 
 where  
-\<sources root\> is the root directory of the sources.  
-\<build path\> is <[path]target[.branch]/d1/d2/.../system-arch/compiler/config>  
+`<sources_root>` is the root directory of the sources.  
+`<build_path>` is `<[path]target[.branch]/d1/d2/.../system-arch/compiler/config>`  
 
 For real examples, see:
 
@@ -19,43 +19,78 @@ For real examples, see:
 - [Build ooRexx][build_oorexx] (the infrastructure I use for Official trunk/releases/branches, Executor)
 - [Build Regina][build_regina]
 
+To build older branches or versions of ooRexx (e.g., 4.2.0), some [adaptations][adaptations]
+must be applied.
+
 
 Builder scripts
 ---------------
 
-Each directory in the build path can have a corresponding script.  
-The scripts/setenv script iterates over each directory, from deeper to root.  
-If a script named setenv-"directory" exists in the directory of scripts then execute it.  
-If a script named setenv-"directory" exists in the directory of private scripts then execute it.  
+Each directory in the `<build_path>` value can have a corresponding script.  
+The script `<builder_path>/scripts/setenv` traverses each directory, from the parent of the current directory to the root.
 
-    /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release/
-    Scripts currently defined :
+- If a script named `setenv-<directory>` exists in the directory of public scripts then execute it.
+- If a script named `setenv-<directory>-<system-arch>-<computername>` exists in the directory of private scripts then execute it.
+- If a script named `setenv-<directory>-<computername>` exists in the directory of private scripts then execute it.
+
+Illustration with ooRexx for Ubuntu ARM 64-bit:
+```
+    /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/gcc/release/build
+    |  setenv                   (launched manually from the build directory)
     |  setenv-release
+    |  setenv-gcc
+    |  setenv-ubuntu-aarch64
     |  setenv-build
-    V  setenv-oorexx
+    |  setenv-oorexx            private: setenv-oorexx-ubuntu-aarch64-jlfaucher-mbp2021-winvm
+    V  setenv-rexxlocal
+```
+
+Public scripts currently defined:
+```
+    setenv
+    setenv-debug OR -profiling OR -reldbg OR -release
+    setenv-cl OR -clang OR -gcc
+    setenv-macos-arm64 OR -macos-x86_64 OR -ubuntu-aarch64 OR -ubuntu-x86_64 OR -windows-arm32.bat OR -windows-arm64.bat OR -windows-x86_32.bat OR -windows-x86_64.bat
+    setenv-executor.master
+    setenv-build
+    setenv-gnuCobol OR -oorexx OR -regina
+    setenv-cobol OR -rexx OR -rexxlocal
+```
+
+[Private scripts][private_scripts] are, by design, private to a specific computer.  
+These files will not be used on your computer, as their names contain my computer's name.  
+It is up to you to define your own private scripts, if necessary.
 
 
-    Examples of variables defined by scripts/setenv (values for linux):
+List of defined variables
+-------------------------
+
+Variables defined by <builder_path>/scripts/setenv (values for Linux):
+    
+    Variables defined for general use:
     builder_arch                x86_64
     builder_bitness             64
     builder_branch
-    builder_build_dir           /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release/build
+    builder_build_dir           /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release/build
     builder_compiler            gcc
     builder_config              release
-    builder_config_dir          /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release
-    builder_delivery_dir        /local/rexxlocal/oorexx/build/official/main/trunk/linux-x86_64/gcc/release/deliver
+    builder_config_dir          /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release
+    builder_delivery_dir        /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release/deliver
+    builder_dir                 /local/rexx/builder
+    builder_hostname            < output of hostname -s > or < output of hostname > or < value of %COMPUTERNAME% >
     builder_local_build_dir     /local/rexxlocal/oorexx/build
     builder_local_dir           /local/rexxlocal/oorexx
     builder_scripts_dir         /local/builder/scripts
     builder_shared_dir          /local/rexx/oorexx
+    builder_src_dir             /local/rexx/oorexx/main/trunk
     builder_src_relative_path   main/trunk
-    builder_system              linux
-    builder_system_arch         linux-x86_64
+    builder_system              ubuntu
+    builder_system_arch         ubuntu-x86_64
     builder_target              official
     builder_target_branch       official
 
     Variables defined for building with cmake:
-    CMAKE_BUILD_TYPE            Debug or Reldbg or Release
+    CMAKE_BUILD_TYPE            Debug or RelWithDebInfo or Release
     CMAKE_C_COMPILER            gcc or clang or cl
     CMAKE_CXX_COMPILER          g++ or clang++ or cl
     CMAKE_GENERATOR             "Unix Makefiles" or "NMake Makefiles"
@@ -143,14 +178,92 @@ Supported architectures
         build done, but runtime error "Side by side configuration is incorrect"
 
 
-Adaptations
------------
+Examples of builds
+------------------
 
-To build older branches or versions (e.g., 4.2.0), some [adaptations][adaptations]
-must be applied.
+### Cobol
+```
+    <sources_root>, $builder_shared_dir
+    local/cobol/gnuCobol
+    
+    <build_path>, $builder_build_dir
+    local/cobol/gnuCobol/build/official/trunk/macos-arm64/clang/release/build
+    
+    $builder_src_dir
+    local/cobol/gnuCobol/official/trunk
+```
 
+### ooRexx family
+```
+    <sources_root>, $builder_shared_dir
+    local/rexx/oorexx
+```
 
+#### Executor
+```
+    <build_path>, $builder_build_dir
+    local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/debug/build
+    local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/reldbg/build
+    local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/release/build
+    local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/debug/build
+    local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/reldbg/build
+    local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/release/build
+    
+    $builder_src_dir
+    local/rexx/oorexx/executor/sandbox/jlf/trunk
+```
+
+#### ooRexx 4.2
+```    
+    <build_path>, $builder_build_dir
+    local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-arm64/clang/debug/build
+    local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-arm64/clang/reldbg/build
+    local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-arm64/clang/release/build
+    local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-x86_64/clang/debug/build
+    local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-x86_64/clang/reldbg/build
+    local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-x86_64/clang/release/build
+    
+    $builder_src_dir
+    local/rexx/oorexx/official/main/releases/4.2.0/trunk
+```
+
+#### ooRexx
+``` 
+    <build_path>, $builder_build_dir
+    local/rexx/oorexx/build/official/main/trunk/macos-arm64/clang/debug/build
+    local/rexx/oorexx/build/official/main/trunk/macos-arm64/clang/reldbg/build
+    local/rexx/oorexx/build/official/main/trunk/macos-arm64/clang/release/build
+    local/rexx/oorexx/build/official/main/trunk/macos-x86_64/clang/debug/build
+    local/rexx/oorexx/build/official/main/trunk/macos-x86_64/clang/reldbg/build
+    local/rexx/oorexx/build/official/main/trunk/macos-x86_64/clang/release/build
+    local\rexxlocal\oorexx\build\official\main\trunk\windows-arm64\cl\debug\build
+    local\rexxlocal\oorexx\build\official\main\trunk\windows-arm64\cl\release\build
+    local\rexxlocal\oorexx\build\official\main\trunk\windows-x86_32\cl\debug\build
+    local\rexxlocal\oorexx\build\official\main\trunk\windows-x86_32\cl\release\build
+    local\rexxlocal\oorexx\build\official\main\trunk\windows-x86_64\cl\debug\build
+    local\rexxlocal\oorexx\build\official\main\trunk\windows-x86_64\cl\release\build
+
+    $builder_src_dir
+    local/rexx/oorexx/official/main/trunk
+```
+
+### Regina
+```
+    <sources_root>, $builder_shared_dir
+    local/rexx/regina
+    
+    <build_path>, $builder_build_dir
+    local/rexx/regina/build/official/interpreter/trunk/macos-arm64/clang/debug/build
+    local/rexx/regina/build/official/interpreter/trunk/macos-arm64/clang/release/build
+    local/rexx/regina/build/official/interpreter/trunk/macos-x86_64/clang/debug/build
+    local/rexx/regina/build/official/interpreter/trunk/macos-x86_64/clang/release/build
+    
+    $builder_src_dir
+    local/rexx/regina/official/interpreter/trunk
+```
+
+[adaptations]: adaptations "adaptations"
 [build_executor]: build-executor.txt "Build Executor"
 [build_oorexx]: build-oorexx.txt "Build ooRexx"
 [build_regina]: build-regina.txt "Build Regina"
-[adaptations]: adaptations "adaptations"
+[private_scripts]: scripts.private
