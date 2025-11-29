@@ -19,8 +19,8 @@ declare_java
 if [ "$builder_target" = "official" -a "$builder_src_relative_path" = "main/trunk" ]
 then
     # bsf4oorexx version 850 - all platforms - can't be used by Executor
-    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v850-20250902-refresh/bsf4oorexx
-    export BSF4OOREXX_JAR=bsf4ooRexx-v850-20250902-bin.jar
+    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v850-20251119-refresh/bsf4oorexx
+    export BSF4OOREXX_JAR=bsf4ooRexx-v850-20251119-bin.jar
     declare_bsf4oorexx_distribution
 else
     # bsf4oorexx version 641 - all platforms

@@ -47,8 +47,8 @@ goto :bsf4oorexx_v641
 :bsf4oorexx_v850
     :: bsf4oorexx version 850 - all platforms - can't be used by Executor
     set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
-    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20250902-refresh\bsf4oorexx
-    set BSF4OOREXX_JAR=bsf4ooRexx-v850-20250902-bin.jar
+    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20251119-refresh\bsf4oorexx
+    set BSF4OOREXX_JAR=bsf4ooRexx-v850-20251119-bin.jar
     call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
     goto :bsf4oorexx_done
 :bsf4oorexx_v641
