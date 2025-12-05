@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# See setenv-clang
+export builder_detect_UB=1
+export builder_sanitize=0
+export builder_LTO=0
+
+# Old build system (configure)
+export CFLAGS="-O3 $CFLAGS"
+export CXXFLAGS="-O3 $CXXFLAGS"
+
+# New build system (cmake)
+export CMAKE_BUILD_TYPE=Release
+
+
+# If your codebase is clean (no aliasing violations):
+#
+# ✔ Enable -fstrict-aliasing
+# ✔ Enable -O3
+# ✔ Optionally add -flto=thin for additional whole-program optimization
+#
+# But if you suspect tricky type-casting areas:
+#
+# → Test with UBSan (-fsanitize=undefined)
+# → Test with ASan (-fsanitize=address)
+# → Use GCC’s alias warnings (-Wstrict-aliasing=3) — Clang does not support these

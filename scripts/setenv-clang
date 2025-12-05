@@ -14,3 +14,64 @@ export CMAKE_GENERATOR="Unix Makefiles"
 # Variables set for building with configure:
 export CONFIGURE_C_COMPILER=clang
 export CONFIGURE_CXX_COMPILER=clang++
+
+
+# Detect undefined behaviour
+# Important requirements when using -fstrict-aliasing
+# If you enable it, your code must obey the strict aliasing rules:
+#
+# Allowed aliasing:
+#     same type
+#     char/unsigned char
+#     unions
+#     “common initial sequence” structs
+# Not allowed:
+#     pointer reinterpret casts like (float*)&i
+#     type-punning through unrelated types
+#     reading one type through a pointer of another
+# Violations lead to undefined behavior and subtle bugs, especially under optimization.
+if [ "$builder_detect_UB" = "1" ] ; then
+    echo "Use flags to detect UB (undefined behaviour)"
+    export CFLAGS="-fstrict-aliasing -Werror $CFLAGS"
+    export CXXFLAGS="-fstrict-aliasing -Werror $CXXFLAGS"
+    export LDFLAGS="-Wl,-fatal_warnings $LDFLAGS"
+fi
+
+
+# Sanitizer flags
+# Clang sanitizers do not work with -fsanitize=implicit-conversion on Apple Clang
+# — this option exists only in LLVM Clang, not Apple’s fork.
+#
+# Supported on Apple Clang:
+#     undefined
+#     address
+#     integer
+#     nullability
+#     thread
+#     leak
+#     float-divide-by-zero
+#     bounds
+#     safe-stack (special)
+#     many more but not implicit-conversion
+if [ "$builder_sanitize" = "1" ] ; then
+    echo "Use sanitizer flags"
+    export CFLAGS="-fsanitize=undefined -fsanitize=float-divide-by-zero -fsanitize=integer $CFLAGS"
+    export CXXFLAGS="-fsanitize=undefined -fsanitize=float-divide-by-zero -fsanitize=integer $CXXFLAGS"
+    export LDFLAGS="-fsanitize=undefined -fsanitize=float-divide-by-zero -fsanitize=integer $LDFLAGS"
+fi
+
+
+# LTO
+# Apple Clang defaults to ThinLTO, similar to LLVM Thin-LTO elsewhere.
+# -flto=thin is fully supported and stable.
+#
+# If you want full LTO:
+# -flto
+#
+# But it is slower and more memory-intensive.
+if [ "$builder_LTO" = "1" ] ; then
+    echo "Use LTO flags"
+    export CFLAGS="-flto=thin $CFLAGS"
+    export CXXFLAGS="-flto=thin $CXXFLAGS"
+    export LDFLAGS="-flto=thin $LDFLAGS"
+fi

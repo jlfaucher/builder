@@ -48,7 +48,7 @@ Illustration with ooRexx for Ubuntu ARM 64-bit:
 Public scripts currently defined:
 ```
     setenv
-    setenv-debug OR -profiling OR -reldbg OR -release
+    setenv-debug OR -profiling OR -reldbg OR -release OR -detect_UB
     setenv-cl OR -clang OR -gcc
     setenv-macos-arm64 OR -macos-x86_64 OR -ubuntu-aarch64 OR -ubuntu-x86_64 OR -windows-arm32.bat OR -windows-arm64.bat OR -windows-x86_32.bat OR -windows-x86_64.bat
     setenv-executor.master
@@ -88,6 +88,13 @@ Variables defined by <builder_path>/scripts/setenv (values for Linux):
     builder_system_arch         ubuntu-x86_64
     builder_target              official
     builder_target_branch       official
+
+    Variables that can be set in setenv-detect_UB:
+    builder_detect_UB=1
+    builder_sanitize=0
+    builder_LTO=0
+    See setenv-clang for the impact of these variables.
+    setenv-gcc and setenv-cl not yet adapted to support these variables.
 
     Variables defined for building with cmake:
     CMAKE_BUILD_TYPE            Debug or RelWithDebInfo or Release

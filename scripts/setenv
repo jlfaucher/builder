@@ -39,9 +39,10 @@ case "$builder_config" in
     "profiling") ;;
     "reldbg") ;;
     "release") ;;
+    "detect_UB") ;;
     *)
         echo "Invalid config: $builder_config"
-        echo "Expected: debug or profiling or reldbg or release"
+        echo "Expected: debug or profiling or reldbg or release or detect_UB"
         return 1
         ;;
 esac
@@ -122,6 +123,12 @@ dir="$( cd -P "$dir" && pwd )"
 export builder_config_dir=$dir
 
 export builder_hostname=`hostname -s`
+
+# Create the delivery/lib directory because of:
+#    ld: warning: search path '$builder_config_dir/delivery/lib' not found
+#    ld: fatal warning(s) induced error (-fatal_warnings)
+#    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+mkdir -p "$builder_config_dir/delivery/lib"
 
 # 2023.07.18: add prefix "builder_private_" to avoid accidental overwriting
 # 2024.06.02: better prefix "builder_iteration_"
