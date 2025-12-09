@@ -25,18 +25,18 @@ jlfaucher/jlf macbookPro 2010
 ================================================================================
 
 macOS           hostname -s: jlfaucher-mbp2010
-Windows 10      hostname:    jlf-mbp2010vm
-wsl             hostname -s: jlf-mbp2010vm
+Windows 10      hostname:    jlfaucher-mbp2010-winvm
+wsl             hostname -s: jlfaucher-mbp2010-winvm
 
 
          ${current} - ${builder_system_arch} - ${builder_hostname}
          %current%  - %builder_system_arch%  - %builder_hostname%
 setenv - oorexx     - macos-x86_64           - jlfaucher-mbp2010
-setenv - oorexx     - ubuntu-x86_64          - jlfaucher-mbp2010
-setenv - oorexx     - windows-x86_32         - jlf-mbp2010vm        .bat
-setenv - oorexx     - windows-x86_64         - jlf-mbp2010vm        .bat
+setenv - oorexx     - ubuntu-x86_64          - jlfaucher-mbp2010-winvm
+setenv - oorexx     - windows-x86_32         - jlfaucher-mbp2010-winvm        .bat
+setenv - oorexx     - windows-x86_64         - jlfaucher-mbp2010-winvm        .bat
 setenv - regina     - macos-x86_64           - jlfaucher-mbp2010
-setenv - regina     - windows-x86_64         - jlf-mbp2010vm        .bat
+setenv - regina     - windows-x86_64         - jlfaucher-mbp2010-winvm        .bat
 
 
 ================================================================================
@@ -44,20 +44,20 @@ jlfaucher/jlf macbookPro M1 2021
 ================================================================================
 
 macOS           hostname -s: jlfaucher-mbp2021
-Windows 10      hostname:    jlf-mbp2021vm
-wsl             hostname -s: jlf-mbp2021vm
+Windows 10      hostname:    jlfaucher-mbp2021-winvm
+wsl             hostname -s: jlfaucher-mbp2021-winvm
 
 
          %current%        - %builder_hostname%
-setenv - executor.master  - jlf-mbp2021vm       .bat
-setenv - executor5.master - jlf-mbp2021vm       .bat
-setenv - official         - jlf-mbp2021vm       .bat
+setenv - executor.master  - jlfaucher-mbp2021-winvm       .bat
+setenv - executor5.master - jlfaucher-mbp2021-winvm       .bat
+setenv - official         - jlfaucher-mbp2021-winvm       .bat
 
          ${current} - ${builder_system_arch} - ${builder_hostname}
          %current%  - %builder_system_arch%  - %builder_hostname%
 setenv - oorexx     - macos-arm64            - jlfaucher-mbp2021
-setenv - oorexx     - ubuntu-arm64           - jlfaucher-mbp2021
-setenv - oorexx     - windows-arm64          - jlf-mbp2021vm        .bat
-setenv - oorexx     - windows-x86_32         - jlf-mbp2021vm        .bat
-setenv - oorexx     - windows-x86_64         - jlf-mbp2021vm        .bat
+setenv - oorexx     - ubuntu-arm64           - jlfaucher-mbp2021-winvm
+setenv - oorexx     - windows-arm64          - jlfaucher-mbp2021-winvm        .bat
+setenv - oorexx     - windows-x86_32         - jlfaucher-mbp2021-winvm        .bat
+setenv - oorexx     - windows-x86_64         - jlfaucher-mbp2021-winvm        .bat
 setenv - regina     - macos-arm64            - jlfaucher-mbp2021
