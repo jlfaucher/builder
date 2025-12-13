@@ -47,7 +47,7 @@ alias cddocs='cd $oorexx_doc_dir'
 # PS1='\w\$ '
 # Ubuntu 20 : I have PROMPT_COMMAND=__vte_prompt_command, and that overwrites the title.
 # Unset this variable if you have no title.
-echo -n -e "\033]0;ooRexx $builder_target $builder_branch $builder_src_relative_path $builder_config $builder_system_arch\007"
+echo -n -e "\033]0;ooRexx $builder_target $builder_branch $builder_src_relative_path $builder_system_arch $builder_compiler $builder_config\007"
 
 export PATH
 export LD_LIBRARY_PATH

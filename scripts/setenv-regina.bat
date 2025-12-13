@@ -49,7 +49,7 @@ doskey cddoc=%regina_doc_drv% ^& cd %regina_doc_dir%
 doskey cddocs=%regina_doc_drv% ^& cd %regina_doc_dir%
 
 :: Title of console
-title Regina %builder_target% %builder_branch% %builder_src_relative_path% %builder_config% %builder_system_arch%
+title Regina %builder_target% %builder_branch% %builder_src_relative_path% %builder_system_arch% %builder_compiler% %builder_config%
 
 call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 

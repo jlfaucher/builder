@@ -43,7 +43,7 @@ doskey cddoc=%oorexx_doc_drv% ^& cd %oorexx_doc_dir%
 doskey cddocs=%oorexx_doc_drv% ^& cd %oorexx_doc_dir%
 
 :: Title of console
-title ooRexx %builder_target% %builder_branch% %builder_src_relative_path% %builder_config% %builder_system_arch%
+title ooRexx %builder_target% %builder_branch% %builder_src_relative_path% %builder_system_arch% %builder_compiler% %builder_config%
 
 call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 

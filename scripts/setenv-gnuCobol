@@ -40,7 +40,7 @@ alias cddoc='cd $gnucobol_doc_dir'
 alias cddocs='cd $gnucobol_doc_dir'
 
 # Title of console
-echo -n -e "\033]0;GNU Cobol $builder_target $builder_branch $builder_src_relative_path $builder_config $builder_system_arch\007"
+echo -n -e "\033]0;GNU Cobol $builder_target $builder_branch $builder_src_relative_path $builder_system_arch $builder_compiler $builder_config\007"
 
 export PATH
 export LD_LIBRARY_PATH
