@@ -38,7 +38,9 @@ case "$builder_config" in
     "debug") ;;
     "profiling") ;;
     "reldbg") ;;
+    "reldbg-O2") ;;
     "release") ;;
+    "release-O2") ;;
     "detect_UB") ;;
     *)
         echo "Invalid config: $builder_config"

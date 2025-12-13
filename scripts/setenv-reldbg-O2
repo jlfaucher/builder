@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Old build system (configure)
+export CFLAGS="-g -O2 $CFLAGS"
+export CXXFLAGS="-g -O2 $CXXFLAGS"
+
+# New build system (cmake)
+export CMAKE_BUILD_TYPE=RelWithDebInfo

@@ -48,7 +48,7 @@ Illustration with ooRexx for Ubuntu ARM 64-bit:
 Public scripts currently defined:
 ```
     setenv
-    setenv-debug OR -profiling OR -reldbg OR -release OR -detect_UB
+    setenv-debug OR -profiling OR -reldbg[-O2] OR -release[-O2] OR -detect_UB
     setenv-cl OR -clang OR -gcc
     setenv-macos-arm64 OR -macos-x86_64 OR -ubuntu-aarch64 OR -ubuntu-x86_64 OR -windows-arm32.bat OR -windows-arm64.bat OR -windows-x86_32.bat OR -windows-x86_64.bat
     setenv-executor.master
@@ -209,9 +209,11 @@ Examples of builds
 #### Executor
 ```
     <build_path>, $builder_build_dir
+    ---
     local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/debug/build
     local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/reldbg/build
     local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/release/build
+    ---
     local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/debug/build
     local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/reldbg/build
     local/rexx/oorexx/build/executor.master/sandbox/jlf/trunk/macos-x86_64/clang/release/build
@@ -223,9 +225,11 @@ Examples of builds
 #### ooRexx 4.2
 ```    
     <build_path>, $builder_build_dir
+    ---
     local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-arm64/clang/debug/build
     local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-arm64/clang/reldbg/build
     local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-arm64/clang/release/build
+    ---
     local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-x86_64/clang/debug/build
     local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-x86_64/clang/reldbg/build
     local/rexx/oorexx/build/official/main/releases/4.2.0/trunk/macos-x86_64/clang/release/build
@@ -237,16 +241,26 @@ Examples of builds
 #### ooRexx
 ``` 
     <build_path>, $builder_build_dir
+    ---
     local/rexx/oorexx/build/official/main/trunk/macos-arm64/clang/debug/build
     local/rexx/oorexx/build/official/main/trunk/macos-arm64/clang/reldbg/build
     local/rexx/oorexx/build/official/main/trunk/macos-arm64/clang/release/build
+    ---
     local/rexx/oorexx/build/official/main/trunk/macos-x86_64/clang/debug/build
     local/rexx/oorexx/build/official/main/trunk/macos-x86_64/clang/reldbg/build
     local/rexx/oorexx/build/official/main/trunk/macos-x86_64/clang/release/build
+    ---
+    local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/gcc/release
+    local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/gcc/release-O2
+    local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/clang/release
+    local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/clang/release-O2
+    ---
     local\rexxlocal\oorexx\build\official\main\trunk\windows-arm64\cl\debug\build
     local\rexxlocal\oorexx\build\official\main\trunk\windows-arm64\cl\release\build
+    ---
     local\rexxlocal\oorexx\build\official\main\trunk\windows-x86_32\cl\debug\build
     local\rexxlocal\oorexx\build\official\main\trunk\windows-x86_32\cl\release\build
+    ---
     local\rexxlocal\oorexx\build\official\main\trunk\windows-x86_64\cl\debug\build
     local\rexxlocal\oorexx\build\official\main\trunk\windows-x86_64\cl\release\build
 
@@ -260,8 +274,10 @@ Examples of builds
     local/rexx/regina
     
     <build_path>, $builder_build_dir
+    ---
     local/rexx/regina/build/official/interpreter/trunk/macos-arm64/clang/debug/build
     local/rexx/regina/build/official/interpreter/trunk/macos-arm64/clang/release/build
+    ---
     local/rexx/regina/build/official/interpreter/trunk/macos-x86_64/clang/debug/build
     local/rexx/regina/build/official/interpreter/trunk/macos-x86_64/clang/release/build
     

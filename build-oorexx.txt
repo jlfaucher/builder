@@ -284,24 +284,44 @@ cd /local/rexx/oorexx
 # Initialize the build environment (only one of them):
 # MacOs
     # system-arch is macos-arm64 or macos-x86_64.
+
     # MacOs ooRexx
     . ../builder/scripts/setenv build/official/main/trunk/macos-arm64/clang/release
+
     # MacOs executor
     . ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/release
+
     # MacOs executor5
     . ../builder/scripts/setenv build/executor5.master/main/trunk/macos-arm64/clang/release
-# Linux
+
+# WSL Ubuntu
     # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
-    # WSL ARM ooRexx
+
+    # WSL ARM ooRexx gcc (-O3 by default)
     . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/gcc/release
-    # Ubuntu ooRexx
-    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release
+    # WSL ARM ooRexx gcc -O2
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/gcc/release-O2
+
+    # WSL ARM ooRexx clang (-O3 by default)
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/clang/release
+    # WSL ARM ooRexx clang -O2
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/clang/release-O2
+
     # WSL ARM executor
     . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-aarch64/clang/release
-    # Ubuntu executor
-    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/clang/release
+
     # WSL ARM executor5
     . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-arm64/gcc/release
+
+# Linux
+    # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
+
+    # Ubuntu ooRexx
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release
+
+    # Ubuntu executor
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/clang/release
+
     # Ubuntu executor5
     . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-x86_64/gcc/release
 
