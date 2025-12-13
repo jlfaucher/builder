@@ -39,10 +39,10 @@ fi
 #declare_bsf4oorexx_svn
 
 echo "Setting environment for ICU"
-. /local/Unicode/ICU/setenv.sh
+[ -f /local/Unicode/ICU/setenv.sh ] && . /local/Unicode/ICU/setenv.sh
 
 echo "Setting environment for BOOST"
-. /local/cpp/boost/setenv.sh
+[ -f /local/cpp/boost/setenv.sh ] && . /local/cpp/boost/setenv.sh
 
 echo "Setting environment for Home scripts"
 prepend_path PATH "~/software/oorexx"
