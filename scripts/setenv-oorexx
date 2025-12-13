@@ -94,7 +94,7 @@ prepend_path PATH "$oorexx_incubator"
 alias cdincubator='cd $oorexx_incubator'
 
 echo "Setting environment for DocMusings"
-export oorexx_docmusings=$oorexx_incubator/docmusings-executor
+if test -z "$oorexx_docmusings" ; then export oorexx_docmusings=$oorexx_incubator/docmusings-executor ; fi
 if [ ! -d  "$oorexx_docmusings" ] ; then export oorexx_docmusings=$oorexx_incubator/docmusings ; fi
 alias cddocmusings='cd $oorexx_docmusings'
 export oorexx_transformxml=$oorexx_docmusings/transformxml
@@ -102,7 +102,7 @@ alias cdtransformxml='cd $oorexx_transformxml'
 prepend_path PATH "$oorexx_docmusings"
 
 echo "Setting environment for ooRexxShell"
-export oorexx_oorexxshell=$oorexx_incubator/ooRexxShell-executor
+if test -z "$oorexx_oorexxshell" ; then export oorexx_oorexxshell=$oorexx_incubator/ooRexxShell-executor ; fi
 if [ ! -d  "$oorexx_oorexxshell" ] ; then export oorexx_oorexxshell=$oorexx_incubator/ooRexxShell ; fi
 prepend_path PATH "$oorexx_oorexxshell"
 alias cdoorexxshell='cd $oorexx_oorexxshell'
@@ -118,7 +118,7 @@ export oorexx_sandbox=$builder_shared_dir/$builder_target/sandbox
 alias cdsandbox='cd $oorexx_sandbox'
 
 echo "Setting environment for the sandbox jlf"
-export oorexx_sandboxjlf=$oorexx_sandbox/jlf-executor
+if test -z "$oorexx_sandboxjlf" ; then export oorexx_sandboxjlf=$oorexx_sandbox/jlf-executor ; fi
 if [ ! -d  "$oorexx_sandboxjlf" ] ; then export oorexx_sandboxjlf=$oorexx_sandbox/jlf ; fi
 prepend_path PATH "$oorexx_sandboxjlf"
 alias cdsandboxjlf='cd $oorexx_sandboxjlf'

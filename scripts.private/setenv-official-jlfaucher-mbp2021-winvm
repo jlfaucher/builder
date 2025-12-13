@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# File naming convention
+# setenv-${current}-${builder_hostname}
+#        official   jlfaucher-mbp2021-winvm
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+# Those variables must be defined before calling this script
+if test -z "$builder_shared_dir" ; then echo "builder_shared_dir is undefined" ; return 1 ; fi
+
+# Workaround because symbolic links on network drive not supported :-((((
+# These variables are used in setenv-oorexx
+export oorexx_oorexxshell=$builder_shared_dir/executor/incubator/ooRexxShell
+export oorexx_docmusings=$builder_shared_dir/executor/incubator/DocMusings
+export oorexx_sandboxjlf=$builder_shared_dir/executor/sandbox/jlf

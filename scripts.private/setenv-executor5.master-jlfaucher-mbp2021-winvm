@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# File naming convention
+# setenv-${current}-${builder_hostname}
+#        executor5.master
+#                   jlfaucher-mbp2021-winvm
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+
+# load the helpers
+. ${builder_scripts_dir}/shellscriptlib
+
+
+# Those variables must be defined before calling this script
+if test -z "$builder_shared_dir" ; then echo "builder_shared_dir is undefined" ; return 1 ; fi
+
+# Workaround because symbolic links on network drive not supported :-((((
+# In order to find the package regex.cls, must add the official incubator in PATH
+export oorexx_official_incubator=$builder_shared_dir/official/incubator
+prepend_path PATH "$oorexx_official_incubator"
