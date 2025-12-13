@@ -10,3 +10,27 @@ export CMAKE_GENERATOR="Unix Makefiles"
 # Variables set for building with configure:
 export CONFIGURE_C_COMPILER=gcc
 export CONFIGURE_CXX_COMPILER=g++
+
+# https://gcc.gnu.org/onlinedocs/
+# https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
+
+# https://stackoverflow.com/questions/12970596/gcc-4-8-does-og-imply-g
+#     - Option -ggdb overrides -g.
+#       That is, if you set -ggdb after -g, the -g option effectively gets ignored.
+#     - Option -g is equal to -g2 and omitting -g is the same as -g0.
+#     - Option -g3 produces a larger debugging section than -g2 and so does -ggdb3 against -ggdb2.
+#     - Higher optimization levels both result in an increase of the code and debugging sections.
+#       (-O0 < -O1 < -Og < -O2 < -O3).
+#     - strip --strip-debug resulted in the same object size independent of the -g levels.
+#       This matched the expectation that only the -O level has an effect on the actual code where -g determines the debug sections.
+#     - strip --keep-debug results in objects where the size is dominated by the -g level, followed by -O levels.
+#       (so -g0 -O3 is smaller than -g3 -O0).
+#
+#     Here is the command I used to test the actual behavior (also compare -ggdbX instead of -gX):
+#
+#         for g in -g0 -g2 -g3;do
+#             for O in -O0 -O1 -O2 -O3 -Og; do
+#                 flags="$g $O";
+#                 gcc -fPIC -rdynamic -c -Wall -Wextra -Ilib ltunify.c -o obj/gL_"${flags// /_}_.o" $flags || break;
+#             done;
+#         done
