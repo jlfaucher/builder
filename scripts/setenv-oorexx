@@ -74,7 +74,6 @@ echo "Setting environment for ooRexx test framework"
 prepend_path PATH "$oorexx_test_trunk"
 prepend_path PATH "$oorexx_test_trunk/framework"
 alias cdtest='cd $oorexx_test_trunk'
-alias cdtests='cd $oorexx_test_trunk'
 
 # Optional, to do manually if you have installed official ooRexx:
     # From the directory official/incubator, reference some subdirectories in executor :
@@ -151,6 +150,9 @@ alias cdtracesamples='cd $oorexx_samples/trace'
 
 export oorexx_tests=$oorexx_sandboxjlf/tests
 alias cdtests='cd $oorexx_tests'
+
+export testx_dir=$builder_shared_dir/executor/testx
+alias cdtestx='cd $testx_dir'
 
 export oorexx_demos=$oorexx_sandboxjlf/demos
 alias cddemos='cd $oorexx_demos'

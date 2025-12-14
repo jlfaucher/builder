@@ -63,7 +63,6 @@ echo Setting environment for ooRexx test framework
 call shellscriptlib :prepend_path PATH "%oorexx_test_trunk%"
 call shellscriptlib :prepend_path PATH "%oorexx_test_trunk%\framework"
 doskey cdtest=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
-doskey cdtests=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
 
 :: Next section is not working under Windows 11 Home ARM.
 :: There is a workaround in the private script setenv-executor and setenv-official.
@@ -147,6 +146,10 @@ doskey cdtracesamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\trace
 set oorexx_tests=%oorexx_sandboxjlf%\tests
 set oorexx_tests_drv=%oorexx_sandbox_drv%
 doskey cdtests=%oorexx_tests_drv% ^& cd %oorexx_tests%
+
+set testx_drv=%builder_shared_drv%
+set testx_dir=%builder_shared_dir%\executor\testx
+doskey cdtestx=%testx_drv% ^& cd %testx_dir%
 
 set oorexx_demos=%oorexx_sandboxjlf%\demos
 set oorexx_demos_drv=%oorexx_sandbox_drv%
