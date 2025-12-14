@@ -43,3 +43,9 @@ export builder_delivery_dir=$builder_config_dir/delivery
 
 if test ! -d "$builder_build_dir" ; then mkdir "$builder_build_dir" ; fi
 if test ! -d "$builder_delivery_dir" ; then mkdir "$builder_delivery_dir" ; fi
+
+# Create the delivery/lib directory because of:
+#    ld: warning: search path '$builder_config_dir/delivery/lib' not found
+#    ld: fatal warning(s) induced error (-fatal_warnings)
+#    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+if test ! -d "$builder_delivery_dir/lib" ; then mkdir "$builder_delivery_dir/lib" ; fi
