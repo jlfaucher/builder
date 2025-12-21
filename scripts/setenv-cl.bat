@@ -44,6 +44,18 @@ set CMAKE_GENERATOR=NMake Makefiles
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Visual Studio 2026 (internal version: 18.0, cl version 19.50 ==> _MSC_VER 1950)
+
+:cl_26
+if 26 GTR %CL_MAX% goto cl_22
+set cl_dir=C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build
+if exist "%cl_dir%" (
+    call "%cl_dir%\vcvarsall.bat" %compiler_option%
+    if errorlevel 1 goto error
+    exit /b 0
+)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Visual Studio 2022 (internal version: 17.0, cl version 19.30)
 
 :cl_22
