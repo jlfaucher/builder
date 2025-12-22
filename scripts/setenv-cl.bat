@@ -158,6 +158,7 @@ Visual Studio 2015          Dev14           14.0                19.00           
 Visual Studio 2017          Dev15           15.0                19.10               March 07, 2017
 Visual Studio 2019          Dev16           16.0                19.20               April 02, 2019
 Visual Studio 2022          Dev17           17.0                19.30               November 08, 2021
+Visual Studio 2026          Dev18           18.0                19.50               November 11, 2025
 
 
 Visual Studio includes
