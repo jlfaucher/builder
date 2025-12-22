@@ -1,0 +1,450 @@
+Compiler prerequisite for Executor:
+    Your compiler supports C++17.
+
+    Tested with Apple clang version 14.0.0 (clang-1400.0.29.202)
+    Tested with clang+llvm-15.0.3-x86_64-apple-darwin
+    Tested with clang+llvm-15.0.6-arm64-apple-darwin21.0
+    Tested under WSL with clang/clang++ version 19.1.7 (could work with an older version, not tested)
+    Tested with Microsoft Visual Studio Community 2022 (64-bit) - Version 17.3.6
+
+    NOTE:
+    Under Linux or WSL, gcc is NOT supported: crash when running rexximage.
+    Use clang.
+
+Shell prerequisite for MacOS:
+    Works only with bash.
+    If your shell is zsh, then launch bash from your shell session and follow the instructions.
+    At the end, you can launch zsh from the bash session, but some libraries (like bsf)
+    may not work because of SIP. The workaround for bash works only for bash.
+    The zsh session will inherit the environment variables but NOT the aliases.
+
+Shell prerequisite for Linux:
+    Works only with bash.
+    If your shell is not bash, then launch bash from your shell session and follow the instructions.
+    At the end, you can launch your shell from the bash session, it will inherit the environment
+    variables but NOT the aliases.
+
+Shell prerequisite for Windows:
+    Works only with cmd.
+
+
+--------------------------------------------------------------------------------
+ooRexx directory hierarchy
+--------------------------------------------------------------------------------
+
+One MacOs host.
+One Linux virtual machine.
+One Windows virtual machine.
+
+Only one occurence of the git & svn sources, stored on the MacOs host.
+Any change made to the sources under MacOs is immediatly available from the VMs.
+
+Under MacOs, which is the main machine (host of the virtual machines):
+/local1                                 SMB share (exported, will be mounted as Y: under Windows VM)
+    local@                              symbolic link to /local (the goal is to have Y:\local)
+/local                                  NFS share (exported, will be mounted as /host/local under Linux VM)
+    rexx/
+        builder/                        Scripts to support builds for several branches, configurations, bitness
+        oorexx/                         $builder_shared_dir
+            ----------------------------
+            executor/                   git sources (fork of official/sandbox/jlf)
+                sandbox/
+                    jlf/
+                        trunk/
+            executor5/                  git sources (fork of official/main/trunk)
+                main/
+                    trunk/
+            official/                   svn sources of ooRexx
+                main/
+                    branches/
+                        4.2             next minor release to deliver
+                    releases/
+                        5.0.0/          last delivered version (older : 4.2.0, 4.1.1, 4.1.0, 4.0.1, 4.0.0, 3.2.0, 3.1.2)
+                            trunk/
+                    trunk/              next version to deliver
+            ----------------------------
+            build/                      where all the builds and deliveries for MacOs are done.
+                executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
+                    sandbox/
+                        jlf/
+                            trunk/      macos-[x86_64|arm64]/clang/[debug|reldbg|release]
+                executor5.master/       other branches : none for the moment
+                    main/
+                        trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
+                official/
+                    main/
+                        branches
+                            4.2/
+                                trunk/  macos-x86_64/clang/[debug|reldbg|release]
+                        releases/
+                            4.2.0/
+                                trunk/  macos-x86_64/clang/[debug|reldbg|release]
+                            5.0.0/
+                                trunk/  macos-[x86_64|arm64]/clang/[debug|reldbg|release]
+                        trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
+
+
+Linux virtual machine:
+The build directory is put inside the VM because of bad performances when accessing $builder_shared_dir.
+See notes.txt for "WSL: Creation of the build environment".
+/host/local                             NFS mount MacOs /local
+/local
+    rexx@                               symbolic link to /host/local/rexx
+        builder/
+        oorexx/                         $builder_shared_dir
+            build/                      not used for Linux
+            ----------------------------
+            executor/                   git sources (fork of official/sandbox/jlf)
+            executor5/                  git sources (fork of official/main/trunk)
+            official/                   svn sources of ooRexx
+    rexxlocal/                          Local directory
+        oorexx/                         $builder_local_dir
+            ----------------------------
+            build/                      where all the builds and deliveries for Linux are done.
+                executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
+                    sandbox/
+                        jlf/
+                            trunk/      ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
+                executor5.master/       other branches : none for the moment
+                    main/
+                        trunk/          ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
+                official/
+                    main/
+                        branches
+                            4.2/
+                                trunk/  ubuntu-x86_64/[gcc|clang]/[debug|profiling|reldbg|release]
+                        releases/
+                            4.2.0/
+                                trunk/  ubuntu-x86_64/[gcc|clang]/[debug|profiling|reldbg|release]
+                            5.0.0/
+                                trunk/  ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
+                        trunk/          ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
+
+
+Windows virtual machine:
+The build directory is put inside the VM because of bad performances when accessing $builder_shared_dir.
+C:\jlf\local\rexxlocal                  root directory of the local files for rexx
+E:                                      subst E: C:\jlf
+Y:                                      SMB mount MacOs /local1 which contains local@ -> /local
+Y:\local
+    rexx\
+        builder\
+        oorexx\                         $builder_shared_dir
+            build\                      not used
+            ----------------------------
+            executor\                   git sources (fork of official/sandbox/jlf)
+            executor5\                  git sources (fork of official/main/trunk)
+            official\                   svn sources of ooRexx
+E:\local\
+    rexxlocal/                          Local directory
+        oorexx/                         $builder_local_dir
+            ----------------------------
+            build/                      where all the builds and deliveries for Windows are done.
+                executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
+                    sandbox/
+                        jlf/
+                            trunk/      windows-[x86_64|arm64]/cl/[debug|reldbg|release]
+                executor5.master/       other branches : none for the moment
+                    main/
+                        trunk/          windows-[x86_64|arm64]/cl/[debug|reldbg|release]
+                official/
+                    main/
+                        branches
+                            4.2/
+                                trunk/  windows-x86_64/cl/[debug|reldbg|release]
+                        releases/
+                            4.2.0/
+                                trunk/  windows-x86_64/cl/[debug|reldbg|release]
+                            5.0.0/
+                                trunk/  windows-[x86_64|arm64]/cl/[debug|reldbg|release]
+                        trunk/          windows-[x86_64|arm64]/cl/[debug|reldbg|release]
+
+
+--------------------------------------------------------------------------------
+Getting the git sources of Builder
+--------------------------------------------------------------------------------
+
+cd /local/rexx
+git clone https://github.com/jlfaucher/builder.git
+
+
+--------------------------------------------------------------------------------
+Getting the svn sources of ooRexx
+--------------------------------------------------------------------------------
+
+# To get everything (1,3Gb: trunk, all releases, doc, test, sandbox):
+cd /local/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0 official
+
+# You can checkout only subsets.
+# In this case each subset will have its own .svn repository to manage separately.
+
+# To get only the main trunk of the interpreter sources (25Mb):
+cd /local/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/main/trunk official/main/trunk
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/build-utilities official/build-utilities
+
+# To get only the main trunk of the documentation (24Mb):
+cd /local/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/docs/trunk official/docs/trunk
+
+# To get only the test framework (7Mb):
+cd /local/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/test/trunk official/test/trunk
+
+# To get only the regex package (loaded by ooRexxShell if available)
+cd /local/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
+
+
+--------------------------------------------------------------------------------
+Getting the git sources of executor
+--------------------------------------------------------------------------------
+
+cd /local/rexx/oorexx
+# --depth 1 needed because of error "fetch-pack: invalid index-pack output"
+git clone --depth 1 https://github.com/jlfaucher/executor.git
+
+
+--------------------------------------------------------------------------------
+Cross references between ooRexx and executor
+--------------------------------------------------------------------------------
+
+# [MacOs & Linux]
+
+# From the directory official/incubator, reference some subdirectories in executor :
+ln -s ../../executor/incubator/ooRexxShell ooRexxShell-executor
+ln -s ../../executor/incubator/DocMusings DocMusings-executor
+
+# From the directory official/sandbox, reference some subdirectories in executor :
+ln -s ../../executor/sandbox/jlf jlf-executor
+
+# From the directory executor/incubator, reference some subdirectories in official :
+ln -s ../../official/incubator/regex regex
+
+
+:: [Windows]
+
+:: From the directory official\incubator, reference some subdirectories in executor :
+mklink /d ooRexxShell-executor ..\..\executor\incubator\ooRexxShell
+mklink /d DocMusings-executor ..\..\executor\incubator\DocMusings
+
+:: From the directory official/sandbox, reference some subdirectories in executor :
+mklink /d jlf-executor ..\..\executor\sandbox\jlf
+
+:: From the directory executor\incubator, reference some subdirectories in official :
+mklink /d regex ..\..\official\incubator\regex
+
+
+--------------------------------------------------------------------------------
+Getting the git sources of executor5
+--------------------------------------------------------------------------------
+
+cd /local/rexx/oorexx
+git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
+
+
+# [MacOs & Linux]
+
+# From the directory executor5, reference some subdirectories in executor :
+ln -s ../executor/incubator incubator
+ln -s ../executor/sandbox sandbox
+
+
+:: [Windows]
+
+:: From the directory executor5, reference some subdirectories in executor :
+mklink /d incubator ..\executor\incubator
+mklink /d sandbox ..\executor\sandbox
+
+
+--------------------------------------------------------------------------------
+FOR OLD BUILD SYSTEMS ONLY (those not using cmake)
+Changes that must be applied before the first build
+--------------------------------------------------------------------------------
+
+See the directory builder/adaptations.
+The files in the subdirectories are either new files or existing files that have
+been adaptated for some reasons.
+You can copy manually these files or you can execute the script copy_files.
+
+
+--------------------------------------------------------------------------------
+MacOs & Linux build
+NEW BUILD SYSTEM (cmake)
+Build the 64-bit release configuration of official ooRexx trunk, executor master branch
+--------------------------------------------------------------------------------
+
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
+cd /local/rexx/oorexx
+
+# Initialize the build environment (only one of them):
+# MacOs
+    # system-arch is macos-arm64 or macos-x86_64.
+
+    # MacOs ooRexx
+    . ../builder/scripts/setenv build/official/main/trunk/macos-arm64/clang/release
+
+    # MacOs executor
+    . ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/release
+
+    # MacOs executor5
+    . ../builder/scripts/setenv build/executor5.master/main/trunk/macos-arm64/clang/release
+
+# WSL Ubuntu
+    # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
+
+    # WSL ARM ooRexx gcc (-O3 by default)
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/gcc/release
+    # WSL ARM ooRexx gcc -O2
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/gcc/release-O2
+
+    # WSL ARM ooRexx clang (-O3 by default)
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/clang/release
+    # WSL ARM ooRexx clang -O2
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/clang/release-O2
+
+    # WSL ARM executor
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-aarch64/clang/release
+
+    # WSL ARM executor5
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-arm64/gcc/release
+
+# Linux
+    # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
+
+    # Ubuntu ooRexx
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release
+
+    # Ubuntu executor
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/clang/release
+
+    # Ubuntu executor5
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-x86_64/gcc/release
+
+# Now build...
+cdbuild
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
+make install
+
+# To build a rpm (Linux):
+# OS_DIST is optional on the following command. It is used to modify the install package name.
+# Note JLF : Under Linux, `uname` could be replaced by `lsb_release -i -s`-`lsb_release -r -s`
+cdbuild
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_RPM=1 -DOS_DIST=`uname` $builder_src_dir
+make install
+cpack -G RPM
+
+# To build a deb (Linux):
+# OS_DIST is optional on the following command. It is used to modify the install package name.
+cdbuild
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_DEB=1 -DOS_DIST=`uname` $builder_src_dir
+make install
+cpack -G DEB
+
+# To build a dmg (Macos):
+# OS_DIST is optional on the following command. It is used to modify the install package name.
+cdbuild
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_DMG=1 -DOS_DIST=`uname` $builder_src_dir
+make install
+. ./build_macOS_dmg.sh
+
+
+--------------------------------------------------------------------------------
+MacOs & Linux build
+OLD BUILD SYSTEM (configure) + adaptations
+Build the 64-bit release configuration of official ooRexx release 4.2.0
+--------------------------------------------------------------------------------
+
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
+cd /local/rexx/oorexx
+
+# MacOs
+    # system-arch is macos-arm64 or macos-x86_64.
+    . ../builder/scripts/setenv build/official/main/releases/4.2.0/trunk/macos-arm64/clang/release
+# Linux
+    # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
+    # WSL ARM
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/releases/4.2.0/trunk/ubuntu-aarch64/gcc/release
+    # Ubuntu
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/releases/4.2.0/trunk/ubuntu-x86_64/gcc/release
+
+# Now build...
+cdtrunk
+./bootstrap
+cdbuild
+ln -s $builder_src_dir/oorexx.ver      # must do that otherwise not found
+$builder_src_dir/configure CC=$CONFIGURE_C_COMPILER CXX=$CONFIGURE_CXX_COMPILER --prefix=$builder_delivery_dir --disable-static
+make install
+
+
+--------------------------------------------------------------------------------
+Windows build
+NEW BUILD SYSTEM (cmake)
+Build the 32-bit or 64-bit release configuration of official ooRexx trunk, executor master branch
+--------------------------------------------------------------------------------
+
+:: Prerequisite
+:: - No space in the path to the current directory.
+:: - ooRexx:   Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+:: - Executor: Visual Studio 2022
+:: - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+:: - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
+:: - Install xalan-c: https://xalan.apache.org/xalan-c/
+
+
+:: Local directory in the virtual machine for Windows
+e:
+cd \local\rexxlocal\oorexx
+:: Shared directory
+y:
+cd \local\rexx\oorexx
+:: system-arch is windows-arm64 or windows-x86_64 or windows-x86_32.
+    :: ooRexx
+    call ..\builder\scripts\setenv e:build\official\main\trunk\windows-x86_64\cl\release\
+    :: executor
+    call ..\builder\scripts\setenv e:build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
+    :: executor5
+    call ..\builder\scripts\setenv e:build\executor5.master\main\trunk\windows-x86_64\cl\release
+:: Now build...
+cdbuild
+cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk -DCMAKE_C_COMPILER=%CMAKE_C_COMPILER% -DCMAKE_CXX_COMPILER=%CMAKE_CXX_COMPILER% %builder_src_dir%
+nmake install
+
+:: Optional
+nmake nsis_template_installer
+
+
+--------------------------------------------------------------------------------
+Windows build
+OLD BUILD SYSTEM (makeorx) + adaptations
+Build the 32-bit or 64-bit release configuration of official ooRexx release 4.2.0
+--------------------------------------------------------------------------------
+
+:: Prerequisite
+:: - No space in the path to the current directory.
+:: - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+:: - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+:: - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
+:: - Install xalan-c: https://xalan.apache.org/xalan-c/
+:: - Adapt scripts.private\other_dependencies-oorexx.bat to your COMPUTERNAME:
+::     - add killer.exe in PATH.
+::     - add NSIS in PATH.
+::     - add xalan-c in PATH.
+
+:: Local directory in the virtual machine for Windows
+e:
+cd \local\rexxlocal\oorexx
+:: Shared directory
+y:
+cd \local\rexx\oorexx
+:: system-arch is windows-arm64 or windows-x86_64 or windows-x86_32.
+call ..\builder\scripts\setenv e:build\official\main\releases\4.2.0\trunk\windows-x86_64\cl\release
+cdtrunk
+makeorx_verbose %BUILD_TYPE%

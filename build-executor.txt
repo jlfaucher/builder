@@ -1,4 +1,4 @@
-This file is a subset of build-oorexx.txt, limited to the build of executor.
+This file is a subset of build-jlf_config.txt, limited to the build of executor.
 
 
 Compiler prerequisite:
