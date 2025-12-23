@@ -1,15 +1,6 @@
 This file is a subset of build-jlf_config.txt, limited to the build of ooRexx.
 
 
-Compiler prerequisite:
-    Your compiler supports C++17.
-
-    Tested with Apple clang version 14.0.0 (clang-1400.0.29.202)
-    Tested with clang+llvm-15.0.3-x86_64-apple-darwin
-    Tested with clang+llvm-15.0.6-arm64-apple-darwin21.0
-    Tested under WSL with clang/clang++ version 19.1.7 (could work with an older version, not tested)
-    Tested with Microsoft Visual Studio Community 2022 (64-bit) - Version 17.3.6
-
 Shell prerequisite for MacOS:
     Works only with bash.
     If your shell is zsh, then launch bash from your shell session and follow the instructions.
