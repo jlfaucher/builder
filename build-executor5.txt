@@ -148,3 +148,6 @@ mklink /d sandbox ..\executor\sandbox
 cd <my directory>/rexx/oorexx
 :: system-arch is windows-arm64 or windows-x86_64.
 call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
+
+:: Optional
+:: See the "notes.txt" file to create the oorexx_builder project in Visual Studio.

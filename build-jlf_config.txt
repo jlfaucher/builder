@@ -420,6 +420,9 @@ nmake install
 :: Optional
 nmake nsis_template_installer
 
+:: Optional
+:: See the "notes.txt" file to create the oorexx_builder project in Visual Studio.
+
 
 --------------------------------------------------------------------------------
 Windows build

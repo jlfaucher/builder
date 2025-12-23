@@ -1,4 +1,167 @@
 --------------------------------------------------------------------------------
+Microsoft Visual Studio - creation of a portable oorexx_builder project
+--------------------------------------------------------------------------------
+
+This section describes how to create a Visual Studio project named "oorexx_builder",
+driven by the variables
+$(builder_build_dir)
+$(buildet_delivery_dir)
+
+The oorexx_builder project can be used from any cmd where the builder has been
+initialized, and the build command "nmake install" is supported:
+- ooRexx release
+- ooRexx debug
+- Executor release
+- Executor debug
+- Executor5 release
+- Executor5 debug
+
+It's important to launch Visual Studio from the cmd where the builder has been run.
+The builder creates environment variables that become visible from VS thanks to the /useenv option.
+The directory from where you launch VS is not important.
+
+devenv /useenv
+
+
+------------------------------------
+INSTRUCTIONS TO CREATE A NEW PROJECT
+------------------------------------
+
+-- Create the "oorexx_builder" project.
+
+    File / New / Project
+    Select Makefile project
+
+    Click Next
+
+    Project name = oorexx_builder
+
+    Click Create
+
+    Debug settings
+    Leave the fields blank
+
+    Click Next
+
+    Release settings
+    Keep same as debug configuration
+
+    Click Finish
+
+-- Define the "Build" and "No build" configurations.
+-- The "Release" and "Debug" configurations are irrelevant, as you already made
+-- this choice when initializing the builder in your command prompt.
+
+-- You have also selected the platform, but it is not possible to rename platforms
+-- in Visual Studio. Therefore, we will not modify them, but please note that they
+-- will have no effect on the build.
+
+    File / Configuration Manager
+
+    In Active solution configuration, click <Edit…>
+    Rename "Debug" into "Build"
+    Rename "Release" into "No build"
+    Click Close
+
+    In Project contexts, click <Edit…> in the Configuration column
+    Rename "Debug" into "Build"
+    Rename "Release" into "No build"
+    Click Close
+
+    Close the configuration manager
+
+-- Make the builder variables usable in the form $(builder...) from Visual Studio.
+
+    Right-click on the "oorexx_builder" project (under solution) and select Open Folder in File Explorer
+    Create the "builder.props" file in the project directoy.
+    Copy-paste in builder.props:
+    <Project>
+      <PropertyGroup>
+        <builder_delivery_dir>$(builder_delivery_dir)</builder_delivery_dir>
+        <builder_build_dir>$(builder_build_dir)</builder_build_dir>
+      </PropertyGroup>
+    </Project>
+
+    Right-click on the "oorexx_builder" project and select Unload Project
+    Right-click on the "oorexx_builder" project and select Edit Project File
+    Add at the end, before the last tag:
+    <Import Project="builder.props" />
+
+    Save
+
+    Right-click on the "oorexx_builder" project and select Reload Project
+
+-- Define the build commands
+-- To avoid the warning MSB8005: The property 'NMakeBuildCommandLine' is not defined,
+-- all the combinations Configuration x Platform must be covered.
+
+    Right-click on the "oorexx_builder" project and select Properties
+    Select the "All Configurations" configuration
+    Select the "All Platforms" configuration
+        General
+            Output Directory = $(builder_delivery_dir)\
+            Intermediate Directory = $(builder_build_dir)\VisualStudio\
+        NMake
+            Build Command Line = REM no build for this configuration
+            Rebuild All Command Line = REM no build for this configuration
+            Clean Command Line = REM no build for this configuration
+            Compile File Command Line = REM no build for this configuration
+            Output = $(builder_delivery_dir)\rexx.exe
+    Select the "Build" configuration
+    Keep "All Platforms" selected
+        NMake
+            Build Command Line = cd /d %builder_build_dir% && nmake install
+            Rebuild All Command Line = cd /d %builder_build_dir% && nmake clean install
+            Clean Command Line = cd /d %builder_build_dir% && nmake clean
+            Compile File Command Line = REM no build for this configuration
+            Output = $(builder_delivery_dir)\rexx.exe
+
+    Click Ok
+
+    Save the project
+
+
+---------------------
+INSTRUCTIONS TO BUILD
+---------------------
+
+    You switch configurations using the toolbar dropdown
+
+    Select the "No build" config
+    Build /  Build Solution (or Ctrl+Shift+B)
+    Nothing is built
+
+    Select the "Build" config
+    Build /  Build Solution (or Ctrl+Shift+B)
+    The build is launched
+
+
+--------------------
+INSTRUCTION TO DEBUG
+--------------------
+
+    Right-click on the "oorexx_builder" project and select Properties
+    Select the "All Configurations" configuration
+    Select the "All Platforms" configuration
+        Debugging
+            Command = $(builder_delivery_dir)\rexx.exe
+            Command Arguments = -e "say hi; pull"
+            working directory = what you need
+
+
+    Click Ok
+
+    You switch configurations using the toolbar dropdown
+
+    Select either the "Build" or "No build" configuration
+    With "Build", a build is always launched when you start debugging.
+    With "No build", the debug is immediate.
+
+    Debug / Start debugging
+    (or F5)
+
+
+--------------------------------------------------------------------------------
 Windows WSL: Creation of the build environment
 --------------------------------------------------------------------------------
 
