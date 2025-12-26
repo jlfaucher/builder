@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
-Microsoft Visual Studio - creation of a portable oorexx_builder project
+Microsoft Visual Studio - creation of the oorexx_builder project
 --------------------------------------------------------------------------------
 
 This section describes how to create a Visual Studio project named "oorexx_builder",
