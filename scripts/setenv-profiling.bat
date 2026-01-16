@@ -11,10 +11,10 @@ set builder_profiling=1
 
 :: MEMPROFILE activates dumpMemoryProfile in ooRexx
 :: VERBOSE_GC activates the GC verbose messages
-echo Adding -DMEMPROFILE to activate dumpMemoryProfile
-echo Adding -DVERBOSE_GC to activate the GC verbose messages
-set CFLAGS=-DMEMPROFILE -DVERBOSE_GC -g -O3 %CFLAGS%
-set CXXFLAGS=-DMEMPROFILE -DVERBOSE_GC -g -O3 %CXXFLAGS%
+echo Adding /DMEMPROFILE to activate dumpMemoryProfile
+echo Adding /DVERBOSE_GC to activate the GC verbose messages
+set CFLAGS=/DMEMPROFILE /DVERBOSE_GC %CFLAGS%
+set CXXFLAGS=/DMEMPROFILE /DVERBOSE_GC %CXXFLAGS%
 
 :: Cmake has no build type for profiling.
 set CMAKE_BUILD_TYPE=RelWithDebInfo
