@@ -16,6 +16,14 @@ export CONFIGURE_C_COMPILER=clang
 export CONFIGURE_CXX_COMPILER=clang++
 
 
+# Profiling
+# https://stackoverflow.com/questions/73922182/how-to-do-profiling-using-clang-compiler-and-cmake
+if [ "$builder_profiling" = "1" ] ; then
+    echo "TODO: add options for profiling instrumentation (clang doesn't support -pg)"
+    echo "MAYBE: -fprofile-instr-generate -fcoverage-mapping"
+    if [ "$builder_system" = "macos" ] ; then echo "On macOS, you can use Xcode Instruments which is sampling-based, not instrumentation-based." ; fi
+fi
+
 # Detect undefined behaviour
 # Important requirements when using -fstrict-aliasing
 # If you enable it, your code must obey the strict aliasing rules:

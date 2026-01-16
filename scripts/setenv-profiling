@@ -2,9 +2,15 @@
 
 if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
 
-export CFLAGS="-g -O3 -pg $CFLAGS"
-export CXXFLAGS="-g -O3 -pg $CXXFLAGS"
-export LDFLAGS="-pg $LDFLAGS"
+# See setenv-clang, setenv-gcc
+export builder_profiling=1
 
-# todo
+# MEMPROFILE activates dumpMemoryProfile in ooRexx
+# VERBOSE_GC activates the GC verbose messages
+echo "Adding -DMEMPROFILE to activate dumpMemoryProfile"
+echo "Adding -DVERBOSE_GC to activate the GC verbose messages"
+export CFLAGS="-DMEMPROFILE -DVERBOSE_GC -g -O3 $CFLAGS"
+export CXXFLAGS="-DMEMPROFILE -DVERBOSE_GC -g -O3 $CXXFLAGS"
+
+# Cmake has no build type for profiling.
 export CMAKE_BUILD_TYPE=RelWithDebInfo

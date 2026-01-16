@@ -11,6 +11,14 @@ export CMAKE_GENERATOR="Unix Makefiles"
 export CONFIGURE_C_COMPILER=gcc
 export CONFIGURE_CXX_COMPILER=g++
 
+# Profiling
+if [ "$builder_profiling" = "1" ] ; then
+    echo "Adding -pg for profiling"
+    export CFLAGS="-pg $CFLAGS"
+    export CXXFLAGS="-pg $CXXFLAGS"
+    export LDFLAGS="-pg $LDFLAGS"
+fi
+
 # https://gcc.gnu.org/onlinedocs/
 # https://gcc.gnu.org/onlinedocs/gcc/Debugging-Options.html
 
