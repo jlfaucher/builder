@@ -18,6 +18,10 @@ if not defined build_dir (
 set build_dir=%build_dir:&=^&%
 set build_dir=%build_dir:"=%
 
+:: There are two “build” directories in the directory hierarchy.
+:: The current directory is above the other one, let's call it “buildroot”.
+set builder_buildroot_dir=%build_dir%
+
 :: The shared drive provided by vmWare or VirtualBox is TOO SLOW !
 :: So I put the binary files on a local drive inside the VM.
 :: The source files remain on the shared drive, I don't want to manage sources per VM.
