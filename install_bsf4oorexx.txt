@@ -1,27 +1,78 @@
 --------------------------------------------------------------------------------
-# Optional for all platforms : install BSF4ooRexx
+# Optional for all platforms: install BSF4ooRexx
 --------------------------------------------------------------------------------
 
 This is not the standard installation procedure.
 It's a "no install" procedure:
-- 3 files to copy & rename
-- 2 scripts to update
+- dynamic libraries to copy & rename
+- builder scripts to update
 - ZERO impact on your system
 
-mkdir rexx
-cd rexx
-mkdir bsf4oorexx
-cd bsf4oorexx
-# Adjust the following lines by using the most recent version. Currently, only beta versions are available.
-# Get the file BSF4ooRexx_install_v641-20201217-beta.zip from https://sourceforge.net/projects/bsf4oorexx/files/beta/20200928/
-# Unzip in BSF4ooRexx_install_v641-20201217-beta
-cd BSF4ooRexx_install_v641-20201217-beta
-cd bsf4oorexx
-cd install
-mkdir 64
-copy lib\BSF4ooRexx.dll-64-amd64     64\BSF4ooRexx.dll
-cp lib/libBSF4ooRexx.dylib-64-x86_64 64/libBSF4ooRexx.dylib
-cp lib/libBSF4ooRexx.so-64-amd64     64/libBSF4ooRexx.so
+
+# 640
+# for ooRexx 4.2, Executor
+    cd <my directory>
+    mkdir rexx
+    cd rexx
+    mkdir bsf4oorexx
+    cd bsf4oorexx
+
+    # Adjust the following lines by using the most recent version.
+    # Get the file BSF4ooRexx_install_v641-20221002-refresh.zip from https://sourceforge.net/projects/bsf4oorexx/files/GA/BSF4ooRexx-641.20220131-GA/
+    # Unzip, the BSF4ooRexx_install_v641-20221002-refresh directory is created.
+    cd BSF4ooRexx_install_v641-20221002-refresh
+    cd bsf4oorexx
+
+    # Copy and rename by removing the end of the filename
+    file=install/lib/BSF4ooRexx.dll-64-arm64            && destdir=lib/windows-arm64        && destfile=BSF4ooRexx.dll                      && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."  # NOT DELIVERED
+    file=install/lib/BSF4ooRexx.dll-32-x86              && destdir=lib/windows-x86_32       && destfile=BSF4ooRexx.dll                      && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/BSF4ooRexx.dll-64-amd64            && destdir=lib/windows-x86_64       && destfile=BSF4ooRexx.dll                      && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx.dylib-64-arm64       && destdir=lib/macos-arm64          && destfile=libBSF4ooRexx.dylib                 && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx.dylib-64-x86_64      && destdir=lib/macos-x86_64         && destfile=libBSF4ooRexx.dylib                 && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx.so-32-arm32          && destdir=lib/ubuntu-aarch32       && destfile=libBSF4ooRexx.so                    && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx.so-32-x86            && destdir=lib/ubuntu-x86_32        && destfile=libBSF4ooRexx.so                    && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx.so-64-arm64          && destdir=lib/ubuntu-aarch64       && destfile=libBSF4ooRexx.so                    && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx.so-64-amd64          && destdir=lib/ubuntu-x86_64        && destfile=libBSF4ooRexx.so                    && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+
+
+# 850
+# for ooRexx 5, Executor5, Executor5-bulk
+    cd <my directory>
+    mkdir rexx
+    cd rexx
+    mkdir bsf4oorexx
+    cd bsf4oorexx
+
+    # Adjust the following lines by using the most recent version.
+    # Get the file BSF4ooRexx_install_v850-20260117-refresh.zip from https://sourceforge.net/projects/bsf4oorexx/files/GA/BSF4ooRexx-850.20240304-GA/
+    # Unzip, the BSF4ooRexx_install_v850-20260117-refresh directory is created.
+    cd BSF4ooRexx_install_v850-20260117-refresh
+    cd bsf4oorexx
+
+    # Copy and rename by removing the end of the filename
+    file=install/lib/BSF4ooRexx850.dll-32-x86           && destdir=lib/windows-x86_32       && destfile=BSF4ooRexx850.dll                   && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/BSF4ooRexx850.dll-64-amd64         && destdir=lib/windows-x86_64       && destfile=BSF4ooRexx850.dll                   && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/BSF4ooRexx850.dll-64-arm64         && destdir=lib/windows-arm64        && destfile=BSF4ooRexx850.dll                   && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx850.dylib-64-arm64    && destdir=lib/macos-arm64          && destfile=libBSF4ooRexx850.dylib              && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx850.dylib-64-x86_64   && destdir=lib/macos-x86_64         && destfile=libBSF4ooRexx850.dylib              && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx850.dylib-universal   && destdir=lib/macos-universal      && destfile=libBSF4ooRexx850.dylib              && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx850.so-32-arm32       && destdir=lib/ubuntu-aarch32       && destfile=libBSF4ooRexx850.so                 && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx850.so-32-x86         && destdir=lib/ubuntu-x86_32        && destfile=libBSF4ooRexx850.so                 && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx850.so-64-amd64       && destdir=lib/ubuntu-x86_64        && destfile=libBSF4ooRexx850.so                 && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+    file=install/lib/libBSF4ooRexx850.so-64-arm64       && destdir=lib/ubuntu-aarch64       && destfile=libBSF4ooRexx850.so                 && [ -f "$file" ] && mkdir -p "$destdir"    && cp -i "$file" "$destdir/$destfile"     && echo "Done."
+
+
 # Adjust the private scripts in builder to reference the right BSF4ooRexx:
-# - builder\scripts.private\other_dependencies-oorexx.bat
-# - builder/scripts.private/other_dependencies-oorexx
+    export BSF4OOREXX_HOME=<my directory>/rexx/bsf4oorexx/BSF4ooRexx_install_v850-20260117-refresh/bsf4oorexx
+    export BSF4OOREXX_JAR=bsf4ooRexx-v850-20260117-bin.jar
+
+    setenv-oorexx-macos-arm64-jlfaucher-mbp2021
+    setenv-oorexx-ubuntu-aarch64-jlfaucher-mbp2021-winvm
+    setenv-oorexx-windows-arm64-jlfaucher-mbp2021-winvm.bat
+    setenv-oorexx-windows-x86_32-jlfaucher-mbp2021-winvm.bat
+    setenv-oorexx-windows-x86_64-jlfaucher-mbp2021-winvm.bat
+
+    setenv-oorexx-macos-x86_64-jlfaucher-mbp2010
+    setenv-oorexx-ubuntu-x86_64-jlfaucher-mbp2010-winvm
+    setenv-oorexx-windows-x86_32-jlfaucher-mbp2010-winvm.bat
+    setenv-oorexx-windows-x86_64-jlfaucher-mbp2010-winvm.bat
