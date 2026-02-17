@@ -50,9 +50,15 @@ cd oorexx
 # --depth 1 needed because of error "fetch-pack: invalid index-pack output"
 git clone --depth 1 https://github.com/jlfaucher/executor.git
 
+# Optional: get the regex package (loaded by ooRexxShell if available)
+cd <my directory>/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
+ln -s ../../official/incubator/regex executor/incubator/regex
+
 # Initialize the build environment:
 # build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
 # system-arch is macos-arm64 or macos-x86_64.
+cd <my directory>/rexx/oorexx
 . ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/release
 
 # Several aliases are defined to navigate easily in the directories:
@@ -64,12 +70,6 @@ cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL
 
 # The binaries are installed in $builder_delivery_dir
 make install
-
-# Optional: get the regex package (loaded by ooRexxShell if available)
-cdoorexx
-svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
-cdincubator
-ln -s ../../official/incubator/regex regex
 
 # Try oorexxshell, see the demos:
 # https://jlfaucher.github.io/executor.master/demos/index.html
@@ -101,9 +101,15 @@ cd oorexx
 # --depth 1 needed because of error "fetch-pack: invalid index-pack output"
 git clone --depth 1 https://github.com/jlfaucher/executor.git
 
+# Optional: get the regex package (loaded by ooRexxShell if available)
+cd <my directory>/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
+ln -s ../../official/incubator/regex executor/incubator/regex
+
 # Initialize the build environment:
 # build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
 # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
+cd <my directory>/rexx/oorexx
 . ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/ubuntu-x86_64/clang/release
 
 # Several aliases are defined to navigate easily in the directories:
@@ -115,12 +121,6 @@ cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL
 
 # The binaries are installed in $builder_delivery_dir
 make install
-
-# Optional: get the regex package (loaded by ooRexxShell if available)
-cdoorexx
-svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
-cdincubator
-ln -s ../../official/incubator/regex regex
 
 # Try oorexxshell, see the demos:
 # https://jlfaucher.github.io/executor.master/demos/index.html
@@ -138,7 +138,7 @@ cd <my directory>/rexx/oorexx
 --------------------------------------------------------------------------------
 :: Prerequisite
 :: - No space in the path to the current directory.
-:: - Visual Studio 2022 is installed. See scripts\setenv-cl.bat
+:: - Visual Studio 2026 or 2022 is installed. See scripts\setenv-cl.bat
 :: - (needed?) An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 
 
@@ -153,9 +153,15 @@ cd oorexx
 :: --depth 1 needed because of error "fetch-pack: invalid index-pack output"
 git clone --depth 1 https://github.com/jlfaucher/executor.git
 
+:: Optional: get the regex package (loaded by ooRexxShell if available)
+cd <my directory>/rexx/oorexx
+svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
+mklink /d executor\incubator\regex ..\..\official\incubator\regex
+
 :: Initialize the build environment:
 :: build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
 :: system-arch is windows-arm64 or windows-x86_64.
+cd <my directory>/rexx/oorexx
 call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
 
 :: Several macros are defined to navigate easily in the directories:
@@ -167,12 +173,6 @@ cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTA
 
 :: The binaries are installed in %builder_delivery_dir%
 nmake install
-
-:: Optional: get the regex package (loaded by ooRexxShell if available)
-cdoorexx
-svn checkout svn://svn.code.sf.net/p/oorexx/code-0/incubator/regex official/incubator/regex
-cdincubator
-mklink /d regex ..\..\official\incubator\regex
 
 :: Try oorexxshell, see the demos:
 :: https://jlfaucher.github.io/executor.master/demos/index.html
