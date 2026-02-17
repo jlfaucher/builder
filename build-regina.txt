@@ -28,7 +28,7 @@ Under MacOs, which is the main machine (host of the virtual machines):
         regina/                         $builder_shared_dir
             ----------------------------
             official_delivery_src/      packaged sources of specific versions
-                3.9.7/                  last delivered version (older : 3.9.6, 3.9.5, 3.9.4, 3.9.3, 3.9.1, 3.9.0, 3.8.2, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.0)
+                3.9.7/                  last delivered version (older: 3.9.6, 3.9.5, 3.9.4, 3.9.3, 3.9.1, 3.9.0, 3.8.2, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.0)
             official/                   svn sources of Regina
                 interpreter/
                     trunk/              next version to deliver
@@ -118,7 +118,7 @@ Getting the packaged sources of Regina for a specific version
 Download from
 https://sourceforge.net/projects/regina-rexx/files/
 
-Example :
+Example:
 cd /local/rexx/regina/official_delivery/3.9.7
 unzip regina397.zip
 
@@ -156,7 +156,7 @@ make install
 
 
 # Maybe fixed, did not check...
-# Bug in the Makefile, when installing the 32-bit version :
+# Bug in the Makefile, when installing the 32-bit version:
 # rexx not found
 # should replace "$(DESTDIR)$(bindir)/rexx "
 # by             "$(DESTDIR)$(bindir)/rexx$(binarybitprefix)$(EXE) "

@@ -176,11 +176,11 @@ Supported architectures
     (3) make
         cc: error: unrecognized command-line option ‘-m64’
     (4) nmake
-        LINK : fatal error LNK1104: cannot open file 'LIBCMT.lib'
+        LINK: fatal error LNK1104: cannot open file 'LIBCMT.lib'
     (5) nmake
-        LINK : fatal error LNK1104: cannot open file 'Y:\local\rexx\regina\official\interpreter\trunk\regina_arm64_dll.def'
-        mt_winarm64.ts.obj : error LNK2005: tsds already defined in mt_win64.ts.obj
-        mt_winarm64.ts.obj : error LNK2005: __regina_ReginaSetMutex already defined in mt_win64.ts.obj
+        LINK: fatal error LNK1104: cannot open file 'Y:\local\rexx\regina\official\interpreter\trunk\regina_arm64_dll.def'
+        mt_winarm64.ts.obj: error LNK2005: tsds already defined in mt_win64.ts.obj
+        mt_winarm64.ts.obj: error LNK2005: __regina_ReginaSetMutex already defined in mt_win64.ts.obj
     (6) rexx
         build done, but runtime error "Side by side configuration is incorrect"
 
