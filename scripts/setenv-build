@@ -32,8 +32,8 @@ export builder_compiler=`basename "$current"`
 current=`dirname "$current"`                    # <target[.branch]>/d1/d2/.../system-arch
 
 current=`dirname "$current"`                    # <target[.branch]>/d1/d2/...
-export builder_target_branch=${current%%/*}     # executor.<branch> or executor5.<branch> or official
-export builder_target=${builder_target_branch%%.*} # executor or executor5 or official (never contains '.')
+export builder_target_branch=${current%%/*}     # executor.<branch> or executor5.<branch> or executor5-bulk.<branch> or official
+export builder_target=${builder_target_branch%%.*} # executor or executor5 or executor5-bulk or official (never contains '.')
 export builder_branch=${builder_target_branch#*.} # branch (can contain zero or one or several '.')
 if test "$builder_target" = "$builder_branch" ; then builder_branch= ; fi
 

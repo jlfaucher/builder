@@ -1,6 +1,7 @@
 Helper scripts to initialize a build environment for
 - Executor
 - Executor5
+- Executor5-bulk
 - Official ooRexx
 - Regina
 

@@ -37,7 +37,7 @@ done
 hooks_dir="$( cd -P "$(dirname "$FILE")" && pwd )"  # /local/rexx/oorexx/<target>/.git/hooks
 dot_git_dir=`dirname $hooks_dir`                    # /local/rexx/oorexx/<target>/.git
 target_dir=`dirname $dot_git_dir`                   # /local/rexx/oorexx/<target>
-target_name=`basename $target_dir`                  # Ex : executor, executor5
+target_name=`basename $target_dir`                  # Ex : executor, executor5, executor5-bulk
 oorexx_dir=`dirname $target_dir`                    # /local/rexx/oorexx
 build_dir=$oorexx_dir/build/$target_name            # /local/rexx/oorexx/build/<target>
 delivery_dir=$oorexx_dir/delivery/$target_name      # /local/rexx/oorexx/delivery/<target>

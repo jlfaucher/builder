@@ -15,6 +15,8 @@ initialized, and the build command "nmake install" is supported:
 - Executor debug
 - Executor5 release
 - Executor5 debug
+- Executor5-bulk release
+- Executor5-bulk debug
 
 It's important to launch Visual Studio from the cmd where the builder has been run.
 The builder creates environment variables that become visible from VS thanks to the /useenv option.
@@ -301,8 +303,8 @@ jlfaucher.local:/Users/jlfaucher    /host/local nfs defaults    0   0
 
 MacOs SMB share
 ---------------
-MacOs : menu System Preferences, then Sharing
-Options : activate SMB, deactivate AFP
+MacOs: menu System Preferences, then Sharing
+Options: activate SMB, deactivate AFP
 Activate file sharing and add /Local1 to the list
 
 Windows SMB client
@@ -678,13 +680,13 @@ https://github.com/lelegard/arm-cpusysregs/blob/main/docs/arm64e-on-macos.md
     Jump-Oriented Programming (JOP) when it smashes other types of data structure,
     typically in the heap.
 
-    Pointer Code Authentication (PAC) :
+    Pointer Code Authentication (PAC):
     A deterministic but unpredictable short "signature" is added to code and data
     pointers to detect invalid injected code addresses. This signature is added in
     the 16 or 8 most significant bits of the 64-pointers, otherwise unused since no
     address space uses 2^64 bytes.
 
-    Branch Target Identification (BTI) :
+    Branch Target Identification (BTI):
     Targets of valid jump and branch instructions are identified by a special
     instruction so that using any unexpected ROP or JOP gadget address results in an
     invalid instruction.

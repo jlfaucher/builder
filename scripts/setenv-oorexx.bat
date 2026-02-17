@@ -30,6 +30,9 @@ doskey cdlocal=%builder_local_drv% ^& cd %builder_local_dir%
 doskey cdofficial=%builder_shared_drv% ^& cd %builder_shared_dir%\official
 doskey cdexecutor=%builder_shared_drv% ^& cd %builder_shared_dir%\executor
 doskey cdexecutor5=%builder_shared_drv% ^& cd %builder_shared_dir%\executor5
+doskey cdexecutor5bulk=%builder_shared_drv% ^& cd %builder_shared_dir%\executor5-bulk
+:: next macro is not registered, probably because of the dash... It works from the command line.
+doskey cdexecutor5-bulk=%builder_shared_drv% ^& cd %builder_shared_dir%\executor5-bulk
 
 doskey cdtrunk=%builder_src_drv% ^& cd %builder_src_dir%
 doskey cdsrc=%builder_src_drv% ^& cd %builder_src_dir%

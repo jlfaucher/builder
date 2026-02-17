@@ -54,23 +54,25 @@ Under MacOs, which is the main machine (host of the virtual machines):
             executor5/                  git sources (fork of official/main/trunk)
                 main/
                     trunk/
+            executor5-bulk/             git sources (full clone of official)
             official/                   svn sources of ooRexx
                 main/
                     branches/
                         4.2             next minor release to deliver
                     releases/
-                        5.0.0/          last delivered version (older : 4.2.0, 4.1.1, 4.1.0, 4.0.1, 4.0.0, 3.2.0, 3.1.2)
+                        5.0.0/          last delivered version (older: 4.2.0, 4.1.1, 4.1.0, 4.0.1, 4.0.0, 3.2.0, 3.1.2)
                             trunk/
                     trunk/              next version to deliver
             ----------------------------
             build/                      where all the builds and deliveries for MacOs are done.
-                executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
+                executor.master/        other branches: block_closure | merge_svn_main | operators | pipeline
                     sandbox/
                         jlf/
                             trunk/      macos-[x86_64|arm64]/clang/[debug|reldbg|release]
-                executor5.master/       other branches : none for the moment
+                executor5.master/       other branches: none for the moment
                     main/
                         trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
+                executor5-bulk.main/    same directories as official
                 official/
                     main/
                         branches
@@ -96,18 +98,20 @@ See notes.txt for "WSL: Creation of the build environment".
             ----------------------------
             executor/                   git sources (fork of official/sandbox/jlf)
             executor5/                  git sources (fork of official/main/trunk)
+            executor5-bulk/             git sources (full clone of official)
             official/                   svn sources of ooRexx
     rexxlocal/                          Local directory
         oorexx/                         $builder_local_dir
             ----------------------------
             build/                      where all the builds and deliveries for Linux are done.
-                executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
+                executor.master/        other branches: block_closure | merge_svn_main | operators | pipeline
                     sandbox/
                         jlf/
                             trunk/      ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
-                executor5.master/       other branches : none for the moment
+                executor5.master/       other branches: none for the moment
                     main/
                         trunk/          ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
+                executor5-bulk.main/    same directories as official
                 official/
                     main/
                         branches
@@ -134,19 +138,21 @@ Y:\local
             ----------------------------
             executor\                   git sources (fork of official/sandbox/jlf)
             executor5\                  git sources (fork of official/main/trunk)
+            executor5-bulk\             git sources (full fork of official)
             official\                   svn sources of ooRexx
 E:\local\
     rexxlocal/                          Local directory
         oorexx/                         $builder_local_dir
             ----------------------------
             build/                      where all the builds and deliveries for Windows are done.
-                executor.master/        other branches : block_closure | merge_svn_main | operators | pipeline
+                executor.master/        other branches: block_closure | merge_svn_main | operators | pipeline
                     sandbox/
                         jlf/
                             trunk/      windows-[x86_64|arm64]/cl/[debug|reldbg|release]
-                executor5.master/       other branches : none for the moment
+                executor5.master/       other branches: none for the moment
                     main/
                         trunk/          windows-[x86_64|arm64]/cl/[debug|reldbg|release]
+                executor5-bulk.main/    same directories as official
                 official/
                     main/
                         branches
@@ -212,27 +218,27 @@ Cross references between ooRexx and executor
 
 # [MacOs & Linux]
 
-# From the directory official/incubator, reference some subdirectories in executor :
+# From the directory official/incubator, reference some subdirectories in executor:
 ln -s ../../executor/incubator/ooRexxShell ooRexxShell-executor
 ln -s ../../executor/incubator/DocMusings DocMusings-executor
 
-# From the directory official/sandbox, reference some subdirectories in executor :
+# From the directory official/sandbox, reference some subdirectories in executor:
 ln -s ../../executor/sandbox/jlf jlf-executor
 
-# From the directory executor/incubator, reference some subdirectories in official :
+# From the directory executor/incubator, reference some subdirectories in official:
 ln -s ../../official/incubator/regex regex
 
 
 :: [Windows]
 
-:: From the directory official\incubator, reference some subdirectories in executor :
+:: From the directory official\incubator, reference some subdirectories in executor:
 mklink /d ooRexxShell-executor ..\..\executor\incubator\ooRexxShell
 mklink /d DocMusings-executor ..\..\executor\incubator\DocMusings
 
-:: From the directory official/sandbox, reference some subdirectories in executor :
+:: From the directory official/sandbox, reference some subdirectories in executor:
 mklink /d jlf-executor ..\..\executor\sandbox\jlf
 
-:: From the directory executor\incubator, reference some subdirectories in official :
+:: From the directory executor\incubator, reference some subdirectories in official:
 mklink /d regex ..\..\official\incubator\regex
 
 
@@ -246,16 +252,63 @@ git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
 
 # [MacOs & Linux]
 
-# From the directory executor5, reference some subdirectories in executor :
+# From the directory executor5, reference some subdirectories in executor:
 ln -s ../executor/incubator incubator
 ln -s ../executor/sandbox sandbox
 
 
 :: [Windows]
 
-:: From the directory executor5, reference some subdirectories in executor :
+:: From the directory executor5, reference some subdirectories in executor:
 mklink /d incubator ..\executor\incubator
 mklink /d sandbox ..\executor\sandbox
+
+
+--------------------------------------------------------------------------------
+Getting the git sources of executor5-bulk
+--------------------------------------------------------------------------------
+
+cd /local/rexx/oorexx
+
+# Option 1: get everything (almost 2 GB)
+git clone https://github.com/jlfaucher/executor5-bulk.git
+
+# Option 2: only a subset
+# For those who do not wish to clone the entire git repository, it's possible to obtain a subset of it.
+git clone --filter=blob:none --no-checkout https://github.com/jlfaucher/executor5-bulk.git
+# 340 MB
+cd executor5-bulk
+git sparse-checkout init --cone
+git sparse-checkout set main/trunk
+git sparse-checkout add incubator/regex
+git sparse-checkout add docs/trunk
+git sparse-checkout add test/trunk
+git checkout
+# 438 MB instead of 1.98 GB
+
+
+# [MacOs & Linux]
+
+# From the directory executor5-bulk, reference some subdirectories in executor:
+cd executor5-bulk
+mkdir incubator
+ln -s ../../executor/incubator/ooRexxShell incubator/ooRexxShell-executor
+ln -s ../../executor/incubator/DocMusings incubator/DocMusings-executor
+ln -s ../../executor/incubator/scripts incubator/scripts
+mkdir sandbox
+ln -s ../../executor/sandbox/jlf sandbox/jlf-executor
+
+
+:: [Windows]
+
+:: From the directory executor5-bulk, reference some subdirectories in executor:
+cd executor5-bulk
+mkdir incubator
+mklink /d incubator\ooRexxShell-executor ..\..\executor\incubator\ooRexxShell
+mklink /d incubator\DocMusings-executor ..\..\executor\incubator\DocMusings
+mklink /d incubator\scripts ..\..\executor\incubator\scripts
+mkdir sandbox
+mklink /d "sandbox/jlf-executor" ..\..\executor\sandbox\jlf
 
 
 --------------------------------------------------------------------------------
@@ -294,6 +347,9 @@ cd /local/rexx/oorexx
     # MacOs executor5
     . ../builder/scripts/setenv build/executor5.master/main/trunk/macos-arm64/clang/release
 
+    # MacOs executor5-bulk
+    . ../builder/scripts/setenv build/executor5-bulk.main/main/trunk/macos-arm64/clang/release
+
 # WSL Ubuntu
     # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
 
@@ -311,7 +367,10 @@ cd /local/rexx/oorexx
     . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor.master/sandbox/jlf/trunk/ubuntu-aarch64/clang/release
 
     # WSL ARM executor5
-    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-arm64/gcc/release
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-aarch64/gcc/release
+
+    # WSL ARM executor5-bulk
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5-bulk.main/main/trunk/ubuntu-aarch64/gcc/release
 
 # Linux
     # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
@@ -325,6 +384,9 @@ cd /local/rexx/oorexx
     # Ubuntu executor5
     . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5.master/main/trunk/ubuntu-x86_64/gcc/release
 
+    # Ubuntu executor5-bulk
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5-bulk.main/main/trunk/ubuntu-x86_64/gcc/release
+
 # Now build...
 cdbuild
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
@@ -332,7 +394,7 @@ make install
 
 # To build a rpm (Linux):
 # OS_DIST is optional on the following command. It is used to modify the install package name.
-# Note JLF : Under Linux, `uname` could be replaced by `lsb_release -i -s`-`lsb_release -r -s`
+# Note JLF: Under Linux, `uname` could be replaced by `lsb_release -i -s`-`lsb_release -r -s`
 cdbuild
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_RPM=1 -DOS_DIST=`uname` $builder_src_dir
 make install
@@ -392,8 +454,8 @@ Build the 32-bit or 64-bit release configuration of official ooRexx trunk, execu
 
 :: Prerequisite
 :: - No space in the path to the current directory.
-:: - ooRexx:   Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
-:: - Executor: Visual Studio 2022
+:: - ooRexx:   Visual Studio 2026 or 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+:: - Executor: Visual Studio 2026 or 2022
 :: - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 :: - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
 :: - Install xalan-c: https://xalan.apache.org/xalan-c/
@@ -412,6 +474,8 @@ cd \local\rexx\oorexx
     call ..\builder\scripts\setenv e:build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
     :: executor5
     call ..\builder\scripts\setenv e:build\executor5.master\main\trunk\windows-x86_64\cl\release
+    :: executor5-bulk
+    call ..\builder\scripts\setenv e:build\executor5-bulk.main\main\trunk\windows-x86_64\cl\release
 :: Now build...
 cdbuild
 cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk -DCMAKE_C_COMPILER=%CMAKE_C_COMPILER% -DCMAKE_CXX_COMPILER=%CMAKE_CXX_COMPILER% %builder_src_dir%
@@ -432,7 +496,7 @@ Build the 32-bit or 64-bit release configuration of official ooRexx release 4.2.
 
 :: Prerequisite
 :: - No space in the path to the current directory.
-:: - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+:: - Visual Studio 2026 or 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
 :: - An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 :: - Install the latest version of https://sourceforge.net/projects/oorexx/files/oorexx-buildutils/
 :: - Install xalan-c: https://xalan.apache.org/xalan-c/

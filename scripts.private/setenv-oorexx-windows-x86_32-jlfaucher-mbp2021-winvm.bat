@@ -40,12 +40,14 @@ call shellscriptlib :prepend_path PATH "%HOST_DRIVE%\jlfaucher\software\oorexx"
 call shellscriptlib :prepend_path PATH "E:\windiff"
 
 if "%builder_target%" == "official" if "%builder_src_relative_path%" == "main\trunk" goto :bsf4oorexx_v850
+if "%builder_target%" == "executor5" goto :bsf4oorexx_v850
+if "%builder_target%" == "executor5-bulk" goto :bsf4oorexx_v850
 goto :bsf4oorexx_v641
 :bsf4oorexx_v850
     :: bsf4oorexx version 850 - all platforms - can't be used by Executor
     set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
-    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20251119-refresh\bsf4oorexx
-    set BSF4OOREXX_JAR=bsf4ooRexx-v850-20251119-bin.jar
+    set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\BSF4ooRexx_install_v850-20260117-refresh\bsf4oorexx
+    set BSF4OOREXX_JAR=bsf4ooRexx-v850-20260117-bin.jar
     call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
     goto :bsf4oorexx_done
 :bsf4oorexx_v641
@@ -56,12 +58,6 @@ goto :bsf4oorexx_v641
     call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
     goto :bsf4oorexx_done
 :bsf4oorexx_done
-
-:: bsf4oorexx portable (641) - windows only
-::set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%
-::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\bsf4oorexx_v641.20220131-Windows-amd64-portable-UNO-runtime
-::set BSF4OOREXX_JAR=bsf4ooRexx-v641-20220131-bin.jar
-::call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_distribution
 
 :: bsf4oorexx SVN sources
 ::set BSF4OOREXX_HOME_DRIVE=%HOST_DRIVE%

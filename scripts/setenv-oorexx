@@ -27,6 +27,8 @@ alias cdlocal='cd $builder_local_dir'
 alias cdofficial='cd $builder_shared_dir/official'
 alias cdexecutor='cd $builder_shared_dir/executor'
 alias cdexecutor5='cd $builder_shared_dir/executor5'
+alias cdexecutor5bulk='cd $builder_shared_dir/executor5-bulk'
+alias cdexecutor5-bulk='cd $builder_shared_dir/executor5-bulk'
 
 alias cdtrunk='cd $builder_src_dir'
 alias cdsrc='cd $builder_src_dir'

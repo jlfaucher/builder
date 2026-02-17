@@ -1,0 +1,193 @@
+This file is a subset of build-jlf_config.txt, limited to the build of executor5-bulk.
+
+
+Shell prerequisite for MacOS:
+    Works only with bash.
+    If your shell is zsh, then launch bash from your shell session and follow the instructions.
+    At the end, you can launch zsh from the bash session, but some libraries (like bsf)
+    may not work because of SIP. The workaround for bash works only for bash.
+    The zsh session will inherit the environment variables but NOT the aliases.
+
+Shell prerequisite for Linux:
+    Works only with bash.
+    If your shell is not bash, then launch bash from your shell session and follow the instructions.
+    At the end, you can launch your shell from the bash session, it will inherit the environment
+    variables but NOT the aliases.
+
+Shell prerequisite for Windows:
+    Works only with cmd.
+
+
+--------------------------------------------------------------------------------
+# MacOs for arm64 or x86_64
+--------------------------------------------------------------------------------
+
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
+cd <my directory>
+mkdir rexx
+cd rexx
+
+# Get the sources
+git clone https://github.com/jlfaucher/builder.git
+mkdir oorexx
+cd oorexx
+# (see the section "Partial clone" if you want only a subset)
+git clone https://github.com/jlfaucher/executor5-bulk.git
+
+# Optional: if you installed Executor
+# From the directory executor5-bulk, reference some subdirectories in executor:
+cd executor5-bulk
+mkdir incubator
+ln -s ../../executor/incubator/ooRexxShell incubator/ooRexxShell-executor
+ln -s ../../executor/incubator/DocMusings incubator/DocMusings-executor
+ln -s ../../executor/incubator/scripts incubator/scripts
+mkdir sandbox
+ln -s ../../executor/sandbox/jlf sandbox/jlf-executor
+
+# Initialize the build environment:
+# build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
+# system-arch is macos-arm64 or macos-x86_64.
+cd <my directory>/rexx/oorexx
+. ../builder/scripts/setenv build/executor5-bulk.main/main/trunk/macos-arm64/clang/release
+
+# Several aliases are defined to navigate easily in the directories:
+alias
+
+# Configure
+cdbuild
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
+
+# The binaries are installed in $builder_delivery_dir
+make install
+
+# Next time, when starting from a fresh console:
+cd <my directory>/rexx/oorexx
+# system-arch is macos-arm64 or macos-x86_64.
+. ../builder/scripts/setenv build/executor5-bulk.main/main/trunk/macos-arm64/clang/release
+
+
+--------------------------------------------------------------------------------
+# Linux for aarch64 or x86_64
+--------------------------------------------------------------------------------
+
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
+cd <my directory>
+mkdir rexx
+cd rexx
+
+# Get the sources
+git clone https://github.com/jlfaucher/builder.git
+mkdir oorexx
+cd oorexx
+# (see the section "Partial clone" if you want only a subset)
+git clone https://github.com/jlfaucher/executor5-bulk.git
+
+# Optional: if you installed Executor
+# From the directory executor5-bulk, reference some subdirectories in executor:
+cd executor5-bulk
+mkdir incubator
+ln -s ../../executor/incubator/ooRexxShell incubator/ooRexxShell-executor
+ln -s ../../executor/incubator/DocMusings incubator/DocMusings-executor
+ln -s ../../executor/incubator/scripts incubator/scripts
+mkdir sandbox
+ln -s ../../executor/sandbox/jlf sandbox/jlf-executor
+
+# Initialize the build environment:
+# build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
+# system-arch is ubuntu-aarch64 or ubuntu-x86_64.
+cd <my directory>/rexx/oorexx
+. ../builder/scripts/setenv build/executor5-bulk.main/main/trunk/ubuntu-x86_64/gcc/release
+
+# Several aliases are defined to navigate easily in the directories:
+alias
+
+# Configure
+cdbuild
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
+
+# The binaries are installed in $builder_delivery_dir
+make install
+
+# Next time, when starting from a fresh console:
+cd <my directory>/rexx/oorexx
+# system-arch is ubuntu-aarch64 or ubuntu-x86_64.
+. ../builder/scripts/setenv build/executor5-bulk.main/main/trunk/ubuntu-x86_64/gcc/release
+
+
+--------------------------------------------------------------------------------
+:: Windows for arm64 or x86_64
+--------------------------------------------------------------------------------
+:: Prerequisite
+:: - No space in the path to the current directory.
+:: - Visual Studio 2026 or 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+:: - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
+
+cd <my directory>
+mkdir rexx
+cd rexx
+
+:: Get the sources
+git clone https://github.com/jlfaucher/builder.git
+mkdir oorexx
+cd oorexx
+:: (see the section "Partial clone" if you want only a subset)
+git clone https://github.com/jlfaucher/executor5-bulk.git
+
+:: Optional: if you installed Executor
+:: From the directory executor5-bulk, reference some subdirectories in executor:
+cd executor5-bulk
+mkdir incubator
+mklink /d incubator\ooRexxShell-executor ..\..\executor\incubator\ooRexxShell
+mklink /d incubator\DocMusings-executor ..\..\executor\incubator\DocMusings
+mklink /d incubator\scripts ..\..\executor\incubator\scripts
+mkdir sandbox
+mklink /d "sandbox/jlf-executor" ..\..\executor\sandbox\jlf
+
+:: Initialize the build environment:
+:: build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
+:: system-arch is windows-arm64 or windows-x86_64.
+cd <my directory>/rexx/oorexx
+call ..\builder\scripts\setenv build\executor5-bulk.main\main\trunk\windows-x86_64\cl\release
+
+:: Several macros are defined to navigate easily in the directories:
+doskey /macros
+
+:: Configure
+cdbuild
+cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DCMAKE_C_COMPILER=%CMAKE_C_COMPILER% -DCMAKE_CXX_COMPILER=%CMAKE_CXX_COMPILER% %builder_src_dir%
+
+:: The binaries are installed in %builder_delivery_dir%
+nmake install
+
+:: Next time, when starting from a fresh console:
+cd <my directory>/rexx/oorexx
+:: system-arch is windows-arm64 or windows-x86_64.
+call ..\builder\scripts\setenv build\executor5-bulk.main\main\trunk\windows-x86_64\cl\release
+
+:: Optional
+:: See the "notes.txt" file to create the oorexx_builder project in Visual Studio.
+
+
+--------------------------------------------------------------------------------
+Partial clone
+--------------------------------------------------------------------------------
+
+# For those who do not wish to clone the entire git repository, it's possible to obtain a subset of it.
+cd <my directory>/rexx/oorexx
+git clone --filter=blob:none --no-checkout https://github.com/jlfaucher/executor5-bulk.git
+# 340 MB
+
+cd executor5-bulk
+git sparse-checkout init --cone
+git sparse-checkout set main/trunk
+git sparse-checkout add incubator/regex
+git sparse-checkout add docs/trunk
+git sparse-checkout add test/trunk
+git checkout
+# 438 MB instead of 1.98 GB

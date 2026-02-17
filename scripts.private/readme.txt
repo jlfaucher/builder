@@ -48,10 +48,11 @@ Windows 10      hostname:    jlfaucher-mbp2021-winvm
 wsl             hostname -s: jlfaucher-mbp2021-winvm
 
 
-         %current%        - %builder_hostname%
-setenv - executor.master  - jlfaucher-mbp2021-winvm       .bat
-setenv - executor5.master - jlfaucher-mbp2021-winvm       .bat
-setenv - official         - jlfaucher-mbp2021-winvm       .bat
+         %current%           - %builder_hostname%
+setenv - executor.master     - jlfaucher-mbp2021-winvm       .bat
+setenv - executor5.master    - jlfaucher-mbp2021-winvm       .bat
+setenv - executor5-bulk.main - jlfaucher-mbp2021-winvm       .bat
+setenv - official            - jlfaucher-mbp2021-winvm       .bat
 
          ${current} - ${builder_system_arch} - ${builder_hostname}
          %current%  - %builder_system_arch%  - %builder_hostname%

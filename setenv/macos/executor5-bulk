@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# $1 is mandatory: debug or profiling or reldbg or release
+# $2 is optional: architecture x86_32 or X86_64 or arm32 or arm64 (default is the machine hardware)
+
+if [ -z "$BASH_VERSION" ]; then
+   echo "Works only with bash"
+   return 1
+fi
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+ARCH="$2"
+if test -z "$ARCH"
+then
+    # not using `arch` because returns "i386" on my MBP 2010 Intel.
+    ARCH=`uname -m`
+fi
+. ../builder/scripts/setenv build/executor5-bulk.main/main/trunk/macos-$ARCH/clang/$1

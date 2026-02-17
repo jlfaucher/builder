@@ -79,7 +79,7 @@ set builder_branch=%builder_target_branch:*.=%
 if "%builder_target_branch%" == "%builder_branch%" set builder_branch=
 
 :: Low risk of wrong substitution, not the case with the current sources
-:: executor or executor5 or official (never contains '.')
+:: executor or executor5 or executor5-bulk or official (never contains '.')
 set builder_target=%builder_target_branch%
 if "%builder_branch%" == "" goto :builder_target_done
 call set builder_target=%%builder_target_branch:%builder_branch%=%%

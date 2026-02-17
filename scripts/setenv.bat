@@ -14,7 +14,7 @@ call "%builder_scripts_dir%\shellscriptlib" :prepend_path PATH "%builder_scripts
 
 :: THE CURRENT DIRECTORY IS USED AS BUILDER SHARED DIR
 :: This is the directory which contains the source, shared by all the platforms (MacOs, Linux, Windows)
-:: Assumptions : build, official, executor and executor5 are all in the same shared directory.
+:: Assumptions : build, official, executor, executor5 and executor5-bulk are all in the same shared directory.
 set builder_shared_dir=%cd%
 set builder_shared_dir=%builder_shared_dir:&=^&%
 set builder_shared_dir=%builder_shared_dir:"=%

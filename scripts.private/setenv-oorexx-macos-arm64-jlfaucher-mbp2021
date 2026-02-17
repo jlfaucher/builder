@@ -16,11 +16,15 @@ if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; ex
 [ -f /local/java/setenv.sh ] && . /local/java/setenv.sh
 declare_java
 
-if [ "$builder_target" = "official" -a "$builder_src_relative_path" = "main/trunk" ]
+if [ "$builder_target" = "official" -a "$builder_src_relative_path" = "main/trunk" \
+     -o \
+     "$builder_target" = "executor5" \
+     -o \
+     "$builder_target" = "executor5-bulk" ]
 then
     # bsf4oorexx version 850 - all platforms - can't be used by Executor
-    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v850-20251119-refresh/bsf4oorexx
-    export BSF4OOREXX_JAR=bsf4ooRexx-v850-20251119-bin.jar
+    export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/BSF4ooRexx_install_v850-20260117-refresh/bsf4oorexx
+    export BSF4OOREXX_JAR=bsf4ooRexx-v850-20260117-bin.jar
     declare_bsf4oorexx_distribution
 else
     # bsf4oorexx version 641 - all platforms
@@ -28,11 +32,6 @@ else
     export BSF4OOREXX_JAR=bsf4ooRexx-v641-20221002-bin.jar
     declare_bsf4oorexx_distribution
 fi
-
-# bsf4oorexx portable (641) - windows only
-#export BSF4OOREXX_HOME=/local/rexx/bsf4oorexx/bsf4oorexx_v641.20220131-Darwin-x86_64-portable-UNO-runtime
-#export BSF4OOREXX_JAR=bsf4ooRexx-v641-20221002-bin.jar
-#declare_bsf4oorexx_distribution
 
 # bsf4oorexx SVN sources
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
