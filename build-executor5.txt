@@ -36,9 +36,16 @@ mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
 
+# Optional: if you installed Executor
+# From the directory executor5, reference some subdirectories in executor:
+cd executor5
+ln -s ../executor/incubator incubator
+ln -s ../executor/sandbox sandbox
+
 # Initialize the build environment:
 # build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
 # system-arch is macos-arm64 or macos-x86_64.
+cd <my directory>/rexx/oorexx
 . ../builder/scripts/setenv build/executor5.master/main/trunk/macos-arm64/clang/release
 
 # Several aliases are defined to navigate easily in the directories:
@@ -51,15 +58,10 @@ cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL
 # The binaries are installed in $builder_delivery_dir
 make install
 
-# Optional: if you installed Executor
-# From the directory executor5, reference some subdirectories in executor :
-ln -s ../executor/incubator incubator
-ln -s ../executor/sandbox sandbox
-
 # Next time, when starting from a fresh console:
 cd <my directory>/rexx/oorexx
 # system-arch is macos-arm64 or macos-x86_64.
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/macos-arm64/clang/release
+. ../builder/scripts/setenv build/executor5.master/main/trunk/macos-arm64/clang/release
 
 
 --------------------------------------------------------------------------------
@@ -80,10 +82,17 @@ mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
 
+# Optional: if you installed Executor
+# From the directory executor5, reference some subdirectories in executor:
+cd executor5
+ln -s ../executor/incubator incubator
+ln -s ../executor/sandbox sandbox
+
 # Initialize the build environment:
 # build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
 # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
-. ../builder/scripts/setenv build/executor5.master/main/trunk/linux-x86_64/clang/release
+cd <my directory>/rexx/oorexx
+. ../builder/scripts/setenv build/executor5.master/main/trunk/ubuntu-x86_64/gcc/release
 
 # Several aliases are defined to navigate easily in the directories:
 alias
@@ -95,15 +104,10 @@ cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL
 # The binaries are installed in $builder_delivery_dir
 make install
 
-# Optional: if you installed Executor
-# From the directory executor5, reference some subdirectories in executor :
-ln -s ../executor/incubator incubator
-ln -s ../executor/sandbox sandbox
-
 # Next time, when starting from a fresh console:
 cd <my directory>/rexx/oorexx
 # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
-. ../builder/scripts/setenv build/executor.master/sandbox/jlf/trunk/linux-x86_64/gcc/release
+. ../builder/scripts/setenv build/executor5.master/main/trunk/ubuntu-x86_64/gcc/release
 
 
 --------------------------------------------------------------------------------
@@ -111,7 +115,7 @@ cd <my directory>/rexx/oorexx
 --------------------------------------------------------------------------------
 :: Prerequisite
 :: - No space in the path to the current directory.
-:: - Visual Studio 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
+:: - Visual Studio 2026 or 2022 or 2019 or 2017 or 2015 or 2013 or 2012 is installed. See scripts\setenv-cl.bat
 :: - Not sure it's needed: An SDK is installed: https://developer.microsoft.com/en-us/windows/downloads/sdk-archive
 
 cd <my directory>
@@ -124,9 +128,16 @@ mkdir oorexx
 cd oorexx
 git clone https://github.com/jlfaucher/executor5.git executor5/main/trunk
 
+:: Optional: if you installed Executor
+:: From the directory executor5, reference some subdirectories in executor:
+cd executor5
+mklink /d incubator ..\executor\incubator
+mklink /d sandbox ..\executor\sandbox
+
 :: Initialize the build environment:
 :: build/<target[.branch]>/d1/d2/.../system-arch/compiler/config
 :: system-arch is windows-arm64 or windows-x86_64.
+cd <my directory>\rexx\oorexx
 call ..\builder\scripts\setenv build\executor5.master\main\trunk\windows-x86_64\cl\release
 
 :: Several macros are defined to navigate easily in the directories:
@@ -139,15 +150,10 @@ cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTA
 :: The binaries are installed in %builder_delivery_dir%
 nmake install
 
-:: Optional: if you installed Executor
-:: From the directory executor5, reference some subdirectories in executor :
-mklink /d incubator ..\executor\incubator
-mklink /d sandbox ..\executor\sandbox
-
 :: Next time, when starting from a fresh console:
-cd <my directory>/rexx/oorexx
+cd <my directory>\rexx\oorexx
 :: system-arch is windows-arm64 or windows-x86_64.
-call ..\builder\scripts\setenv build\executor.master\sandbox\jlf\trunk\windows-x86_64\cl\release
+call ..\builder\scripts\setenv build\executor5.master\main\trunk\windows-x86_64\cl\release
 
 :: Optional
 :: See the "notes.txt" file to create the oorexx_builder project in Visual Studio.
