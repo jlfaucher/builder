@@ -16,6 +16,6 @@ set oorexx_official_incubator=%builder_shared_dir%\official\incubator
 set oorexx_official_incubator_drv=%builder_shared_drv%
 call shellscriptlib :prepend_path PATH "%oorexx_official_incubator%"
 :: These variables are used in setenv-oorexx.bat
-set oorexx_oorexxshell=%builder_shared_dir%\executor\incubator\ooRexxShell
-set oorexx_docmusings=%builder_shared_dir%\executor\incubator\DocMusings
-set oorexx_sandboxjlf=%builder_shared_dir%\executor\sandbox\jlf
+set executor_oorexxshell=%builder_shared_dir%\executor\incubator\ooRexxShell
+set executor_docmusings=%builder_shared_dir%\executor\incubator\DocMusings
+set executor_sandboxjlf=%builder_shared_dir%\executor\sandbox\jlf

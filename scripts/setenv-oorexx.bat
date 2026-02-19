@@ -16,12 +16,6 @@ if not defined builder_src_drv echo builder_src_drv is undefined & exit /b 1
 if not defined builder_src_relative_path echo builder_src_relative_path is undefined & exit /b 1
 if not defined builder_target echo builder_target is undefined & exit /b 1
 
-set oorexx_doc_dir=%builder_shared_dir%\official\docs
-set oorexx_doc_drv=%builder_shared_drv%
-set oorexx_test_trunk=%builder_shared_dir%\official\test\trunk
-set oorexx_test_drv=%builder_shared_drv%
-set oorexx_test_src=%oorexx_test_trunk%
-
 doskey cdoorexx=%builder_shared_drv% ^& cd %builder_shared_dir%
 doskey cdshared=%builder_shared_drv% ^& cd %builder_shared_dir%
 doskey cdoorexxlocal=%builder_local_drv% ^& cd %builder_local_dir%
@@ -36,18 +30,15 @@ doskey cdexecutor5-bulk=%builder_shared_drv% ^& cd %builder_shared_dir%\executor
 
 doskey cdtrunk=%builder_src_drv% ^& cd %builder_src_dir%
 doskey cdsrc=%builder_src_drv% ^& cd %builder_src_dir%
-doskey cdm17n=%builder_src_drv% ^& cd %builder_src_dir%\interpreter\classes\support\m17n
 
 doskey cdconfig=%builder_config_drv% ^& cd %builder_config_dir%
 doskey cdbuild=%builder_build_drv% ^& cd %builder_build_dir%
 doskey cddelivery=%builder_delivery_drv% ^& cd %builder_delivery_dir%
 
-doskey cddoc=%oorexx_doc_drv% ^& cd %oorexx_doc_dir%
-doskey cddocs=%oorexx_doc_drv% ^& cd %oorexx_doc_dir%
-
 :: Title of console
 title ooRexx %builder_target% %builder_branch% %builder_src_relative_path% %builder_system_arch% %builder_compiler% %builder_config%
 
+:: Local scripts, not in Github for the moment
 call shellscriptlib :prepend_path PATH "%builder_shared_dir%\scripts"
 
 :: Needed by extensions\platform\windows\ole\events.cpp for for AgtCtl_i.c
@@ -62,10 +53,23 @@ call shellscriptlib :prepend_path LIB "%builder_delivery_dir%\api"
 echo Setting environment for executing ooRexx
 call shellscriptlib :prepend_path PATH "%builder_delivery_dir%"
 
+echo Setting environment for ooRexx documentation
+set oorexx_doc_dir=%builder_shared_dir%\%builder_target%\docs
+set oorexx_doc_drv=%builder_shared_drv%
+doskey cddoc=%oorexx_doc_drv% ^& cd %oorexx_doc_dir%
+doskey cddocs=%oorexx_doc_drv% ^& cd %oorexx_doc_dir%
+
 echo Setting environment for ooRexx test framework
+set oorexx_test_trunk=%builder_shared_dir%\%builder_target%\test\trunk
+set oorexx_test_drv=%builder_shared_drv%
+set oorexx_test_src=%oorexx_test_trunk%
 call shellscriptlib :prepend_path PATH "%oorexx_test_trunk%"
 call shellscriptlib :prepend_path PATH "%oorexx_test_trunk%\framework"
 doskey cdtest=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Cross references between ooRexx and executor
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :: Next section is not working under Windows 11 Home ARM.
 :: There is a workaround in the private script setenv-executor and setenv-official.
@@ -82,85 +86,102 @@ doskey cdtest=%oorexx_test_drv% ^& cd %oorexx_test_trunk%
     :: mklink /d ooSQLite ..\..\official\incubator\ooSQLite
     :: mklink /d regex ..\..\official\incubator\regex
 
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Incubator
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 echo Setting environment for incubator
 set oorexx_incubator=%builder_shared_dir%\%builder_target%\incubator
 set oorexx_incubator_drv=%builder_shared_drv%
 call shellscriptlib :prepend_path PATH "%oorexx_incubator%"
 doskey cdincubator=%oorexx_incubator_drv% ^& cd %oorexx_incubator%
 
-echo Setting environment for DocMusings
-if not defined oorexx_docmusings set oorexx_docmusings=%oorexx_incubator%\docmusings-executor
-if not exist "%oorexx_docmusings%" set oorexx_docmusings=%oorexx_incubator%\docmusings
-set oorexx_docmusings_drv=%oorexx_incubator_drv%
-doskey cddocmusings=%oorexx_docmusings_drv% ^& cd %oorexx_docmusings%
-set oorexx_transformxml=%oorexx_docmusings%\transformxml
-set oorexx_transformxml_drv=%oorexx_docmusings_drv%
-doskey cdtransformxml=%oorexx_transformxml_drv% ^& cd %oorexx_transformxml%
-call shellscriptlib :prepend_path PATH "%oorexx_docmusings%"
-
-echo Setting environment for ooRexxShell
-if not defined oorexx_oorexxshell set oorexx_oorexxshell=%oorexx_incubator%\ooRexxShell-executor
-if not exist "%oorexx_oorexxshell%" set oorexx_oorexxshell=%oorexx_incubator%\ooRexxShell
-call shellscriptlib :prepend_path PATH "%oorexx_oorexxshell%"
-doskey cdoorexxshell=%oorexx_incubator_drv% ^& cd %oorexx_oorexxshell%
-
 :: echo Setting environment for ooSQLite
 :: call shellscriptlib :prepend_path PATH "%oorexx_incubator%\ooSQLite\bin\windows
 :: doskey cdoosqlite=%oorexx_incubator_drv% ^& cd %oorexx_incubator%\ooSQLite'
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Executor incubator
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+echo Setting environment for DocMusings
+if not defined executor_docmusings set executor_docmusings=%oorexx_incubator%\docmusings-executor
+if not exist "%executor_docmusings%" set executor_docmusings=%oorexx_incubator%\docmusings
+set executor_docmusings_drv=%oorexx_incubator_drv%
+doskey cddocmusings=%executor_docmusings_drv% ^& cd %executor_docmusings%
+set oorexx_transformxml=%executor_docmusings%\transformxml
+set oorexx_transformxml_drv=%executor_docmusings_drv%
+doskey cdtransformxml=%oorexx_transformxml_drv% ^& cd %oorexx_transformxml%
+call shellscriptlib :prepend_path PATH "%executor_docmusings%"
+
+echo Setting environment for ooRexxShell
+if not defined executor_oorexxshell set executor_oorexxshell=%oorexx_incubator%\ooRexxShell-executor
+if not exist "%executor_oorexxshell%" set executor_oorexxshell=%oorexx_incubator%\ooRexxShell
+set executor_oorexxshell_drv=%oorexx_incubator_drv%
+call shellscriptlib :prepend_path PATH "%executor_oorexxshell%"
+doskey cdoorexxshell=%executor_oorexxshell_drv% ^& cd %executor_oorexxshell%
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Sandbox
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 echo Setting environment for the sandbox
 set oorexx_sandbox=%builder_shared_dir%\%builder_target%\sandbox
 set oorexx_sandbox_drv=%builder_shared_drv%
 doskey cdsandbox=%oorexx_sandbox_drv% ^& cd %oorexx_sandbox%
 
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Executor sandbox
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 echo Setting environment for the sandbox jlf
-if not defined oorexx_sandboxjlf set oorexx_sandboxjlf=%oorexx_sandbox%\jlf-executor
-if not exist "%oorexx_sandboxjlf%" set oorexx_sandboxjlf=%oorexx_sandbox%\jlf
-call shellscriptlib :prepend_path PATH "%oorexx_sandboxjlf%"
-doskey cdsandboxjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandboxjlf%
-doskey cdjlf=%oorexx_sandbox_drv% ^& cd %oorexx_sandboxjlf%
+if not defined executor_sandboxjlf set executor_sandboxjlf=%oorexx_sandbox%\jlf-executor
+if not exist "%executor_sandboxjlf%" set executor_sandboxjlf=%oorexx_sandbox%\jlf
+call shellscriptlib :prepend_path PATH "%executor_sandboxjlf%"
+doskey cdsandboxjlf=%oorexx_sandbox_drv% ^& cd %executor_sandboxjlf%
+doskey cdjlf=%oorexx_sandbox_drv% ^& cd %executor_sandboxjlf%
 
 echo Setting environment for the sandbox packages
-set oorexx_packages=%oorexx_sandboxjlf%\packages
-set oorexx_packages_drv=%oorexx_sandbox_drv%
-call shellscriptlib :prepend_path PATH "%oorexx_packages%"
-doskey cdpackages=%oorexx_packages_drv% ^& cd %oorexx_packages%
-doskey cdextension=%oorexx_packages_drv% ^& cd %oorexx_packages%\extension
-doskey cdextensionstd=%oorexx_packages_drv% ^& cd %oorexx_packages%\extension\std
-doskey cdfunctional=%oorexx_packages_drv% ^& cd %oorexx_packages%\functional
-doskey cdconcurrency=%oorexx_packages_drv% ^& cd %oorexx_packages%\concurrency
-doskey cdmutablebuffer=%oorexx_packages_drv% ^& cd %oorexx_packages%\mutablebuffer
-doskey cdrgfutil2=%oorexx_packages_drv% ^& cd %oorexx_packages%\rgf_util2
-doskey cdtrace=%oorexx_packages_drv% ^& cd %oorexx_packages%\trace
+set executor_packages=%executor_sandboxjlf%\packages
+set executor_packages_drv=%oorexx_sandbox_drv%
+call shellscriptlib :prepend_path PATH "%executor_packages%"
+doskey cdpackages=%executor_packages_drv% ^& cd %executor_packages%
+doskey cdextension=%executor_packages_drv% ^& cd %executor_packages%\extension
+doskey cdextensionstd=%executor_packages_drv% ^& cd %executor_packages%\extension\std
+doskey cdfunctional=%executor_packages_drv% ^& cd %executor_packages%\functional
+doskey cdconcurrency=%executor_packages_drv% ^& cd %executor_packages%\concurrency
+doskey cdmutablebuffer=%executor_packages_drv% ^& cd %executor_packages%\mutablebuffer
+doskey cdrgfutil2=%executor_packages_drv% ^& cd %executor_packages%\rgf_util2
+doskey cdtrace=%executor_packages_drv% ^& cd %executor_packages%\trace
 
 echo Setting environment for the sandbox samples
-set oorexx_samples=%oorexx_sandboxjlf%\samples
-set oorexx_samples_drv=%oorexx_sandbox_drv%
-call shellscriptlib :prepend_path PATH "%oorexx_samples%"
-doskey cdsamples=%oorexx_samples_drv% ^& cd %oorexx_samples%
-doskey cdextensionsamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\extension
-doskey cdextensionstdsamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\extension\std
-doskey cdfunctionalsamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\functional
-doskey cdconcurrencysamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\concurrency
-doskey cdmutablebuffersamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\mutablebuffer
-doskey cdrgfutil2samples=%oorexx_samples_drv% ^& cd %oorexx_samples%\rgf_util2
-doskey cdtracesamples=%oorexx_samples_drv% ^& cd %oorexx_samples%\trace
+set executor_samples=%executor_sandboxjlf%\samples
+set executor_samples_drv=%oorexx_sandbox_drv%
+call shellscriptlib :prepend_path PATH "%executor_samples%"
+doskey cdsamples=%executor_samples_drv% ^& cd %executor_samples%
+doskey cdextensionsamples=%executor_samples_drv% ^& cd %executor_samples%\extension
+doskey cdextensionstdsamples=%executor_samples_drv% ^& cd %executor_samples%\extension\std
+doskey cdfunctionalsamples=%executor_samples_drv% ^& cd %executor_samples%\functional
+doskey cdconcurrencysamples=%executor_samples_drv% ^& cd %executor_samples%\concurrency
+doskey cdmutablebuffersamples=%executor_samples_drv% ^& cd %executor_samples%\mutablebuffer
+doskey cdrgfutil2samples=%executor_samples_drv% ^& cd %executor_samples%\rgf_util2
+doskey cdtracesamples=%executor_samples_drv% ^& cd %executor_samples%\trace
 
-set oorexx_tests=%oorexx_sandboxjlf%\tests
-set oorexx_tests_drv=%oorexx_sandbox_drv%
-doskey cdtests=%oorexx_tests_drv% ^& cd %oorexx_tests%
+set executor_tests=%executor_sandboxjlf%\tests
+set executor_tests_drv=%oorexx_sandbox_drv%
+doskey cdtests=%executor_tests_drv% ^& cd %executor_tests%
 
-set testx_drv=%builder_shared_drv%
-set testx_dir=%builder_shared_dir%\executor\testx
-doskey cdtestx=%testx_drv% ^& cd %testx_dir%
+set executor_testx=%builder_shared_dir%\executor\testx
+set executor_testx_drv=%builder_shared_drv%
+doskey cdtestx=%executor_testx_drv% ^& cd %executor_testx%
 
-set oorexx_demos=%oorexx_sandboxjlf%\demos
-set oorexx_demos_drv=%oorexx_sandbox_drv%
-doskey cddemos=%oorexx_demos_drv% ^& cd %oorexx_demos%
+set executor_demos=%executor_sandboxjlf%\demos
+set executor_demos_drv=%oorexx_sandbox_drv%
+doskey cddemos=%executor_demos_drv% ^& cd %executor_demos%
 
-set oorexx_unicode=%oorexx_sandboxjlf%\unicode
-set oorexx_unicode_drv=%oorexx_sandbox_drv%
-doskey cdunicode=%oorexx_unicode_drv% ^& cd %oorexx_unicode%
+set executor_unicode=%executor_sandboxjlf%\unicode
+set executor_unicode_drv=%oorexx_sandbox_drv%
+doskey cdunicode=%executor_unicode_drv% ^& cd %executor_unicode%
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Compatibility with old build system (oorexx <= 4.2)

@@ -15,10 +15,6 @@ if test -z "$builder_src_dir" ; then echo "builder_src_dir is undefined" ; retur
 if test -z "$builder_src_relative_path" ; then echo "builder_src_relative_path is undefined" ; return 1 ; fi
 if test -z "$builder_target" ; then echo "builder_target is undefined" ; return 1 ; fi
 
-export oorexx_doc_dir=$builder_shared_dir/official/docs
-export oorexx_test_trunk=$builder_shared_dir/official/test/trunk
-export oorexx_test_src=$oorexx_test_trunk
-
 alias cdoorexx='cd $builder_shared_dir'
 alias cdshared='cd $builder_shared_dir'
 alias cdoorexxlocal='cd $builder_local_dir'
@@ -32,14 +28,10 @@ alias cdexecutor5-bulk='cd $builder_shared_dir/executor5-bulk'
 
 alias cdtrunk='cd $builder_src_dir'
 alias cdsrc='cd $builder_src_dir'
-alias cdm17n='cd $builder_src_dir/interpreter/classes/support/m17n'
 
 alias cdconfig='cd $builder_config_dir'
 alias cdbuild='cd $builder_build_dir'
 alias cddelivery='cd $builder_delivery_dir'
-
-alias cddoc='cd $oorexx_doc_dir'
-alias cddocs='cd $oorexx_doc_dir'
 
 # Title of console
 # Note : If you don't see this title, then maybe you have to redefine the variable PS1.
@@ -59,6 +51,7 @@ export CPLUS_INCLUDE_PATH
 export LIBRARY_PATH
 export NLSPATH
 
+# Local scripts, not in Github for the moment
 prepend_path PATH "$builder_shared_dir/scripts"
 
 echo "Setting environment for building with ooRexx"
@@ -72,10 +65,21 @@ prepend_path LD_LIBRARY_PATH "$builder_delivery_dir/lib"
 prepend_path DYLD_LIBRARY_PATH "$builder_delivery_dir/lib"
 prepend_path NLSPATH "$builder_delivery_dir/bin/rexx.cat"
 
+echo "Setting environment for ooRexx documentation"
+export oorexx_doc_dir=$builder_shared_dir/$builder_target/docs
+alias cddoc='cd $oorexx_doc_dir'
+alias cddocs='cd $oorexx_doc_dir'
+
 echo "Setting environment for ooRexx test framework"
+export oorexx_test_trunk=$builder_shared_dir/$builder_target/test/trunk
+export oorexx_test_src=$oorexx_test_trunk
 prepend_path PATH "$oorexx_test_trunk"
 prepend_path PATH "$oorexx_test_trunk/framework"
 alias cdtest='cd $oorexx_test_trunk'
+
+################################################################################
+# Cross references between ooRexx and executor
+################################################################################
 
 # Optional, to do manually if you have installed official ooRexx:
     # From the directory official/incubator, reference some subdirectories in executor :
@@ -89,24 +93,14 @@ alias cdtest='cd $oorexx_test_trunk'
     # ln -s ../../official/incubator/ooSQLite ooSQLite
     # ln -s ../../official/incubator/regex regex
 
+################################################################################
+# Incubator
+################################################################################
+
 echo "Setting environment for incubator"
 export oorexx_incubator=$builder_shared_dir/$builder_target/incubator
 prepend_path PATH "$oorexx_incubator"
 alias cdincubator='cd $oorexx_incubator'
-
-echo "Setting environment for DocMusings"
-if test -z "$oorexx_docmusings" ; then export oorexx_docmusings=$oorexx_incubator/docmusings-executor ; fi
-if [ ! -d  "$oorexx_docmusings" ] ; then export oorexx_docmusings=$oorexx_incubator/docmusings ; fi
-alias cddocmusings='cd $oorexx_docmusings'
-export oorexx_transformxml=$oorexx_docmusings/transformxml
-alias cdtransformxml='cd $oorexx_transformxml'
-prepend_path PATH "$oorexx_docmusings"
-
-echo "Setting environment for ooRexxShell"
-if test -z "$oorexx_oorexxshell" ; then export oorexx_oorexxshell=$oorexx_incubator/ooRexxShell-executor ; fi
-if [ ! -d  "$oorexx_oorexxshell" ] ; then export oorexx_oorexxshell=$oorexx_incubator/ooRexxShell ; fi
-prepend_path PATH "$oorexx_oorexxshell"
-alias cdoorexxshell='cd $oorexx_oorexxshell'
 
 # echo "Setting environment for ooSQLite"
 # prepend_path PATH "$oorexx_incubator/ooSQLite/bin/linux"
@@ -114,50 +108,76 @@ alias cdoorexxshell='cd $oorexx_oorexxshell'
 # prepend_path DYLD_LIBRARY_PATH "$oorexx_incubator/ooSQLite/bin/linux"
 # alias cdoosqlite='cd $oorexx_incubator/ooSQLite'
 
+################################################################################
+# Executor incubator
+################################################################################
+
+echo "Setting environment for DocMusings"
+if test -z "$executor_docmusings" ; then export executor_docmusings=$oorexx_incubator/docmusings-executor ; fi
+if [ ! -d  "$executor_docmusings" ] ; then export executor_docmusings=$oorexx_incubator/docmusings ; fi
+alias cddocmusings='cd $executor_docmusings'
+export oorexx_transformxml=$executor_docmusings/transformxml
+alias cdtransformxml='cd $oorexx_transformxml'
+prepend_path PATH "$executor_docmusings"
+
+echo "Setting environment for ooRexxShell"
+if test -z "$executor_oorexxshell" ; then export executor_oorexxshell=$oorexx_incubator/ooRexxShell-executor ; fi
+if [ ! -d  "$executor_oorexxshell" ] ; then export executor_oorexxshell=$oorexx_incubator/ooRexxShell ; fi
+prepend_path PATH "$executor_oorexxshell"
+alias cdoorexxshell='cd $executor_oorexxshell'
+
+################################################################################
+# Sandbox
+################################################################################
+
 echo "Setting environment for the sandbox"
 export oorexx_sandbox=$builder_shared_dir/$builder_target/sandbox
 alias cdsandbox='cd $oorexx_sandbox'
 
+################################################################################
+# Executor sandbox
+################################################################################
+
 echo "Setting environment for the sandbox jlf"
-if test -z "$oorexx_sandboxjlf" ; then export oorexx_sandboxjlf=$oorexx_sandbox/jlf-executor ; fi
-if [ ! -d  "$oorexx_sandboxjlf" ] ; then export oorexx_sandboxjlf=$oorexx_sandbox/jlf ; fi
-prepend_path PATH "$oorexx_sandboxjlf"
-alias cdsandboxjlf='cd $oorexx_sandboxjlf'
-alias cdjlf='cd $oorexx_sandboxjlf'
+if test -z "$executor_sandboxjlf" ; then export executor_sandboxjlf=$oorexx_sandbox/jlf-executor ; fi
+if [ ! -d  "$executor_sandboxjlf" ] ; then export executor_sandboxjlf=$oorexx_sandbox/jlf ; fi
+prepend_path PATH "$executor_sandboxjlf"
+alias cdsandboxjlf='cd $executor_sandboxjlf'
+alias cdjlf='cd $executor_sandboxjlf'
 
 echo "Setting environment for the sandbox packages"
-export oorexx_packages=$oorexx_sandboxjlf/packages
-prepend_path PATH "$oorexx_packages"
-alias cdpackages='cd $oorexx_packages'
-alias cdextension='cd $oorexx_packages/extension'
-alias cdextensionstd='cd $oorexx_packages/extension/std'
-alias cdfunctional='cd $oorexx_packages/functional'
-alias cdconcurrency='cd $oorexx_packages/concurrency'
-alias cdmutablebuffer='cd $oorexx_packages/mutablebuffer'
-alias cdrgfutil2='cd $oorexx_packages/rgf_util2'
-alias cdtrace='cd $oorexx_packages/trace'
-alias cdprofiling='cd $oorexx_packages/profiling'
+export executor_packages=$executor_sandboxjlf/packages
+prepend_path PATH "$executor_packages"
+alias cdpackages='cd $executor_packages'
+alias cdextension='cd $executor_packages/extension'
+alias cdextensionstd='cd $executor_packages/extension/std'
+alias cdfunctional='cd $executor_packages/functional'
+alias cdconcurrency='cd $executor_packages/concurrency'
+alias cdmutablebuffer='cd $executor_packages/mutablebuffer'
+alias cdrgfutil2='cd $executor_packages/rgf_util2'
+alias cdtrace='cd $executor_packages/trace'
+alias cdprofiling='cd $executor_packages/profiling'
 
 echo "Setting environment for the sandbox samples"
-export oorexx_samples=$oorexx_sandboxjlf/samples
-prepend_path PATH "$oorexx_samples"
-alias cdsamples='cd $oorexx_samples'
-alias cdextensionsamples='cd $oorexx_samples/extension'
-alias cdextensionstdsamples='cd $oorexx_samples/extension/std'
-alias cdfunctionalsamples='cd $oorexx_samples/functional'
-alias cdconcurrencysamples='cd $oorexx_samples/concurrency'
-alias cdmutablebuffersamples='cd $oorexx_samples/mutablebuffer'
-alias cdrgfutil2samples='cd $oorexx_samples/rgf_util2'
-alias cdtracesamples='cd $oorexx_samples/trace'
+export executor_samples=$executor_sandboxjlf/samples
+prepend_path PATH "$executor_samples"
+alias cdsamples='cd $executor_samples'
+alias cdextensionsamples='cd $executor_samples/extension'
+alias cdextensionstdsamples='cd $executor_samples/extension/std'
+alias cdfunctionalsamples='cd $executor_samples/functional'
+alias cdconcurrencysamples='cd $executor_samples/concurrency'
+alias cdmutablebuffersamples='cd $executor_samples/mutablebuffer'
+alias cdrgfutil2samples='cd $executor_samples/rgf_util2'
+alias cdtracesamples='cd $executor_samples/trace'
 
-export oorexx_tests=$oorexx_sandboxjlf/tests
-alias cdtests='cd $oorexx_tests'
+export executor_tests=$executor_sandboxjlf/tests
+alias cdtests='cd $executor_tests'
 
-export testx_dir=$builder_shared_dir/executor/testx
-alias cdtestx='cd $testx_dir'
+export executor_testx=$builder_shared_dir/executor/testx
+alias cdtestx='cd $executor_testx'
 
-export oorexx_demos=$oorexx_sandboxjlf/demos
-alias cddemos='cd $oorexx_demos'
+export executor_demos=$executor_sandboxjlf/demos
+alias cddemos='cd $executor_demos'
 
-export oorexx_unicode=$oorexx_sandboxjlf/unicode
-alias cdunicode='cd $oorexx_unicode'
+export executor_unicode=$executor_sandboxjlf/unicode
+alias cdunicode='cd $executor_unicode'

@@ -11,6 +11,6 @@ if test -z "$builder_shared_dir" ; then echo "builder_shared_dir is undefined" ;
 
 # Workaround because symbolic links on network drive not supported :-((((
 # These variables are used in setenv-oorexx
-export oorexx_oorexxshell=$builder_shared_dir/executor/incubator/ooRexxShell
-export oorexx_docmusings=$builder_shared_dir/executor/incubator/DocMusings
-export oorexx_sandboxjlf=$builder_shared_dir/executor/sandbox/jlf
+export executor_oorexxshell=$builder_shared_dir/executor/incubator/ooRexxShell
+export executor_docmusings=$builder_shared_dir/executor/incubator/DocMusings
+export executor_sandboxjlf=$builder_shared_dir/executor/sandbox/jlf

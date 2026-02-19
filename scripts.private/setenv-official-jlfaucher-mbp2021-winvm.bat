@@ -11,6 +11,6 @@ if not defined builder_shared_drv echo builder_shared_drv is undefined & exit /b
 
 :: Workaround because symbolic links on network drive not supported :-((((
 :: These variables are used in setenv-oorexx.bat
-set oorexx_oorexxshell=%builder_shared_dir%\executor\incubator\ooRexxShell
-set oorexx_docmusings=%builder_shared_dir%\executor\incubator\DocMusings
-set oorexx_sandboxjlf=%builder_shared_dir%\executor\sandbox\jlf
+set executor_oorexxshell=%builder_shared_dir%\executor\incubator\ooRexxShell
+set executor_docmusings=%builder_shared_dir%\executor\incubator\DocMusings
+set executor_sandboxjlf=%builder_shared_dir%\executor\sandbox\jlf
