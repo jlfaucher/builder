@@ -21,6 +21,7 @@ doskey cdshared=%builder_shared_drv% ^& cd %builder_shared_dir%
 doskey cdoorexxlocal=%builder_local_drv% ^& cd %builder_local_dir%
 doskey cdlocal=%builder_local_drv% ^& cd %builder_local_dir%
 
+doskey cdroot=%builder_shared_drv% ^& cd %builder_shared_dir%\%builder_target%
 doskey cdofficial=%builder_shared_drv% ^& cd %builder_shared_dir%\official
 doskey cdexecutor=%builder_shared_drv% ^& cd %builder_shared_dir%\executor
 doskey cdexecutor5=%builder_shared_drv% ^& cd %builder_shared_dir%\executor5
