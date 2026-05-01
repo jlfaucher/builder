@@ -1,6 +1,11 @@
 #!/bin/bash
 
+# Let find the executables needed by the testsuite for native_api testing,
+# ProcessInvocation.testGroup, RexxStart.testGroup, ProcessRexxStart.testGroup.
+export PATH=$builder_build_dir/bin:$PATH
+
 # Let find the dynamic libraries needed by the testsuite for native_api testing
-# and ADDRESS.testGroup
+# and ADDRESS.testGroup.
+export LD_LIBRARY_PATH=$builder_build_dir/lib:$LD_LIBRARY_PATH
 export DYLD_LIBRARY_PATH=$builder_build_dir/lib:$DYLD_LIBRARY_PATH
 rexx testOORexx "$@"
