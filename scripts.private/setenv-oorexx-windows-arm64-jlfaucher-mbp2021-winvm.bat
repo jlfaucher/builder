@@ -68,6 +68,12 @@ goto :bsf4oorexx_v641
 ::set BSF4OOREXX_HOME=%HOST_DRIVE%\local\rexx\bsf4oorexx\svn\trunk
 ::call %builder_scripts_dir%.private\shellscriptlib-windows :declare_bsf4oorexx_svn
 
+echo "Setting environment for ICU"
+set ICU_ROOT=E:\ICU4C\icu4c-78.3-WinARM64-MSVC2022
+set PATH=%ICU_ROOT%\binARM64;%PATH%
+set INCLUDE=%ICU_ROOT%\include\unicode;%INCLUDE%
+set LIB=%ICU_ROOT%\libARM64;%LIB%
+
 :: On this system, the default console code page is 437 (character set of the original IBM PC).
 :: That brings troubles when you execute a script created with a Window application (like Notepad) which contains letters with accent.
 :: Change the default code page of the console to 1252 ANSI Latin 1; Western European (Windows).

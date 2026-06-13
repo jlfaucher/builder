@@ -1,0 +1,87 @@
+Prerequisite:
+
+Your compiler supports C++17.
+Starting with ICU 75 (April 2024), ICU4C requires C++17
+
+You have already installed ICU4C, and made it visible
+- at build time (ICU_ROOT, INCLUDE, LIB, CFLAGS, LDFLAGS)
+- at runtime (PATH, LD_LIBRARY_PATH).
+
+You have already installed Builder and built ooRexx or Executor[5[-bulk]] with
+Builder.
+See build-oorexx.txt
+or  build-executor.txt
+or  build-executor5.txt
+or  build-executor5-bulk.txt
+
+You have initialized a session with ooRexx or Executor[5[-bulk]]
+call ..\builder\scripts\setenv ...  (Windows)
+or
+. ../builder/scripts/setenv ...     (Linux, macOS)
+
+
+--------------------------------------------------------------------------------
+# MacOs for arm64 or x86_64
+--------------------------------------------------------------------------------
+
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
+cd <my directory>/rexx/oorexx
+
+# Get the sources
+git clone https://github.com/jlfaucher/icu4oorexx.git
+
+# Configure
+cdbuild
+mkdir -p icu4oorexx
+cd icu4oorexx
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_shared_dir/icu4oorexx/src
+
+# The binaries are installed in $builder_delivery_dir
+make install
+
+
+--------------------------------------------------------------------------------
+# Linux for aarch64 or x86_64
+--------------------------------------------------------------------------------
+
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
+cd <my directory>/rexx/oorexx
+
+# Get the sources
+git clone https://github.com/jlfaucher/icu4oorexx.git
+
+# Configure
+cdbuild
+mkdir -p icu4oorexx
+cd icu4oorexx
+cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_shared_dir/icu4oorexx/src
+
+# The binaries are installed in $builder_delivery_dir
+make install
+
+
+--------------------------------------------------------------------------------
+:: Windows for arm64 or x86_64
+--------------------------------------------------------------------------------
+:: Prerequisite
+:: - Works only with cmd.
+
+cd <my directory>\rexx\oorexx
+
+:: Get the sources
+git clone https://github.com/jlfaucher/icu4oorexx.git
+
+:: Configure
+cdbuild
+mkdir icu4oorexx
+cd icu4oorexx
+cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DCMAKE_CXX_COMPILER=%CMAKE_CXX_COMPILER% %builder_shared_dir%\icu4oorexx\src
+
+:: The binaries are installed in %builder_delivery_dir%
+nmake install

@@ -37,8 +37,14 @@ fi
 #export BSF4OOREXX_HOME=/Local/rexx/bsf4oorexx/svn/trunk
 #declare_bsf4oorexx_svn
 
-#echo "Setting environment for ICU"
-#[ -f /local/Unicode/ICU/setenv.sh ] && . /local/Unicode/ICU/setenv.sh
+echo "Setting environment for ICU"
+export ICU_ROOT="/opt/homebrew/opt/icu4c"
+export PATH="$ICU_ROOT/bin:$PATH"
+export PATH="$ICU_ROOT/sbin:$PATH"
+export DYLD_LIBRARY_PATH="$ICU_ROOT/lib:$DYLD_LIBRARY_PATH"
+export CPPFLAGS="-I$ICU_ROOT/include $CPPFLAGS"
+export LDFLAGS="-L$ICU_ROOT/lib $LDFLAGS"
+export PKG_CONFIG_PATH="$ICU_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 #echo "Setting environment for BOOST"
 #[ -f /local/cpp/boost/setenv.sh ] && . /local/cpp/boost/setenv.sh
