@@ -71,7 +71,7 @@ goto :bsf4oorexx_v641
 echo "Setting environment for ICU"
 set ICU_ROOT=E:\ICU4C\icu4c-78.3-WinARM64-MSVC2022
 set PATH=%ICU_ROOT%\binARM64;%PATH%
-set INCLUDE=%ICU_ROOT%\include\unicode;%INCLUDE%
+set INCLUDE=%ICU_ROOT%\include;%INCLUDE%
 set LIB=%ICU_ROOT%\libARM64;%LIB%
 
 :: On this system, the default console code page is 437 (character set of the original IBM PC).
