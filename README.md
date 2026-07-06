@@ -15,9 +15,12 @@ where
 
 For real examples, see:
 
-- [Build Executor][build_executor] (instructions to build Executor from scratch)
-- [Build ooRexx][build_oorexx] (the infrastructure I use for Official trunk/releases/branches, Executor)
-- [Build Regina][build_regina]
+- [Build Executor][build_executor] (instructions for building Executor from scratch)
+- [Build Executor5-bulk][build_executor5_bulk] (instructions for building Executor5-bulk from scratch)
+- [Build ooRexx][build_oorexx] (instructions for building ooRexx from scratch)
+- [Build Regina][build_regina] (instructions for building Regina from scratch for a limited number of architectures)
+
+- [Build JLF configs][build_jlf_configs] (the infrastructure I use for Official trunk/releases/branches, Executor, Executor5-bulk)
 
 To build older branches or versions of ooRexx (e.g., 4.2.0), some [adaptations][adaptations]
 must be applied.
@@ -287,6 +290,8 @@ Examples of builds
 
 [adaptations]: adaptations "adaptations"
 [build_executor]: build-executor.txt "Build Executor"
+[build_executor5_bulk]: build-executor5-bulk.txt "Build Executor5-bulk"
+[build_jlf_configs]: build-jlf_config.txt "Build JLF configs"
 [build_oorexx]: build-oorexx.txt "Build ooRexx"
 [build_regina]: build-regina.txt "Build Regina"
 [private_scripts]: scripts.private
