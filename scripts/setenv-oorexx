@@ -12,7 +12,7 @@ if test -z "$builder_local_dir" ; then echo "builder_local_dir is undefined" ; r
 if test -z "$builder_scripts_dir" ; then echo "builder_scripts_dir is undefined" ; return 1 ; fi
 if test -z "$builder_shared_dir" ; then echo "builder_shared_dir is undefined" ; return 1 ; fi
 if test -z "$builder_src_dir" ; then echo "builder_src_dir is undefined" ; return 1 ; fi
-if test -z "$builder_src_relative_path" ; then echo "builder_src_relative_path is undefined" ; return 1 ; fi
+#if test -z "$builder_src_relative_path" ; then echo "builder_src_relative_path is undefined" ; return 1 ; fi   # Can be empty, don't test it
 if test -z "$builder_target" ; then echo "builder_target is undefined" ; return 1 ; fi
 
 alias cdoorexx='cd $builder_shared_dir'

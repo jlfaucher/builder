@@ -37,9 +37,13 @@ export builder_target=${builder_target_branch%%.*} # executor or executor5 or ex
 export builder_branch=${builder_target_branch#*.} # branch (can contain zero or one or several '.')
 if test "$builder_target" = "$builder_branch" ; then builder_branch= ; fi
 
-export builder_src_relative_path=${current#*/}  # d1/d2/...
-
+export builder_src_relative_path=${current#*/}  # d1/d2/... If no "/" then builder_src_relative_path is equal to current (yes!)
 export builder_src_dir=$builder_shared_dir/$builder_target/$builder_src_relative_path
+if test "$builder_src_relative_path" = "$current" # current doesn't contain "/"
+then
+    builder_src_relative_path=
+    builder_src_dir=$builder_shared_dir/$builder_target
+fi
 
 # build & delivery are subdirectories of the config directory.
 export builder_build_dir=$builder_config_dir/build

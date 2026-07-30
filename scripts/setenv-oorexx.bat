@@ -13,7 +13,7 @@ if not defined builder_shared_dir echo builder_shared_dir is undefined & exit /b
 if not defined builder_shared_drv echo builder_shared_drv is undefined & exit /b 1
 if not defined builder_src_dir echo builder_src_dir is undefined & exit /b 1
 if not defined builder_src_drv echo builder_src_drv is undefined & exit /b 1
-if not defined builder_src_relative_path echo builder_src_relative_path is undefined & exit /b 1
+:: (can be empty, don't test it) if not defined builder_src_relative_path echo builder_src_relative_path is undefined & exit /b 1
 if not defined builder_target echo builder_target is undefined & exit /b 1
 
 doskey cdoorexx=%builder_shared_drv% ^& cd %builder_shared_dir%
