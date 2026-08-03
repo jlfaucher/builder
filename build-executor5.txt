@@ -1,3 +1,43 @@
+********************************************************************************
+
+This repository has been archived, replaced by executor5-bulk.
+
+see build-executor5-bulk.txt
+
+
+********************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 This file is a subset of build-jlf_config.txt, limited to the build of executor5.
 
 
