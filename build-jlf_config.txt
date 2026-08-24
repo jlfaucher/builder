@@ -371,6 +371,8 @@ cd /local/rexx/oorexx
 
     # WSL ARM executor5-bulk
     . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5-bulk.main/main/trunk/ubuntu-aarch64/gcc/release
+    or faster but Segmentation fault with ooRexxShell when loading BSF.cls:
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/executor5-bulk.main/main/trunk/ubuntu-aarch64/clang/release
 
 # Linux
     # system-arch is ubuntu-aarch64 or ubuntu-x86_64.
@@ -389,7 +391,11 @@ cd /local/rexx/oorexx
 
 # Now build...
 cdbuild
+cmake -G "Ninja"            -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
+  or
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
+ninja install
+  or
 make install
 
 # To build a rpm (Linux):
