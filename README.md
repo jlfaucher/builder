@@ -103,7 +103,7 @@ Variables defined by <builder_path>/scripts/setenv (values for Linux):
     CMAKE_BUILD_TYPE            Debug or RelWithDebInfo or Release
     CMAKE_C_COMPILER            gcc or clang or cl
     CMAKE_CXX_COMPILER          g++ or clang++ or cl
-    CMAKE_GENERATOR             "Unix Makefiles" or "NMake Makefiles"
+    CMAKE_GENERATOR             "Unix Makefiles" or "NMake Makefiles" or "Ninja"
 
     Variables defined for building with configure:
     CONFIGURE_C_COMPILER        gcc or clang
