@@ -19,6 +19,9 @@ call ..\builder\scripts\setenv ...  (Windows)
 or
 . ../builder/scripts/setenv ...     (Linux, macOS)
 
+If ninja is installed, the build command is "ninja".
+Otherwise, the build command is "make" or "nmake".
+
 
 --------------------------------------------------------------------------------
 # MacOs for arm64 or x86_64
@@ -40,6 +43,8 @@ cd icu4oorexx
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_shared_dir/icu4oorexx/src
 
 # The binaries are installed in $builder_delivery_dir
+ninja install
+or
 make install
 
 
@@ -63,6 +68,8 @@ cd icu4oorexx
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_shared_dir/icu4oorexx/src
 
 # The binaries are installed in $builder_delivery_dir
+ninja install
+or
 make install
 
 
@@ -84,4 +91,6 @@ cd icu4oorexx
 cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DCMAKE_CXX_COMPILER=%CMAKE_CXX_COMPILER% %builder_shared_dir%\icu4oorexx\src
 
 :: The binaries are installed in %builder_delivery_dir%
+ninja install
+or
 nmake install

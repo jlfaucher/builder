@@ -27,6 +27,9 @@ Shell prerequisite for Linux:
 Shell prerequisite for Windows:
     Works only with cmd.
 
+If ninja is installed, the build command is "ninja".
+Otherwise, the build command is "make" or "nmake".
+
 
 --------------------------------------------------------------------------------
 ooRexx directory hierarchy
@@ -391,8 +394,6 @@ cd /local/rexx/oorexx
 
 # Now build...
 cdbuild
-cmake -G "Ninja"            -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
-  or
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER $builder_src_dir
 ninja install
   or
@@ -403,6 +404,8 @@ make install
 # Note JLF: Under Linux, `uname` could be replaced by `lsb_release -i -s`-`lsb_release -r -s`
 cdbuild
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_RPM=1 -DOS_DIST=`uname` $builder_src_dir
+ninja install
+or
 make install
 cpack -G RPM
 
@@ -410,6 +413,8 @@ cpack -G RPM
 # OS_DIST is optional on the following command. It is used to modify the install package name.
 cdbuild
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_DEB=1 -DOS_DIST=`uname` $builder_src_dir
+ninja install
+or
 make install
 cpack -G DEB
 
@@ -417,6 +422,8 @@ cpack -G DEB
 # OS_DIST is optional on the following command. It is used to modify the install package name.
 cdbuild
 cmake -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_INSTALL_PREFIX=$builder_delivery_dir -DCMAKE_C_COMPILER=$CMAKE_C_COMPILER -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER -DBUILD_DMG=1 -DOS_DIST=`uname` $builder_src_dir
+ninja install
+or
 make install
 . ./build_macOS_dmg.sh
 
@@ -485,9 +492,13 @@ cd \local\rexx\oorexx
 :: Now build...
 cdbuild
 cmake -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE% -DCMAKE_INSTALL_PREFIX=%builder_delivery_dir% -DDOC_SOURCE_DIR=%oorexx_doc_dir%\build\trunk -DCMAKE_C_COMPILER=%CMAKE_C_COMPILER% -DCMAKE_CXX_COMPILER=%CMAKE_CXX_COMPILER% %builder_src_dir%
+ninja install
+or
 nmake install
 
 :: Optional
+ninja nsis_template_installer
+or
 nmake nsis_template_installer
 
 :: Optional

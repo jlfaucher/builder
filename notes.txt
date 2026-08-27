@@ -8,7 +8,7 @@ $(builder_build_dir)
 $(buildet_delivery_dir)
 
 The oorexx_builder project can be used from any cmd where the builder has been
-initialized, and the build command "nmake install" is supported:
+initialized, and the build command "ninja install" or "nmake install" is supported:
 - ooRexx release
 - ooRexx debug
 - Executor release
@@ -75,12 +75,13 @@ INSTRUCTIONS TO CREATE A NEW PROJECT
 -- Make the builder variables usable in the form $(builder...) from Visual Studio.
 
     Right-click on the "oorexx_builder" project (under solution) and select Open Folder in File Explorer
-    Create the "builder.props" file in the project directoy.
+    Create the "builder.props" file in the project directoy ("C:\Users\jlfaucher\source\repos\oorexx_builder\oorexx_builder\builder.props").
     Copy-paste in builder.props:
     <Project>
       <PropertyGroup>
         <builder_delivery_dir>$(builder_delivery_dir)</builder_delivery_dir>
         <builder_build_dir>$(builder_build_dir)</builder_build_dir>
+        <builder_build_command>$(builder_build_command)</builder_build_command>
       </PropertyGroup>
     </Project>
 
@@ -112,9 +113,9 @@ INSTRUCTIONS TO CREATE A NEW PROJECT
     Select the "Build" configuration
     Keep "All Platforms" selected
         NMake
-            Build Command Line = cd /d %builder_build_dir% && nmake install
-            Rebuild All Command Line = cd /d %builder_build_dir% && nmake clean install
-            Clean Command Line = cd /d %builder_build_dir% && nmake clean
+            Build Command Line = cd /d %builder_build_dir% && %builder_build_command% install
+            Rebuild All Command Line = cd /d %builder_build_dir% && %builder_build_command% clean install
+            Clean Command Line = cd /d %builder_build_dir% && %builder_build_command% clean
             Compile File Command Line = REM no build for this configuration
             Output = $(builder_delivery_dir)\rexx.exe
 

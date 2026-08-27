@@ -75,6 +75,7 @@ Variables defined by <builder_path>/scripts/setenv (values for Linux):
     builder_bitness             64
     builder_branch
     builder_build_dir           /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release/build
+    builder_build_command       make or ninja
     builder_compiler            gcc
     builder_config              release
     builder_config_dir          /local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-x86_64/gcc/release
