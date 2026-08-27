@@ -40,7 +40,14 @@ if not defined compiler_option  goto error
 set CMAKE_C_COMPILER=cl
 set CMAKE_CXX_COMPILER=cl
 :: yes! no quotes
-ninja --version > nul 2>&1 && set CMAKE_GENERATOR=Ninja|| set CMAKE_GENERATOR=NMake Makefiles
+ninja --version > nul 2>&1
+if errorlevel 1 (
+    set CMAKE_GENERATOR=NMake Makefiles
+    set builder_build_command=nmake
+) else (
+    set CMAKE_GENERATOR=Ninja
+    set builder_build_command=ninja
+)
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
