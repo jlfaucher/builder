@@ -87,6 +87,7 @@ Under MacOs, which is the main machine (host of the virtual machines):
                             5.0.0/
                                 trunk/  macos-[x86_64|arm64]/clang/[debug|reldbg|release]
                         trunk/          macos-[x86_64|arm64]/clang/[debug|reldbg|release]
+                        trunk           emscripten-wasm32/emcc/release
 
 
 Linux virtual machine:
@@ -126,6 +127,7 @@ See notes.txt for "WSL: Creation of the build environment".
                             5.0.0/
                                 trunk/  ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
                         trunk/          ubuntu-[x86_64|aarch64]/[gcc|clang]/[debug|profiling|reldbg|release]
+                        trunk           emscripten-wasm32/emcc/release
 
 
 Windows virtual machine:
@@ -532,3 +534,53 @@ cd \local\rexx\oorexx
 call ..\builder\scripts\setenv e:build\official\main\releases\4.2.0\trunk\windows-x86_64\cl\release
 cdtrunk
 makeorx_verbose %BUILD_TYPE%
+
+
+--------------------------------------------------------------------------------
+ooRexx 5
+Emscripten wasm32 (MacOS and Linux, Windows not supported)
+--------------------------------------------------------------------------------
+
+# Remember: the instructions in this section work only with bash.
+# If you use another shell (like zsh), then type bash -l
+# See the folder setenv/bash for examples of configuration files for bash.
+
+
+# Prerequisite
+# Install Emscripten.
+
+
+# Note: This is a temporary procedure, needing patches to be applied.
+# From the oorexx/trunk folder, apply the patches attached to
+# https://sourceforge.net/p/oorexx/feature-requests/879/
+
+
+cd /local/rexx/oorexx
+
+# Initialize the build environment (only one of them):
+# MacOs
+    . ../builder/scripts/setenv build/official/main/trunk/emscripten-wasm32/emcc/release/
+
+# WSL Ubuntu, Linux
+    . ../builder/scripts/setenv /local/rexxlocal/oorexx/build/official/main/trunk/emscripten-wasm32/emcc/release/
+
+cdbuild
+$builder_src_dir/wasm/build-wasm.sh $EMSDK/upstream build-wasm
+$builder_src_dir/wasm/build-node.sh build-wasm
+$builder_src_dir/wasm/build-web.sh build-wasm
+
+# qualification script
+
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install websockets
+# Check it works
+python -c 'import websockets; print(websockets.__version__)'
+
+$builder_src_dir/wasm/tests/qualify-node.sh build-wasm
+$builder_src_dir/wasm/tests/qualify-node-cli.sh build-wasm/bin-node
+
+python -m pip install playwright
+playwright install chromium
+
+python3 $builder_src_dir/wasm/tests/web-api.py build-wasm/bin-web

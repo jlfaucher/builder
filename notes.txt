@@ -832,3 +832,15 @@ Setting up M1 Macs for x86 development with Homebrew
 ---
 arch -arm64 rexx
 arch -x86_64 rexx
+
+https://doc.rust-lang.org/nightly/rustc/platform-support/wasm32-unknown-emscripten.html
+wasm32-unknown-emscripten   #[cfg(target_os = "emscripten")]
+wasm32-unknown-unknown      #[cfg(all(target_family = "wasm", target_os = "unknown"))]
+# wasm32-wasip1 target is a WebAssembly compilation target which assumes that the WASIp1
+# (aka “WASI preview1”) set of “syscalls” are available for use in the standard library.
+# Prior to March 2024 this target was known as wasm32-wasi
+wasm32-wasip1               #[cfg(all(target_os = "wasi", target_env = "p1"))]
+# The wasm32-wasip2 target is a new and still (as of January 2024) an experimental target.
+wasm32-wasip2               #[cfg(all(target_os = "wasi", target_env = "p2"))]
+# The wasm32-wasip3 target is the next stage of evolution of the wasm32-wasip2 target.
+wasm32-wasip3               #[cfg(all(target_os = "wasi", target_env = "p3"))]

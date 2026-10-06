@@ -64,9 +64,10 @@ export builder_arch=${str_array[1]}
 case "$builder_system" in
     "macos") ;;
     "ubuntu") ;;
+    "emscripten") ;;
     *)
         echo "Invalid system: $builder_system"
-        echo "Expected: macos or ubuntu"
+        echo "Expected: macos or ubuntu or emscripten"
         return 1
         ;;
 esac
@@ -77,9 +78,10 @@ case "$builder_arch" in
     "arm64") ;;
     "aarch32") ;;
     "aarch64") ;;
+    "wasm32") ;;
     *)
         echo "Invalid architecture: $builder_arch"
-        echo "Expected: x86_64 or arm64 or aarch32 or aarch64"
+        echo "Expected: x86_64 or arm64 or aarch32 or aarch64 or wasm32"
         return 1
         ;;
 esac
@@ -90,6 +92,7 @@ case "$builder_system_arch" in
     "macos-x86_64") ;;
     "ubuntu-aarch64") ;;
     "ubuntu-x86_64") ;;
+    "emscripten-wasm32") ;;
     *)
         echo "Unsupported system-architecture: $builder_system_arch"
         echo "Expected:"
@@ -97,6 +100,7 @@ case "$builder_system_arch" in
         echo "macos-x86_64"
         echo "ubuntu-aarch64"
         echo "ubuntu-x86_64"
+        echo "emscripten-wasm32"
         return 1
         ;;
 esac

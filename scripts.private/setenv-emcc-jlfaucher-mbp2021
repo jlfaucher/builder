@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# File naming convention
+# setenv-${current}-${builder_hostname}
+#        emcc       jlfaucher-mbp2021
+
+if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; exit 1 ; fi
+
+source "/local/emscripten/emsdk/emsdk_env.sh"
+
+if [ ! -x "$(which $compiler)" ] ; then
+    echo "\"$compiler\" not found or not executable"
+    echo
+    echo "Aborting"
+    return 1
+fi

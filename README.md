@@ -165,6 +165,10 @@ Supported architectures
     Regina          ko (5)          ko (4)          ko (6)          ok
 
 
+    Emscripten      wasm32
+    ooRexx 5        ok
+    
+
     Other platforms: not tested.
 
 
@@ -253,6 +257,8 @@ Examples of builds
     local/rexx/oorexx/build/official/main/trunk/macos-x86_64/clang/debug/build
     local/rexx/oorexx/build/official/main/trunk/macos-x86_64/clang/reldbg/build
     local/rexx/oorexx/build/official/main/trunk/macos-x86_64/clang/release/build
+    ---
+    local/rexx/oorexx/build/official/main/trunk/emscripten-wasm32/emcc/release/build
     ---
     local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/gcc/release
     local/rexxlocal/oorexx/build/official/main/trunk/ubuntu-aarch64/gcc/release-O2
