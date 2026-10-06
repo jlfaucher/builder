@@ -9,7 +9,7 @@ if [ "$0" = "$BASH_SOURCE" ] ; then echo "Usage : source ${BASH_SOURCE[0]}" ; ex
 # Variables set for building with cmake:
 export CMAKE_C_COMPILER=clang
 export CMAKE_CXX_COMPILER=clang++
-if [ -x ninja ] ; then
+if [ -x "$(which ninja)" ] ; then
     export CMAKE_GENERATOR="Ninja"
     export builder_build_command=ninja
 else
